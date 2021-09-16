@@ -3,7 +3,7 @@
         ".git"
     ],
     "watch": [
-        "src"
+        "api"
     ],
     "ext": "json,js"
 }

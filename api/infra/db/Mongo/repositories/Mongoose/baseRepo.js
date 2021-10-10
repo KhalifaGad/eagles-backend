@@ -13,13 +13,13 @@ class BaseRepo {
       : this._model.create(item);
   }
 
-  leanedFindById(id, populateField = undefined) {
+  findById(id, populateField = undefined) {
     if (populateField)
       return this._model.findById(id).populate(populateField).lean();
     return this._model.findById(id).lean();
   }
 
-  findById(id) {
+  RawfindById(id) {
     return this._model.findById(id);
   }
 
@@ -44,7 +44,7 @@ class BaseRepo {
     return this._model.find({ ...args }).lean();
   }
 
-  listUnleaned(args, populateField = undefined) {
+  Rawlist(args, populateField = undefined) {
     if (populateField)
       return this._model.find({ ...args }).populate(populateField);
     return this._model.find({ ...args });
@@ -57,6 +57,10 @@ class BaseRepo {
   insertMany(data) {
     if (!Array.isArray(data)) throw new Error("Array required!");
     return this._model.insertMany(data);
+  }
+
+  drop() {
+    return this._model.collection.drop();
   }
 }
 

@@ -3,14 +3,21 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import Providers from "./HOCs/Providers";
+import { ToastsContainer, ToastsStore } from "react-toasts";
+import { BrowserRouter } from "react-router-dom";
 
 import "./normalize.css";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Providers.User>
-      <App />
-    </Providers.User>
+    <BrowserRouter>
+      <Providers.User>
+        <Providers.Theme>
+          <App />
+          <ToastsContainer store={ToastsStore} />
+        </Providers.Theme>
+      </Providers.User>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );

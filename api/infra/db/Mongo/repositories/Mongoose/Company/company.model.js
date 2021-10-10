@@ -33,6 +33,11 @@ const companySchema = Schema({
   },
   ownerName: String,
   ownerMobile: String,
+  byBranchId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: "Branch",
+  },
 });
 
 const CompanyModel = mongoose.model("Company", companySchema);

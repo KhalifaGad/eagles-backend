@@ -2,7 +2,7 @@ import express from "express";
 import { errorHandler } from "./middlewares";
 import router from "./routes";
 import cors from "cors";
-
+import cookieParser from "cookie-parser";
 class Server {
   constructor(port) {
     this.port = port;
@@ -10,11 +10,12 @@ class Server {
   }
 
   init() {
-    const whitelist = ["http://localhost:3000"];
+    const whitelist = ["http://localhost:3000", "http://0.0.0.0:3000"];
 
     this.app
       .use(express.urlencoded({ extended: true }))
       .use(express.json())
+      .use(cookieParser(process.env.COOKIE_SECRET))
       .disable("x-powered-by")
       .use(
         cors(function (req, callback) {

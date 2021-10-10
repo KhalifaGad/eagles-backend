@@ -16,6 +16,11 @@ const clientSchema = mongoose.Schema({
     required: true,
     unique: true,
   },
+  byBranchId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: "Branch",
+  },
   addresses: {
     type: [
       {

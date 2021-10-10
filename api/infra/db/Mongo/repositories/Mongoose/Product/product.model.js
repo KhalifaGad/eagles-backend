@@ -26,11 +26,17 @@ const productSchema = Schema({
     required: true,
   },
   weight: Number,
-  Heght: Number,
-  CompanyId: {
+  height: Number,
+  width: Number,
+  companyId: {
     type: Schema.Types.ObjectId,
     required: true,
     ref: "Company",
+  },
+  byBranchId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: "Branch",
   },
 });
 

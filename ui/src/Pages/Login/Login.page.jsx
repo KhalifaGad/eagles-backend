@@ -13,7 +13,11 @@ const Login = () => {
 
   async function onSubmit(data) {
     const { mobile, password } = data;
-    const { error, employee, branch } = await API.login(mobile, password);
+    console.log(mobile, password);
+    const { error, employee, branch } = await API.login(
+      "01043703911",
+      "abcd1234"
+    );
     if (error) {
       ToastsStore.error(error);
       return false;
@@ -38,12 +42,11 @@ const Login = () => {
     >
       <Box
         sx={{
-          paddingRight: "35%",
-          mb: "5vh",
-          mt: "3vh",
+          widht: "100%",
+          mb: "8vh",
         }}
       >
-        <Brand variant="h4" />
+        <Brand size="70px" height="40px" />
       </Box>
       <Form
         initialValues={initialValues}

@@ -1,7 +1,7 @@
 import { Box, Typography, Paper } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import Form from "../../Components/Form";
-import APIContext from "../../Contexts/API/API.Context";
+import APIContext from "../../Contexts/API/API.context";
 import {
   fieldsValidation,
   addressFields,
@@ -9,7 +9,7 @@ import {
 } from "./AddAddress.schema";
 import { ToastsStore } from "react-toasts";
 
-const AddAddress = ({ submit }) => {
+const AddAddress = ({ submit, shouldReset }) => {
   const { API } = useContext(APIContext);
   const [cities, setCities] = useState([]);
   const [formFields, setFormFields] = useState(addressFields);
@@ -72,6 +72,7 @@ const AddAddress = ({ submit }) => {
               gap: 4,
               useRow: true,
             }}
+            shouldReset={shouldReset}
           />
         </Box>
       </Paper>

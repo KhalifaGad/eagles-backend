@@ -77,15 +77,15 @@ export const managerFields = [
 ];
 
 export const companyInitialValues = {
-  name: "",
-  businessType: "",
-  ownerName: "",
-  ownerMobile: "",
-  telephone: "",
+  name: undefined,
+  businessType: undefined,
+  ownerName: undefined,
+  ownerMobile: undefined,
+  telephone: undefined,
 };
 
 export const managerInitialValues = {
-  name: "",
-  departmentName: "",
-  mobile: "",
+  name: undefined,
+  departmentName: undefined,
+  mobile: undefined,
 };

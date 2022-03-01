@@ -7,7 +7,7 @@ import {
 import { MongooseRepos as repos } from "../../infra/db/Mongo/repositories";
 
 async function addCompany(companyData, managersData, addressData) {
-  const isManagersExist = managersData.length > 0;
+  const isManagersExist = managersData && managersData.length > 0;
   let company = new CompanyEntity(companyData);
   let address = new AddressEntity({
     ...addressData,

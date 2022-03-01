@@ -38,6 +38,10 @@ class CoreAPI {
     return this.client.post(URLs.CLIENTS, { client, address });
   }
 
+  getClients() {
+    return this.client.get(URLs.CLIENTS);
+  }
+
   addCompany(company, managers, address) {
     return this.client.post(URLs.COMPANIES, { company, managers, address });
   }

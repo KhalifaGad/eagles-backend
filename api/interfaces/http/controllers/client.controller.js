@@ -9,6 +9,12 @@ class ClientController {
     if (boom.isBoom(clientRes)) return next(clientRes);
     return res.status(200).send(clientRes);
   }
+
+  async list(_req, res, next) {
+    const clientsRes = await ClientService.list();
+    if (boom.isBoom(clientsRes)) return next(clientsRes);
+    return res.status(200).send(clientsRes);
+  }
 }
 
 export default new ClientController();

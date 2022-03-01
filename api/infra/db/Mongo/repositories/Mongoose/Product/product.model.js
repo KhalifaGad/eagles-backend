@@ -11,20 +11,9 @@ const productSchema = Schema({
     type: String,
     required: true,
   },
-  descriptionEn: {
-    type: String,
-    required: true,
-    default: "",
-  },
-  descriptionAr: {
-    type: String,
-    required: true,
-    default: "",
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
+  descriptionEn: String,
+  descriptionAr: String,
+  price: Number,
   weight: Number,
   height: Number,
   width: Number,

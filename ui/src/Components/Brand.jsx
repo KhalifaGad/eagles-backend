@@ -1,31 +1,17 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
+import { FullLogo } from "../styles";
 
-const Brand = ({ variant }) => {
+const Brand = ({ height, size }) => {
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "row-reverse",
+        height: height,
+        width: "100%",
       }}
     >
-      <Typography variant={variant} color="secondary">
-        E
-      </Typography>
-      <Typography variant={variant}>gyptian</Typography>
-      <Typography variant={variant} color="secondary" sx={{ mr: "5px" }}>
-        {" E"}
-      </Typography>
-      <Typography variant={variant}>agls</Typography>
+      <FullLogo height={size} />
     </Box>
   );
 };
 
 export default Brand;
-
-/* 
-
-
-.Orange {
-    color:#ff9800;
-}
-*/

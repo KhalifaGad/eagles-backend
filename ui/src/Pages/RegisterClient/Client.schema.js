@@ -31,7 +31,7 @@ export const clientFields = [
 ];
 
 export const initialValues = {
-  firstName: "",
-  lastName: "",
-  mobile: "",
+  firstName: undefined,
+  lastName: undefined,
+  mobile: undefined,
 };

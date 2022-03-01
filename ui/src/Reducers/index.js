@@ -1,2 +1,3 @@
-export { default as UserReducer } from "./User.reducer";
-export { userActions } from "./Actions";
+export { default as UserReducer, userInitialState } from "./User.reducer";
+export { default as CacheReducer, cacheInitialState } from "./Cache.reducer";
+export { userActions, cacheActions } from "./Actions";

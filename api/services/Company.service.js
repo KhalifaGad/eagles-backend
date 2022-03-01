@@ -5,12 +5,11 @@ import ErrorService from "./Error.service";
 class CompanyService {
   async add(companytData, addressData, managersData, branchId) {
     try {
-      const company = await CompanyUseCases.addCompany(
+      return await CompanyUseCases.addCompany(
         { ...companytData, byBranchId: branchId },
         managersData,
         addressData
       );
-      return company;
     } catch (err) {
       return ErrorService.handleError(err);
     }

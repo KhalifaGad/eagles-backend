@@ -1,1 +1,1 @@
-export { default as APIContext } from "./API.Context";
+export { default as APIContext } from "./API.context";

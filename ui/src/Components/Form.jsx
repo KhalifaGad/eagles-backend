@@ -5,9 +5,11 @@ import {
   FormGroup,
   FormHelperText,
   InputLabel,
-  MenuItem,
-  Select,
+  // MenuItem,
+  Autocomplete,
   TextField,
+  Box,
+  Chip,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useMemo, useState } from "react";
@@ -21,6 +23,8 @@ const Form = ({
   submitText,
   formStyle = {},
   disableAfterSubmit,
+  shouldReset = true,
+  onChangeListeners = {},
 }) => {
   const formik = useFormik({
     initialValues,
@@ -32,7 +36,7 @@ const Form = ({
 
   const [shouldDisable, setShoudDisable] = useState(false);
 
-  async function innerOnSubmit(args) {
+  async function innerOnSubmit(args, { resetForm }) {
     const numricFields = fields.filter((field) => field.type === "number");
     numricFields.forEach((numricField) => {
       args[numricField.name] = isEnglishNumber(args[numricField.name])
@@ -43,6 +47,9 @@ const Form = ({
     const result = await onSubmit(args);
     if (result && disableAfterSubmit) {
       setShoudDisable(true);
+    }
+    if (result && shouldReset) {
+      resetForm();
     }
     return result;
   }
@@ -74,6 +81,7 @@ const Form = ({
           field={field}
           formStyle={formStyle}
           key={field.name}
+          onChangeListeners={onChangeListeners}
         />
       );
     }
@@ -116,7 +124,7 @@ const FormTextField = ({ formik, field, formStyle }) => {
       onBlur={formik.handleBlur}
       value={formik.values[field.name]}
       color={formStyle.color ?? "secondary"}
-      helperText={formik.errors[field.name]}
+      helperText={formik.touched[field.name] ? formik.errors[field.name] : ""}
       style={{
         width: field.width ?? "80%",
       }}
@@ -130,7 +138,17 @@ const FormTextField = ({ formik, field, formStyle }) => {
   );
 };
 
-const FormSelect = ({ formik, field, formStyle }) => {
+const FormSelect = ({ formik, field, formStyle, onChangeListeners }) => {
+  function handleChange(_, option) {
+    if (!option) return;
+    const value = field.multiple ? option.map((op) => op.value) : option.value;
+    formik.setFieldValue(field.name, value);
+    const onChangleListner = onChangeListeners[field.name];
+    if (Boolean(onChangleListner)) {
+      onChangleListner(value);
+    }
+  }
+
   return (
     <FormControl
       sx={{
@@ -140,31 +158,33 @@ const FormSelect = ({ formik, field, formStyle }) => {
       error={formik.touched[field.name] && Boolean(formik.errors[field.name])}
       color={formStyle.color ?? "secondary"}
     >
-      <InputLabel id={`select-label-${field.name}`}>{field.label}</InputLabel>
-      <Select
+      <Autocomplete
         id={field.name}
         name={field.name}
-        labelId={`select-label-${field.name}`}
-        value={formik.values[field.name]}
-        label={field.label}
-        onChange={formik.handleChange}
+        options={field.items}
         onBlur={formik.handleBlur}
-      >
-        {field.items.map((item) => (
-          <MenuItem key={item.value} value={item.value}>
-            {item.label}
-          </MenuItem>
-        ))}
-      </Select>
-
-      <FormHelperText
-        sx={{
-          position: "absolute",
-          bottom: "-40%",
-        }}
-      >
-        {formik.errors[field.name]}
-      </FormHelperText>
+        multiple={field.multiple}
+        onChange={handleChange}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={field.label}
+            color={formStyle.color ?? "secondary"}
+            FormHelperTextProps={{
+              sx: {
+                position: "absolute",
+                bottom: "-40%",
+              },
+            }}
+            helperText={
+              formik.touched[field.name] ? formik.errors[field.name] : ""
+            }
+            error={
+              formik.touched[field.name] && Boolean(formik.errors[field.name])
+            }
+          />
+        )}
+      />
     </FormControl>
   );
 };

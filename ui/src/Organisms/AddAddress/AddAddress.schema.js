@@ -63,11 +63,11 @@ export const addressFields = [
 ];
 
 export const initialValues = {
-  area: "",
-  street: "",
-  block: "",
-  landmark: "",
-  apartmentNumber: "",
-  floorNumber: "",
+  area: undefined,
+  street: undefined,
+  block: undefined,
+  landmark: undefined,
+  apartmentNumber: undefined,
+  floorNumber: undefined,
   cityId: "",
 };

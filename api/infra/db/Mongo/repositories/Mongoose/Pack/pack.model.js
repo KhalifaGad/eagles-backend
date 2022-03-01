@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
-import { SHIPPING_STATUSES } from "../../../../../../domain/entities/pack.entity";
+import {
+  SHIPPING_STATUSES,
+  SHIPPING_STATUSES_INDEXES,
+} from "../../../../../../domain/entities";
 const Schema = mongoose.Schema;
 
 const packSchema = Schema({
@@ -51,6 +54,10 @@ const packSchema = Schema({
     type: String,
     required: true,
   },
+  isServicePaid: {
+    type: String,
+    required: true,
+  },
   totalPackPrice: {
     type: Number,
     required: true,
@@ -67,6 +74,7 @@ const packSchema = Schema({
     type: String,
     required: true,
     enum: SHIPPING_STATUSES,
+    default: SHIPPING_STATUSES[SHIPPING_STATUSES_INDEXES.originBranch],
   },
 });
 

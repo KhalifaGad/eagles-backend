@@ -9,10 +9,10 @@ import {
   ListItemText,
   Divider,
 } from "@mui/material";
-import Brand from "./Brand";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 import { useHistory } from "react-router";
+import { Logo } from "./Logo";
 
 const AppNav = () => {
   const [drawerState, setDrawerState] = useState(false);
@@ -44,8 +44,15 @@ const AppNav = () => {
         >
           <MenuIcon />
         </IconButton>
-        <Box sx={{ flexGrow: 1 }}>
-          <Brand variant="h5" />
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Logo inverted height="40px" />
         </Box>
         <Drawer anchor="left" open={drawerState} onClose={toggleDrawer(false)}>
           <Box

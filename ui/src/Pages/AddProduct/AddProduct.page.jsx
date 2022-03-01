@@ -1,7 +1,7 @@
 import { Box, Typography, Paper } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import Form from "../../Components/Form";
-import APIContext from "../../Contexts/API/API.Context";
+import APIContext from "../../Contexts/API/API.context";
 import {
   fieldsValidation,
   productFields,
@@ -51,41 +51,39 @@ const AddProduct = () => {
   }
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        m: "5%",
-      }}
-    >
-      <Paper
-        elevation={16}
+    <Box>
+      <Typography variant="h3" sx={{ m: "2%" }}>
+        اضافة منتج
+      </Typography>
+      <Box
         sx={{
-          height: "60vh",
-          overflowY: "auto",
+          display: "flex",
+          flexDirection: "column",
+          m: "5%",
         }}
       >
-        <Typography
-          variant="h4"
-          color="secondary"
-          sx={{ ml: "1vw", mt: "1vh" }}
+        <Paper
+          elevation={16}
+          sx={{
+            height: "60vh",
+            overflowY: "auto",
+          }}
         >
-          اضافة منتج
-        </Typography>
-        <Box sx={{ mx: "2vw", pt: "5vh" }}>
-          <Form
-            initialValues={initialValues}
-            validationSchema={fieldsValidation}
-            onSubmit={handleSubmit}
-            fields={formFields}
-            submitText="اضافه"
-            formStyle={{
-              gap: 4,
-              useRow: true,
-            }}
-          />
-        </Box>
-      </Paper>
+          <Box sx={{ mx: "2vw", pt: "5vh" }}>
+            <Form
+              initialValues={initialValues}
+              validationSchema={fieldsValidation}
+              onSubmit={handleSubmit}
+              fields={formFields}
+              submitText="اضافه"
+              formStyle={{
+                gap: 4,
+                useRow: true,
+              }}
+            />
+          </Box>
+        </Paper>
+      </Box>
     </Box>
   );
 };

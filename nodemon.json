@@ -1,9 +1,5 @@
 {
-    "ignore": [
-        ".git"
-    ],
-    "watch": [
-        "api"
-    ],
-    "ext": "json,js"
+  "ignore": [".git"],
+  "watch": ["api"],
+  "ext": "json,js"
 }

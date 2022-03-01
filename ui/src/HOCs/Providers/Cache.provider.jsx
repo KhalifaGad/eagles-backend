@@ -5,9 +5,8 @@ import { ToastsStore } from "react-toasts";
 
 const UserProvider = (props) => {
   const [state, dispatch] = useReducer(CacheReducer, cacheInitialState);
-  const { updateClients, updateCompanies, updateProducts } = useContext(
-    CacheContext
-  );
+  const { updateClients, updateCompanies, updateProducts } =
+    useContext(CacheContext);
   const { API } = useContext(APIContext);
 
   useEffect(() => {

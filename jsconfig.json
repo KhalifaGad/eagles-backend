@@ -1,14 +1,10 @@
 {
-    "compilerOptions": {
-        "baseUrl": "./src",
-        "module": "commonjs",
-        "target": "esnext",
-        "moduleResolution": "node"
-    },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "node_modules"
-    ]
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "module": "commonjs",
+    "target": "esnext",
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }

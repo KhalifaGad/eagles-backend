@@ -1,5 +1,5 @@
 {
   "ignore": [".git"],
-  "watch": ["api"],
-  "ext": "json,js"
+  "watch": ["config", "src"],
+  "ext": "ts,json,js"
 }

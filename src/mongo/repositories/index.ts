@@ -1,0 +1,9 @@
+export { default as visitRepository } from "./visit.repository";
+export { default as productRepository } from "./product.repository";
+export { default as packRepository } from "./pack.repository";
+export { default as employeeRoleRepository } from "./employeeRole.repository";
+export { default as employeeRepository } from "./employee.repository";
+export { default as companyRepository } from "./company.repository";
+export { default as clientRepository } from "./client.repository";
+export { default as cityRepository } from "./city.repository";
+export { default as branchRepository } from "./branch.repository";

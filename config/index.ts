@@ -7,7 +7,7 @@ export default Object.freeze({
   mongo: {
     connectionString:
       process.env.MONGO_CONNECTION_STRING ??
-      "mongodb://mongodb0.example.com:27017",
+      "mongodb://127.0.0.1:27017/egypt-eagles",
   },
 
   jwtSecret: process.env.JWT_SECRET ?? "JWT_SECRET",

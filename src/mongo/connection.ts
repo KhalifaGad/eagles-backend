@@ -1,4 +1,4 @@
 import { connect } from "mongoose";
+import config from "../../config";
 
-export const MongoConnect = (connectionString: string) =>
-  connect(connectionString);
+export default () => connect(config.mongo.connectionString);

@@ -1,11 +1,11 @@
 import { Model } from "mongoose";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+// TODO: args = {}
 
-export default class BaseRepository<Document> {
-  private model: Model<Document>;
+export default class BaseRepository<T> {
+  private model: Model<T>;
 
-  constructor(model: Model<Document>) {
+  constructor(model: Model<T>) {
     this.model = model;
   }
 
@@ -13,7 +13,7 @@ export default class BaseRepository<Document> {
     return this.model.countDocuments(args);
   }
 
-  async create(data: any) {
+  async create(data: T) {
     return this.model.create(data);
   }
 
@@ -54,7 +54,7 @@ export default class BaseRepository<Document> {
     return this.model.findByIdAndDelete(id);
   }
 
-  async insertMany(data: any[]) {
+  async insertMany(data: T[]) {
     return this.model.insertMany(data);
   }
 }

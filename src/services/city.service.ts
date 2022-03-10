@@ -1,5 +1,5 @@
 import { cityRepository } from "../mongo/repositories";
-import { CityEntity } from "../types";
+import { CityInterface } from "../types";
 
-export const listCities = async (): Promise<CityEntity[]> =>
+export const listCities = async (): Promise<CityInterface[]> =>
   cityRepository.list();

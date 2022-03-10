@@ -1,15 +1,15 @@
 import { Request, Response, NextFunction } from "express";
-import { clientService } from "../services";
+import { userService } from "../services";
 import Controller from "./base.controller";
 
-class ClientController extends Controller {
+class userController extends Controller {
   async list(req: Request, res: Response, next: NextFunction) {
-    return this.exec(res, next, clientService.listClients);
+    return this.exec(res, next, userService.listusers);
   }
 
   async create(req: Request, res: Response, next: NextFunction) {
-    return this.exec(res, next, clientService.createClient, req.body);
+    return this.exec(res, next, userService.createuser, req.body);
   }
 }
 
-export default new ClientController();
+export default new userController();

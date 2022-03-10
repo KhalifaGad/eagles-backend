@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { clientController } from "../controllers";
+import { userController } from "../controllers";
 
 const router = Router();
 
-router.route("/clients").get(clientController.list);
+router.route("/users").get(userController.list);
 
-router.route("/client").post(clientController.create);
+router.route("/user").post(userController.create);
 
 export default router;

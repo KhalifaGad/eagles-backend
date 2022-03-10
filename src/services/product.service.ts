@@ -1,9 +1,9 @@
 import { productRepository } from "../mongo/repositories";
-import { ProductEntity } from "../types";
+import { ProductInterface } from "../types";
 
 export const createProduct = async (
-  company: ProductEntity
-): Promise<ProductEntity> => productRepository.create(company);
+  organization: ProductInterface
+): Promise<ProductInterface> => productRepository.create(organization);
 
-export const listProducts = async (): Promise<ProductEntity[]> =>
+export const listProducts = async (): Promise<ProductInterface[]> =>
   productRepository.list();

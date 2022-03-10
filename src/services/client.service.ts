@@ -1,16 +1,16 @@
-import { clientRepository } from "../mongo/repositories";
-import { AddressEntity, ClientEntity } from "../types";
+import { userRepository } from "../mongo/repositories";
+import { AddressInterface, UserInterface } from "../types";
 
-export const createClient = async (
-  client: ClientEntity,
-  addresses: AddressEntity[],
+export const createuser = async (
+  user: UserInterface,
+  addresses: AddressInterface[],
   branchId: number
-): Promise<ClientEntity> =>
-  clientRepository.create({
-    ...client,
+): Promise<UserInterface> =>
+  userRepository.create({
+    ...user,
     branchId,
     addresses,
   });
 
-export const listClients = async (): Promise<ClientEntity[]> =>
-  clientRepository.list();
+export const listusers = async (): Promise<UserInterface[]> =>
+  userRepository.list();

@@ -1,5 +1,6 @@
 import { packRepository } from "../mongo/repositories";
-import { PackEntity } from "../types";
+import { PackInterface } from "../types";
 
-export const createPack = async (company: PackEntity): Promise<PackEntity> =>
-  packRepository.create(company);
+export const createPack = async (
+  organization: PackInterface
+): Promise<PackInterface> => packRepository.create(organization);

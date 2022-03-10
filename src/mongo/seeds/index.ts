@@ -1,4 +1,4 @@
 import cities from "./cities.json";
-import employeeRoles from "./employeeRoles.json";
+import roles from "./roles.json";
 
-export { cities, employeeRoles };
+export { cities, roles };

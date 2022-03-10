@@ -1,12 +1,12 @@
 import exceptions from "../errors";
 import { branchRepository, employeeRepository } from "../mongo/repositories";
-import { EmployeeEntity, BranchEntity } from "../types";
+import { EmployeeInterface, BranchInterface } from "../types";
 import { verifyHash } from "../utilities";
 
 export const login = async (
   mobile: string,
   password: string
-): Promise<void | (EmployeeEntity & { branch: BranchEntity | null })> => {
+): Promise<void | (EmployeeInterface & { branch: BranchInterface | null })> => {
   const employee = await employeeRepository.findOne({ mobile });
 
   if (

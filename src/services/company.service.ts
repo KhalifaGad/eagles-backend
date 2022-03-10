@@ -1,9 +1,10 @@
-import { companyRepository } from "../mongo/repositories";
-import { CompanyEntity } from "../types";
+import { organizationRepository } from "../mongo/repositories";
+import { OrganizationInterface } from "../types";
 
-export const createCompany = async (
-  company: CompanyEntity
-): Promise<CompanyEntity> => companyRepository.create(company);
+export const createorganization = async (
+  organization: OrganizationInterface
+): Promise<OrganizationInterface> =>
+  organizationRepository.create(organization);
 
-export const listCompanies = async (): Promise<CompanyEntity[]> =>
-  companyRepository.list();
+export const listCompanies = async (): Promise<OrganizationInterface[]> =>
+  organizationRepository.list();

@@ -1,10 +1,10 @@
 import Repository from "./baseRepository";
-import { companyModel, CompanyDocument } from "../schemas";
+import { organizationModel, OrganizationDocument } from "../schemas";
 
-class CompanyRepository extends Repository<CompanyDocument> {
+class organizationRepository extends Repository<OrganizationDocument> {
   constructor() {
-    super(companyModel);
+    super(organizationModel);
   }
 }
 
-export default new CompanyRepository();
+export default new organizationRepository();

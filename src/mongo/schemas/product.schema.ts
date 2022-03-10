@@ -1,55 +1,37 @@
 import { Schema, model, Document } from "mongoose";
-import { ProductEntity } from "../../types";
+import { ProductInterface } from "../../types";
 
 export const productSchema = new Schema({
-  nameEn: {
-    type: String,
-    required: true,
+  name: {
+    arabic: { type: String, required: true, unique: true },
+    english: { type: String, required: true, unique: true },
   },
-  nameAr: {
-    type: String,
-    required: true,
+  description: {
+    arabic: { type: String, required: true, unique: true },
+    english: { type: String, required: true, unique: true },
   },
-  descriptionEn: {
-    type: String,
-    required: true,
-  },
-  descriptionAr: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  weight: {
-    type: Number,
-    required: true,
-  },
-  height: {
-    type: Number,
-    required: true,
-  },
-  width: {
-    type: Number,
-    required: true,
-  },
-  companyId: {
+  price: { type: Number, required: true },
+  weight: { type: Number, required: true },
+  height: { type: Number, required: true },
+  width: { type: Number, required: true },
+  organizationId: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: "Company",
+    ref: "organizations",
   },
   branchId: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: "Branch",
+    ref: "branches",
   },
-});
+})
+  .index({ arabicName: 1 })
+  .index({ englishName: 1 })
+  .index({ organizationId: 1 })
+  .index({ branchId: 1 });
 
-productSchema.index({ name: 1 });
-
-export interface ProductDocument extends ProductEntity, Document {
+export interface ProductDocument extends ProductInterface, Document {
   _id: string;
 }
 
-export const productModel = model<ProductDocument>("Product", productSchema);
+export const productModel = model<ProductDocument>("products", productSchema);

@@ -1,4 +1,4 @@
-export interface AddressEntity {
+export interface AddressInterface {
   cityId: string;
   area: string;
   street: string;
@@ -10,62 +10,64 @@ export interface AddressEntity {
   lng: number;
 }
 
-export interface CityEntity {
+export interface CityInterface {
   name: string;
 }
 
-export interface ClientEntity {
+export interface UserInterface {
   firstName: string;
   lastName: string;
   mobile: string;
+  address: AddressInterface;
   branchId: string;
-  addresses: AddressEntity[];
+  roleId: string;
+  isAdmin: boolean;
 }
 
-export interface CompanyManagerEntity {
+export interface OrganizationManagerInterface {
   name: string;
   departmentName: string;
   mobile: string;
-  companyId: string;
+  organizationId: string;
 }
 
-export interface CompanyEntity {
+export interface OrganizationInterface {
   name: string;
   businessType: string;
-  address: AddressEntity;
+  address: AddressInterface;
   telephone: string;
-  managers: CompanyManagerEntity[];
+  managers: OrganizationManagerInterface[];
   ownerName: string;
   ownerMobile: string;
   branchId: string;
 }
 
-export interface EmployeeEntity {
+export interface EmployeeInterface {
   name: string;
   mobile: string;
   password: string;
   idNumber: number;
   loginPermission: boolean;
   branchId: string;
-  address: AddressEntity;
-  employeeRoleId: string;
+  address: AddressInterface;
+  roleId: string;
 }
 
-export interface BranchEntity {
+export interface BranchInterface {
   name: string;
   commercialNumber: number;
   taxCardNumber: number;
-  address: AddressEntity;
+  address: AddressInterface;
   ownerId: string;
-  employees: EmployeeEntity[];
+  employees: EmployeeInterface[];
   telephone: number;
 }
 
-export interface EmployeeRoleEntity {
+export interface RoleInterface {
   name: string;
 }
 
-export interface PackEntity {
+export interface PackInterface {
   originBranchId: number;
   destinationBranchId: number;
   originCustomerType: any;
@@ -79,24 +81,29 @@ export interface PackEntity {
   totalPackPrice: any;
   servicePrice: any;
   date: any;
-  shippingStatus: any;
+  ShippingStatusEnum: any;
   isServicePaid: any;
 }
 
-export enum ShippingStatus {
+export enum ShippingStatusEnum { // TODO
   originBranch = "origin_branch",
   shippedFromOrigin = "shipped_from_origin",
   backToOrigin = "back_to_origin",
   masterBranch = "master_branch", // "warehouse" -> momken kaza makan
   shippedToDestination_branch = "shipped_to_destination_branch",
   destinationBranch = "destination_branch",
-  shippedToClient = "shipped_to_client",
+  shippedTouser = "shipped_to_user",
   delivered = "delivered",
   rejected = "rejected",
   cannotReach = "cannot_reach",
 }
 
-export interface ProductEntity {
+export enum BusinessTypeEnum { // TODO
+  socialMedia = "social media",
+  company = "company",
+}
+
+export interface ProductInterface {
   nameEn: string;
   nameAr: string;
   descriptionEn: string;
@@ -105,22 +112,27 @@ export interface ProductEntity {
   weight: number;
   height: number;
   width: number;
-  companyId: string;
+  organizationId: string;
   branchId: string;
 }
 
-export interface VisitEntity {
-  employeeId: string;
-  companyId: string;
-  packs: PackEntity[];
-  rejectionReason: string;
+export interface VehicleInterface {
+  plateNumber: string;
 }
 
-export interface BranchOwnerEntity {
+export interface BranchOwnerInterface {
   name: string;
   mobile: string;
   password: string;
   idNumber: number;
-  address: AddressEntity;
-  branches: BranchEntity[];
+  address: AddressInterface;
+  branches: BranchInterface[];
+}
+
+export interface RideInterface {
+  origin: AddressInterface;
+  destination: AddressInterface;
+  driverId: string;
+  vehicleId: string;
+  orders: any[];
 }

@@ -1,10 +1,10 @@
 import Repository from "./baseRepository";
-import { employeeRoleModel, EmployeeRoleDocument } from "../schemas";
+import { rolesModel, RolesDocument } from "../schemas";
 
-class EmployeeRoleRepository extends Repository<EmployeeRoleDocument> {
+class roleRepository extends Repository<RolesDocument> {
   constructor() {
-    super(employeeRoleModel);
+    super(rolesModel);
   }
 }
 
-export default new EmployeeRoleRepository();
+export default new roleRepository();

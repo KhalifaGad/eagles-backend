@@ -1,15 +1,20 @@
 import { Request, Response, NextFunction } from "express";
-import { companyService } from "../services";
+import { organizationService } from "../services";
 import Controller from "./base.controller";
 
-class CompanyController extends Controller {
+class organizationController extends Controller {
   async list(req: Request, res: Response, next: NextFunction) {
-    return this.exec(res, next, companyService.listCompanies);
+    return this.exec(res, next, organizationService.listCompanies);
   }
 
   async create(req: Request, res: Response, next: NextFunction) {
-    return this.exec(res, next, companyService.createCompany, req.body);
+    return this.exec(
+      res,
+      next,
+      organizationService.createorganization,
+      req.body
+    );
   }
 }
 
-export default new CompanyController();
+export default new organizationController();

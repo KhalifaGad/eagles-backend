@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { companyController } from "../controllers";
+import { organizationController } from "../controllers";
 
 const router = Router();
 
-router.route("/companies").get(companyController.list);
+router.route("/companies").get(organizationController.list);
 
-router.route("/company").post(companyController.create);
+router.route("/organization").post(organizationController.create);
 
 export default router;

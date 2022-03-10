@@ -1,20 +1,20 @@
 // import { Request, Response, NextFunction } from "express";
-// import { employeeRoleService } from "../services";
+// import { roleService } from "../services";
 // import Controller from "./base.controller";
 
-// class EmployeeRoleController extends Controller {
+// class roleController extends Controller {
 //   async list(req: Request, res: Response, next: NextFunction) {
-//     return this.exec(res, next, employeeRoleService.listEmployeesRoles);
+//     return this.exec(res, next, roleService.listEmployeesRoles);
 //   }
 
 //   async create(req: Request, res: Response, next: NextFunction) {
 //     return this.exec(
 //       res,
 //       next,
-//       employeeRoleService.createEmployeeRole,
+//       roleService.createrole,
 //       req.body
 //     );
 //   }
 // }
 
-// export default new EmployeeRoleController();
+// export default new roleController();

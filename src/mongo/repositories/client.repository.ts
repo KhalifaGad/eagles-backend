@@ -1,10 +1,10 @@
 import Repository from "./baseRepository";
-import { clientModel, ClientDocument } from "../schemas";
+import { userModel, UserDocument } from "../schemas";
 
-class ClientRepository extends Repository<ClientDocument> {
+class userRepository extends Repository<UserDocument> {
   constructor() {
-    super(clientModel);
+    super(userModel);
   }
 }
 
-export default new ClientRepository();
+export default new userRepository();

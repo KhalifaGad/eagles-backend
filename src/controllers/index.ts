@@ -1,10 +1,9 @@
 export { default as authController } from "./auth.controller";
-// export { default as visitController } from "./visit.controller";
-export { default as productController } from "./product.controller";
-export { default as packController } from "./pack.controller";
-// export { default as roleController } from "./role.controller";
-// export { default as employeeController } from "./employee.controller";
-export { default as organizationController } from "./organization.controller";
-export { default as userController } from "./user.controller";
-export { default as cityController } from "./city.controller";
-// export { default as branchController } from "./branch.controller";
+export { default as citiesController } from "./cities.controller";
+export { default as ordersController } from "./orders.controller";
+export { default as organizationsController } from "./organizations.controller";
+export { default as productsController } from "./products.controller";
+export { default as ridesController } from "./rides.controller";
+export { default as rolesController } from "./roles.controller";
+export { default as usersController } from "./users.controller";
+export { default as vehiclesController } from "./vehicles.controller";

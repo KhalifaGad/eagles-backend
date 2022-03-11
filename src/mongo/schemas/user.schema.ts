@@ -15,8 +15,10 @@ export const userSchema = new Schema(
   {
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
+    password: { type: String, required: true },
     mobile: { type: String, required: true, unique: true },
     address: { type: addressSchema, required: true },
+    loginPermission: { type: Boolean, default: true },
     branchId: { type: Schema.Types.ObjectId, ref: "branches" },
     roleId: { type: Schema.Types.ObjectId, ref: "roles" },
     permissions: { type: permissionsSchema },

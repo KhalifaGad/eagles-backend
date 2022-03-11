@@ -1,23 +1,19 @@
 import exceptions from "../errors";
-import { branchRepository, employeeRepository } from "../mongo/repositories";
-import { EmployeeInterface, BranchInterface } from "../types";
+import { branchesRepository, usersRepository } from "../mongo/repositories";
+import { UserInterface, BranchInterface } from "../types";
 import { verifyHash } from "../utilities";
 
 export const login = async (
   mobile: string,
   password: string
-): Promise<void | (EmployeeInterface & { branch: BranchInterface | null })> => {
-  const employee = await employeeRepository.findOne({ mobile });
+): Promise<void | (UserInterface & { branch: BranchInterface })> => {
+  const user = await usersRepository.findOne({ mobile });
 
-  if (
-    !employee ||
-    !employee.loginPermission ||
-    !(await verifyHash(employee.password, password))
-  ) {
+  if (!user?.loginPermission || !(await verifyHash(user.password, password))) {
     return exceptions.throwUnauthorized("Invalid credentials");
   }
 
-  const branch = await branchRepository.findById(employee.branchId);
+  const branch = await branchesRepository.findById(user.branchId);
 
-  return { ...employee, branch };
+  return { ...user, branch };
 };

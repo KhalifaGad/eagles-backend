@@ -1,7 +1,5 @@
 import { Model } from "mongoose";
 
-// TODO: args = {}
-
 export default class BaseRepository<T> {
   private model: Model<T>;
 
@@ -9,52 +7,41 @@ export default class BaseRepository<T> {
     this.model = model;
   }
 
-  async count(args = {}) {
-    return this.model.countDocuments(args);
-  }
-
-  async create(data: T) {
-    return this.model.create(data);
-  }
-
-  async findById(id: string, populateField?: string) {
+  async findById(id: string, populateField?: string): Promise<T> {
     if (populateField) {
       return this.model.findById(id).populate(populateField).lean();
     }
     return this.model.findById(id).lean();
   }
 
-  async RawFindById(id: string) {
-    return this.model.findById(id);
+  async findOne(filter = {}): Promise<T> {
+    return this.model.findOne(filter).lean();
   }
 
-  async findOne(args = {}) {
-    return this.model.findOne(args).lean();
-  }
-
-  async asyncUpdateWhereId(id: string, data = {}) {
-    return this.model.findByIdAndUpdate(id, data, { new: true });
-  }
-
-  async list(args = {}, populateField?: string) {
+  async list(filter = {}, populateField?: string): Promise<T[]> {
     if (populateField) {
-      return this.model.find(args).populate(populateField).lean();
+      return this.model.find(filter).populate(populateField).lean();
     }
-    return this.model.find(args).lean();
+    return this.model.find(filter).lean();
   }
 
-  async RawList(args = {}, populateField?: string) {
-    if (populateField) {
-      return this.model.find(args).populate(populateField);
-    }
-    return this.model.find(args);
+  async count(filter = {}): Promise<number> {
+    return this.model.countDocuments(filter);
   }
 
-  async delete(id: string) {
+  async create(data: T): Promise<T> {
+    return this.model.create(data);
+  }
+
+  async insertMany(data: T[]): Promise<T[]> {
+    return this.model.insertMany(data);
+  }
+
+  async deleteById(id: string): Promise<T | null> {
     return this.model.findByIdAndDelete(id);
   }
 
-  async insertMany(data: T[]) {
-    return this.model.insertMany(data);
+  async updateWhereId(id: string, data = {}): Promise<T | null> {
+    return this.model.findByIdAndUpdate(id, data, { new: true });
   }
 }

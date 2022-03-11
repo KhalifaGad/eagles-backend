@@ -8,16 +8,6 @@
   "engines": {
     "node": ">=14.0"
   },
-  "scripts": {
-    "start": "NODE_ENV=Production ts-node .",
-    "start:client": "cd client && npm run start",
-    "start:app": "concurrently --kill-others \"npm run start\" \"npm run start:client\"",
-    "dev": "NODE_ENV=Development nodemon .",
-    "test": "mocha",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --ext .ts --fix",
-    "seed:dummy": "NODE_ENV=Dummy ts-node ./scripts/dummy.script.ts"
-  },
   "homepage": "https://github.com/KhalifaGad/EgyptEagles#readme",
   "repository": {
     "type": "git",
@@ -25,6 +15,23 @@
   },
   "bugs": {
     "url": "https://github.com/KhalifaGad/EgyptEagles/issues"
+  },
+  "scripts": {
+    "start": "NODE_ENV=Production ts-node .",
+    "start:client": "cd client && npm run start",
+    "start:app": "concurrently --kill-others \"npm run start\" \"npm run start:client\"",
+    "dev": "NODE_ENV=Development nodemon .",
+    "test": "mocha",
+    "test:circular-dependencies": "madge --circular --extensions ts .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "seed:dummy": "NODE_ENV=Dummy ts-node ./scripts/dummy.script.ts"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run test:circular-dependencies",
+      "pre-push": "npm run lint && echo \"All files pass linting.\n\" || (echo \"\nSome files did not pass linting.\nUse \\`npm run lint:fix\\` to fix some of them.\nMake sure to commit these changes before pushing.\n\"; false)"
+    }
   },
   "dependencies": {
     "@hapi/boom": "^9.1.4",
@@ -55,6 +62,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-security": "^1.4.0",
     "husky": "^7.0.4",
+    "madge": "^5.0.1",
     "mocha": "^9.2.1",
     "nodemon": "^2.0.15",
     "supertest": "^6.2.2"

@@ -85,8 +85,8 @@ export interface UserInterface {
   lastName: string;
   mobile: string;
   address: AddressInterface;
-  loginPermission: boolean;
-  password: string;
+  loginPermission?: boolean;
+  password?: string; // sensitive data
   branchId: string;
   roleId: string;
   permissions: { access: boolean; edit: boolean }; // TODO

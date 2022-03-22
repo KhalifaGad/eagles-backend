@@ -64,6 +64,7 @@ const run = async () => {
       )?._id?.toString() as string,
       permissions: { access: true, edit: true },
       isAdmin: true,
+      password: "password",
     }),
   ]);
 
@@ -102,6 +103,7 @@ const run = async () => {
       )?._id?.toString() as string,
       permissions: { access: true, edit: true },
       isAdmin: true,
+      password: "password",
     }),
     repositories.vehiclesRepository.findOne({ name: "XYZ 000" }),
   ]);

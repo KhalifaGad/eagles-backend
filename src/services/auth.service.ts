@@ -7,13 +7,14 @@ import config from "../../config";
 
 export const login = async (
   mobile: string,
-  password: string
+  secret: string
 ): Promise<
   void | (UserInterface & { branch: BranchInterface; token: string })
 > => {
-  const user = await usersRepository.findOne({ mobile });
+  const { password = "", ...user } =
+    (await usersRepository.findOne({ mobile })) || {};
 
-  if (!user?.loginPermission || !(await verifyHash(user.password, password))) {
+  if (!user?.loginPermission || !(await verifyHash(secret, password))) {
     return exceptions.throwUnauthorized("Invalid credentials");
   }
 

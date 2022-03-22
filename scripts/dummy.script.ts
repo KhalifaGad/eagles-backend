@@ -84,7 +84,7 @@ const run = async () => {
         shippingStatus: "origin_branch",
         packages: products.map((product, i) => ({
           productId: product?._id?.toString() as string,
-          quality: i,
+          quantity: i,
         })),
       },
     ],
@@ -117,7 +117,7 @@ const run = async () => {
       vehicleId: vehicle?._id?.toString() as string,
       packages: products.map((product, i) => ({
         productId: product?._id?.toString() as string,
-        quality: i,
+        quantity: i,
       })),
     }),
     repositories.ridesRepository.create({
@@ -128,7 +128,7 @@ const run = async () => {
       vehicleId: vehicle?._id?.toString() as string,
       packages: products.map((product, i) => ({
         productId: product?._id?.toString() as string,
-        quality: i,
+        quantity: i,
       })),
     }),
   ]);

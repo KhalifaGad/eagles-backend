@@ -6,7 +6,7 @@ import { addressSchema } from "./shared.schema";
 export const packageSchema = new Schema(
   {
     productId: { type: Schema.Types.ObjectId, required: true },
-    quality: { type: Number, required: true },
+    quantity: { type: Number, required: true },
   },
   { timestamps: true }
 );

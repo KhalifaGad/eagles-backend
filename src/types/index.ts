@@ -52,7 +52,7 @@ export interface ProductInterface {
 
 export interface PackageInterface {
   productId: string;
-  quality: number;
+  quantity: number;
 }
 
 export interface FulfillerInterface {

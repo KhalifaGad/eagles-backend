@@ -17,10 +17,8 @@
     "url": "https://github.com/KhalifaGad/EgyptEagles/issues"
   },
   "scripts": {
-    "start": "NODE_ENV=Production ts-node .",
-    "start:client": "cd client && npm run start",
-    "start:app": "concurrently --kill-others \"npm run start\" \"npm run start:client\"",
-    "dev": "NODE_ENV=Development nodemon .",
+    "start": "NODE_ENV=Production ts-node index.ts",
+    "dev": "NODE_ENV=Development nodemon index.ts",
     "test": "mocha",
     "test:circular-dependencies": "madge --circular --extensions ts .",
     "lint": "eslint .",

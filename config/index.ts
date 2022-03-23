@@ -2,7 +2,7 @@ import { config } from "dotenv";
 config();
 
 export default Object.freeze({
-  port: parseInt(process.env.PORT ?? "6000"),
+  port: parseInt(process.env.PORT ?? "5000"),
 
   mongo: {
     connectionString:

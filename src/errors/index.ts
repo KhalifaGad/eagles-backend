@@ -4,7 +4,7 @@ import {
   forbidden,
   badData,
   badRequest,
-} from "@hapi/Boom";
+} from "@hapi/boom";
 
 class Errors {
   throwNotFound(message?: string) {

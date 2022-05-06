@@ -1,20 +1,17 @@
 import jwt from "jsonwebtoken";
 import exceptions from "../errors";
-import { branchesRepository, usersRepository } from "../mongo/repositories";
+import { branchesRepository, usersRepository } from "../mongoDB/repositories";
 import { UserInterface, BranchInterface } from "../types";
 import { verifyHash } from "../utilities";
 import config from "../../config";
 
 export const login = async (
   mobile: string,
-  secret: string
-): Promise<
-  void | (UserInterface & { branch: BranchInterface; token: string })
-> => {
-  const { password = "", ...user } =
-    (await usersRepository.findOne({ mobile })) || {};
+  password: string
+): Promise<void | (UserInterface & { branch: BranchInterface; token: string })> => {
+  const user = await usersRepository.findOne({ mobile });
 
-  if (!user?.loginPermission || !(await verifyHash(secret, password))) {
+  if (!user?.loginPermission || !(await verifyHash(user.password, password))) {
     return exceptions.throwUnauthorized("Invalid credentials");
   }
 

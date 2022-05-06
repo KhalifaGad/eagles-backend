@@ -5,13 +5,8 @@ const router = Router();
 
 router.route("/organizations").get(organizationsController.list);
 
-router
-  .route("/organization")
-  .get(organizationsController.show)
-  .post(organizationsController.create);
+router.route("/organization").get(organizationsController.show).post(organizationsController.create);
 
-router
-  .route("/organization/:organizationId/branch")
-  .post(organizationsController.addBranch);
+router.route("/organization/:organizationId/branch").post(organizationsController.addBranch);
 
 export default router;

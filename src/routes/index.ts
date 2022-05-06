@@ -13,7 +13,7 @@ import exceptions from "../errors";
 
 const router = Router();
 
-router.route("/ping").get((req, res) => res.send({ success: true }));
+router.route("/ping").get((_req, res) => res.send({ success: true }));
 
 router.use(authenticateMiddleware);
 
@@ -29,6 +29,6 @@ router.use("/", vehiclesRouter);
 
 router.use(errorHandlerMiddleware);
 
-router.use((req, res, next) => next(exceptions.throwNotFound));
+router.use((_req, _res, next) => next(exceptions.throwNotFound));
 
 export default router;

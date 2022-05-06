@@ -14,10 +14,8 @@ class Server {
   }
 
   start() {
-    this.server.listen(this.port, () => {
-      // eslint-disable-next-line no-console
-      console.log(`🚀 Server started on port: ${this.port}`);
-    });
+    // eslint-disable-next-line no-console
+    this.server.listen(this.port, () => console.log(`🚀 Server started on port: ${this.port}`));
   }
 }
 

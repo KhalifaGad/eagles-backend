@@ -1,9 +1,6 @@
-import { ordersRepository } from "../mongo/repositories";
+import { ordersRepository } from "../mongoDB/repositories";
 import { OrderInterface } from "../types";
 
-export const createOrder = async (
-  order: OrderInterface
-): Promise<OrderInterface> => ordersRepository.create(order);
+export const createOrder = async (order: OrderInterface): Promise<OrderInterface> => ordersRepository.create(order);
 
-export const listOrders = async (): Promise<OrderInterface[]> =>
-  ordersRepository.list();
+export const listOrders = async (): Promise<OrderInterface[]> => ordersRepository.list();

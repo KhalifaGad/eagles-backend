@@ -1,10 +1,4 @@
-import {
-  notFound,
-  unauthorized,
-  forbidden,
-  badData,
-  badRequest,
-} from "@hapi/boom";
+import { notFound, unauthorized, forbidden, badData, badRequest } from "@hapi/Boom";
 
 class Errors {
   throwNotFound(message?: string) {

@@ -12,12 +12,7 @@ class OrganizationsController extends Controller {
   }
 
   async create(req: Request, res: Response, next: NextFunction) {
-    return this.exec(
-      res,
-      next,
-      organizationsService.createOrganization,
-      req.body
-    );
+    return this.exec(res, next, organizationsService.createOrganization, req.body);
   }
 
   async addBranch(req: Request, res: Response, next: NextFunction) {

@@ -24,13 +24,8 @@
     "promise/no-return-in-finally": "warn",
     "promise/valid-params": "warn",
     "no-loops/no-loops": 2,
-    //////////////
     "indent": "off",
-    "no-invalid-this": 0,
-    "no-use-before-define": [
-      "error",
-      { "functions": true, "classes": true, "variables": true }
-    ],
+    "no-use-before-define": ["error", { "functions": true, "classes": true, "variables": true }],
     "no-console": ["error", { "allow": ["error"] }],
     "nonblock-statement-body-position": ["error", "any"],
     "quotes": [2, "double", { "avoidEscape": true }],

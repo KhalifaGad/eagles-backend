@@ -1,11 +1,7 @@
-import {
-  organizationsRepository,
-  branchesRepository,
-} from "../mongo/repositories";
+import { organizationsRepository, branchesRepository } from "../mongoDB/repositories";
 import { OrganizationInterface, BranchInterface } from "../types";
 
-export const listOrganizations = async (): Promise<OrganizationInterface[]> =>
-  organizationsRepository.list();
+export const listOrganizations = async (): Promise<OrganizationInterface[]> => organizationsRepository.list();
 
 export const showOrganization = async (
   name: string
@@ -24,9 +20,7 @@ export const createOrganization = async (
   organization: OrganizationInterface,
   branches: BranchInterface[] = []
 ): Promise<OrganizationInterface & { branches: BranchInterface[] }> => {
-  const createdOrganization = await organizationsRepository.create(
-    organization
-  );
+  const createdOrganization = await organizationsRepository.create(organization);
 
   return {
     ...createdOrganization,
@@ -34,6 +28,5 @@ export const createOrganization = async (
   };
 };
 
-export const createBranch = async (
-  branch: BranchInterface
-): Promise<BranchInterface> => branchesRepository.create(branch);
+export const createBranch = async (branch: BranchInterface): Promise<BranchInterface> =>
+  branchesRepository.create(branch);

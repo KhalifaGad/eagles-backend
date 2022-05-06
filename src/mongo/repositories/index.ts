@@ -1,9 +1,0 @@
-export { default as branchesRepository } from "./branches.repository";
-export { default as citiesRepository } from "./cities.repository";
-export { default as ordersRepository } from "./orders.repository";
-export { default as organizationsRepository } from "./organizations.repository";
-export { default as productsRepository } from "./products.repository";
-export { default as ridesRepository } from "./rides.repository";
-export { default as rolesRepository } from "./roles.repository";
-export { default as usersRepository } from "./users.repository";
-export { default as vehiclesRepository } from "./vehicles.repository";

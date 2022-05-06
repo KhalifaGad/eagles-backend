@@ -2,14 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import { isBoom } from "@hapi/boom";
 import { logger } from "../utilities";
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-export default (
-  err: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default (err: Error, _req: Request, res: Response, _next: NextFunction) => {
   if (isBoom(err)) {
     return res.status(err.output.payload.statusCode).send(err.output.payload);
   }

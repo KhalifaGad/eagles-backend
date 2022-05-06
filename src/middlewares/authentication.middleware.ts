@@ -10,7 +10,8 @@ export default () => (req: Request, res: Response, next: NextFunction) => {
   jwt.verify(token, config.jwtSecret, async (err, data) => {
     if (err) return next(exceptions.throwUnauthorized());
 
-    // TODO: add user's data to request
+    // TODO
+    // res.user = data;
   });
 
   next();

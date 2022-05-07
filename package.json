@@ -18,7 +18,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run format; npm run lint:fix"
+      "pre-commit": "npm run format; npm run lint:fix",
+      "pre-push": "npm run test && echo \"✅ Passed all test cases.\n\" || (echo  \"\nMake sure the server is up and running before pushing\"; false)"
     }
   },
   "scripts": {

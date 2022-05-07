@@ -1,8 +1,8 @@
 import supertest from "supertest";
 import { expect } from "chai";
-import Dotenv from "dotenv";
+import { config } from "dotenv";
+config();
 
-Dotenv.config();
 const request = supertest(`127.0.0.1:${process.env.PORT}`);
 
 // ***************************************************************

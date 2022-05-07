@@ -1,8 +1,8 @@
-import Repository from "./baseRepository";
+import DefaultRepository from "./default.repository";
 import { VehicleModel } from "../models";
 import { VehicleInterface } from "../../types";
 
-class VehicleRepository extends Repository<VehicleInterface> {
+class VehicleRepository extends DefaultRepository<VehicleInterface> {
   constructor() {
     super(VehicleModel);
   }

@@ -28,9 +28,7 @@ const shipmentSchema = new Schema<ShipmentInterface>(
     destinationAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency, required: true },
     isInCity: {
       type: Boolean,
-      default: function () {
-        return this.originAgency.toString() === this.destinationAgency.toString();
-      },
+      default: false,
     },
     notes: [String],
     products: {

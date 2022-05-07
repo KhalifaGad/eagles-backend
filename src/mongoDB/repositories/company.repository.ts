@@ -1,8 +1,8 @@
-import Repository from "./baseRepository";
+import DefaultRepository from "./default.repository";
 import { CompanyModel } from "../models";
 import { CompanyInterface } from "../../types";
 
-class CompanyRepository extends Repository<CompanyInterface> {
+class CompanyRepository extends DefaultRepository<CompanyInterface> {
   constructor() {
     super(CompanyModel);
   }

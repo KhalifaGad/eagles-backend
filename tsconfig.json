@@ -1,12 +1,20 @@
 {
   "compilerOptions": {
-    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "target": "es6",
+    "outDir": "dist/",
+    "sourceRoot": "./",
+    "sourceMap": true,
+    "skipLibCheck": true,
     "noImplicitAny": true,
+    "inlineSources": true,
     "esModuleInterop": true,
     "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true
+    "paths": {},
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   },
-  "exclude": ["node_modules"],
-  "include": ["src/**/*.ts"]
+  "exclude": ["node_modules"]
 }

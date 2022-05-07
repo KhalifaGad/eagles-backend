@@ -1,8 +1,8 @@
-import Repository from "./baseRepository";
+import DefaultRepository from "./default.repository";
 import { CredentialModel } from "../models";
 import { CredentialInterface } from "../../types";
 
-class CredentialRepository extends Repository<CredentialInterface> {
+class CredentialRepository extends DefaultRepository<CredentialInterface> {
   constructor() {
     super(CredentialModel);
   }

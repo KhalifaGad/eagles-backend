@@ -1,8 +1,8 @@
-import Repository from "./baseRepository";
+import DefaultRepository from "./default.repository";
 import { EmployeeRatingModel } from "../models";
 import { EmployeeRatingInterface } from "../../types";
 
-class EmployeeRatingRepository extends Repository<EmployeeRatingInterface> {
+class EmployeeRatingRepository extends DefaultRepository<EmployeeRatingInterface> {
   constructor() {
     super(EmployeeRatingModel);
   }

@@ -19,4 +19,10 @@ class Server {
   }
 }
 
+declare module "express-serve-static-core" {
+  interface Request {
+    client?: unknown;
+  }
+}
+
 export default Server;

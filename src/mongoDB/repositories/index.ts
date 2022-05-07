@@ -1,3 +1,5 @@
+export { default } from "./default.repository";
+
 export { default as agencyRepository } from "./agency.repository";
 export { default as cityRepository } from "./city.repository";
 export { default as clientRepository } from "./client.repository";

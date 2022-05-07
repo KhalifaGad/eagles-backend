@@ -1,8 +1,8 @@
-import Repository from "./baseRepository";
+import DefaultRepository from "./default.repository";
 import { RideModel } from "../models";
 import { RideInterface } from "../../types";
 
-class RideRepository extends Repository<RideInterface> {
+class RideRepository extends DefaultRepository<RideInterface> {
   constructor() {
     super(RideModel);
   }

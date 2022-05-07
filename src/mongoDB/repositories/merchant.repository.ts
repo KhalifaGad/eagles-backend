@@ -1,8 +1,8 @@
-import Repository from "./baseRepository";
+import DefaultRepository from "./default.repository";
 import { MerchantModel } from "../models";
 import { MerchantInterface } from "../../types";
 
-class MerchantRepository extends Repository<MerchantInterface> {
+class MerchantRepository extends DefaultRepository<MerchantInterface> {
   constructor() {
     super(MerchantModel);
   }

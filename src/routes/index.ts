@@ -21,7 +21,7 @@ router.route("/ping").get((_req, res) => res.send({ success: true }));
 
 router.use(authenticationRoutes);
 
-// router.use(authenticateMiddleware);
+router.use(authenticateMiddleware);
 
 router.use(agencyRoutes);
 router.use(cityRoutes);

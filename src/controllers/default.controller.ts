@@ -9,27 +9,35 @@ export default class DefaultController<T> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  protected async exec(res: Response, next: NextFunction, logic: (...arg: any) => any, ...params: any) {
+  protected exec = async (res: Response, next: NextFunction, logic: (...arg: any) => any, ...params: any) => {
     try {
       return res.status(200).send(await logic(...params));
     } catch (err) {
       next(err);
     }
-  }
+  };
 
-  async list(_req: Request, res: Response, next: NextFunction) {
-    return this.exec(res, next, this.service.list);
-  }
+  list = async (req: Request, res: Response, next: NextFunction) => {
+    return this.exec(res, next, this.service.list, req.query);
+  };
 
-  async show(req: Request, res: Response, next: NextFunction) {
-    return this.exec(res, next, this.service.list, req.params.id);
-  }
+  show = async (req: Request, res: Response, next: NextFunction) => {
+    return this.exec(res, next, this.service.show, req.params.id);
+  };
 
-  async create(req: Request, res: Response, next: NextFunction) {
+  create = async (req: Request, res: Response, next: NextFunction) => {
     return this.exec(res, next, this.service.create, req.body);
-  }
+  };
 
-  async update(req: Request, res: Response, next: NextFunction) {
+  bulkCreate = async (req: Request, res: Response, next: NextFunction) => {
+    return this.exec(res, next, this.service.bulkCreate, req.body);
+  };
+
+  update = async (req: Request, res: Response, next: NextFunction) => {
     return this.exec(res, next, this.service.update, req.params.id, req.body);
-  }
+  };
+
+  delete = async (req: Request, res: Response, next: NextFunction) => {
+    return this.exec(res, next, this.service.delete, req.params.id);
+  };
 }

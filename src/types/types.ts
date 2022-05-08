@@ -1,6 +1,10 @@
 import { Types as MongooseTypes, PopulatedDoc as MongoosePopulatedDoc } from "mongoose";
 import * as Enums from "./enums";
 
+export interface ListMetadataInterface {
+  totalCount: number;
+}
+
 export type MongooseID = MongooseTypes.ObjectId;
 type Entity<T> = NonNullable<MongoosePopulatedDoc<T>>;
 
@@ -165,7 +169,7 @@ export interface MerchantInterface {
 export interface CredentialInterface {
   _id?: MongooseID;
   mobile: string;
-  password: string;
+  password?: string;
   accountType: Enums.AccountEnum;
   account: Entity<EmployeeInterface | ClientInterface | MerchantInterface>;
 }

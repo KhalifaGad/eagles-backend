@@ -7,41 +7,35 @@ export default class DefaultRepository<T> {
     this.model = model;
   }
 
-  async findById(id: string, populateField?: string): Promise<T> {
-    if (populateField) {
-      return this.model.findById(id).populate(populateField).lean();
-    }
+  findById = async (id: string): Promise<T> => {
     return this.model.findById(id).lean();
-  }
+  };
 
-  async findOne(filter: FilterQuery<T> = {}): Promise<T> {
+  findOne = async (filter: FilterQuery<T> = {}): Promise<T> => {
     return this.model.findOne(filter).lean();
-  }
+  };
 
-  async list(filter: FilterQuery<T> = {}, populateField?: string): Promise<T[]> {
-    if (populateField) {
-      return this.model.find(filter).populate(populateField).lean();
-    }
+  list = async (filter: FilterQuery<T> = {}): Promise<T[]> => {
     return this.model.find(filter).lean();
-  }
+  };
 
-  async count(filter: FilterQuery<T> = {}): Promise<number> {
+  count = async (filter: FilterQuery<T> = {}): Promise<number> => {
     return this.model.countDocuments(filter);
-  }
+  };
 
-  async create(data: T): Promise<T> {
+  create = async (data: T): Promise<T> => {
     return this.model.create(data);
-  }
+  };
 
-  async insertMany(data: T[]): Promise<T[]> {
+  insertMany = async (data: T[]): Promise<T[]> => {
     return this.model.insertMany(data);
-  }
+  };
 
-  async deleteById(id: string): Promise<T | null> {
+  deleteById = async (id: string): Promise<T | null> => {
     return this.model.findByIdAndDelete(id);
-  }
+  };
 
-  async updateWhereId(id: string, data = {}): Promise<T | null> {
+  updateWhereId = async (id: string, data = {}): Promise<T | null> => {
     return this.model.findByIdAndUpdate(id, data, { new: true });
-  }
+  };
 }

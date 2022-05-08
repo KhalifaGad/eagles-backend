@@ -3,10 +3,14 @@ import { employeeController } from "../controllers";
 
 const router = Router();
 
-router.route("/employees").get(employeeController.list);
+router.route("/employees").get(employeeController.list).post(employeeController.bulkCreate);
 
 router.route("/employee").post(employeeController.create);
 
-router.route("/employee/:id").get(employeeController.show).put(employeeController.update);
+router
+  .route("/employee/:id")
+  .get(employeeController.show)
+  .put(employeeController.update)
+  .delete(employeeController.delete);
 
 export default router;

@@ -3,7 +3,7 @@ import agencyRoutes from "./agency.routes";
 import cityRoutes from "./city.routes";
 import clientRoutes from "./client.routes";
 import companyRoutes from "./company.routes";
-import credentialRoutes from "./credential.routes";
+import authenticationRoutes from "./authentication.routes";
 import employeeRoutes from "./employee.routes";
 import employeeRatingRoutes from "./employeeRating.routes";
 import hubRoutes from "./hub.routes";
@@ -19,22 +19,22 @@ const router = Router();
 
 router.route("/ping").get((_req, res) => res.send({ success: true }));
 
-router.use("/", credentialRoutes);
+router.use(authenticationRoutes);
 
-router.use(authenticateMiddleware);
+// router.use(authenticateMiddleware);
 
-router.use("/", agencyRoutes);
-router.use("/", cityRoutes);
-router.use("/", clientRoutes);
-router.use("/", companyRoutes);
-router.use("/", employeeRoutes);
-router.use("/", employeeRatingRoutes);
-router.use("/", hubRoutes);
-router.use("/", merchantRoutes);
-router.use("/", rideRoutes);
-router.use("/", salaryRoutes);
-router.use("/", shipmentRoutes);
-router.use("/", vehicleRoutes);
+router.use(agencyRoutes);
+router.use(cityRoutes);
+router.use(clientRoutes);
+router.use(companyRoutes);
+router.use(employeeRoutes);
+router.use(employeeRatingRoutes);
+router.use(hubRoutes);
+router.use(merchantRoutes);
+router.use(rideRoutes);
+router.use(salaryRoutes);
+router.use(shipmentRoutes);
+router.use(vehicleRoutes);
 
 router.use(errorHandlerMiddleware);
 

@@ -8,19 +8,27 @@ export default class DefaultService<T> {
     this.repository = repository;
   }
 
-  async list() {
-    return this.repository.list();
-  }
+  list = async (filter: FilterQuery<T> = {}) => {
+    return this.repository.list(filter);
+  };
 
-  async show(filter: FilterQuery<T> = {}) {
-    return this.repository.findOne(filter);
-  }
+  show = async (id: string) => {
+    return this.repository.findById(id);
+  };
 
-  async create(data: T) {
+  create = async (data: T) => {
     return this.repository.create(data);
-  }
+  };
 
-  async update(id: string, data: T) {
+  bulkCreate = async (data: T[]): Promise<T[]> => {
+    return this.repository.insertMany(data);
+  };
+
+  update = async (id: string, data: T) => {
     return this.repository.updateWhereId(id, data);
-  }
+  };
+
+  delete = async (id: string): Promise<T | null> => {
+    return this.repository.deleteById(id);
+  };
 }

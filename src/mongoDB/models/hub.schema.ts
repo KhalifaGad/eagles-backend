@@ -8,7 +8,7 @@ const hubSchema = new Schema<HubInterface>(
     name: { type: String, required: true, unique: true },
     address: { type: addressSchema },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 export const HubModel = model<HubInterface>(Schemas.hub, hubSchema);

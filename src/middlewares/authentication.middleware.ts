@@ -1,17 +1,20 @@
-import jwt from "jsonwebtoken";
+import { verify } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import exceptions from "../errors";
 import config from "../../config";
 
 export default (req: Request, _res: Response, next: NextFunction) => {
-  const token = req.headers.authorization;
-  if (!token) return next(exceptions.throwUnauthorized());
+  try {
+    const token = (req.headers.authorization ?? "").replace("Bearer ", "");
 
-  jwt.verify(token, config.jwtSecret, async (err, data) => {
-    if (err || !data) return next(exceptions.throwUnauthorized());
+    verify(token, config.jwtSecret, (err, data) => {
+      if (err || !data) throw new Error();
 
-    req.client = data;
-  });
+      req.client = data;
+    });
+  } catch (err) {
+    next(exceptions.throwUnauthorized());
+  }
 
   next();
 };

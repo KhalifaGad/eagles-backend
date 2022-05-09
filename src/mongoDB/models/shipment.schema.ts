@@ -47,7 +47,7 @@ const shipmentSchema = new Schema<ShipmentInterface>(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 export const ShipmentModel = model<ShipmentInterface>(Schemas.shipment, shipmentSchema);

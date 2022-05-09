@@ -9,15 +9,30 @@ class SalaryRepository extends DefaultRepository<SalaryInterface> {
   }
 
   findById = async (id: string): Promise<SalaryInterface> => {
-    return SalaryModel.findById(id).populate("employee").populate("agency").lean();
+    return SalaryModel.findById(id)
+      .populate([
+        { path: "employee", populate: { path: "address.city" } },
+        { path: "agency", populate: { path: "address.city" } },
+      ])
+      .lean();
   };
 
   findOne = async (filter: FilterQuery<SalaryInterface> = {}): Promise<SalaryInterface> => {
-    return SalaryModel.findOne(filter).populate("employee").populate("agency").lean();
+    return SalaryModel.findOne(filter)
+      .populate([
+        { path: "employee", populate: { path: "address.city" } },
+        { path: "agency", populate: { path: "address.city" } },
+      ])
+      .lean();
   };
 
   list = async (filter: FilterQuery<SalaryInterface> = {}): Promise<SalaryInterface[]> => {
-    return SalaryModel.find(filter).populate("employee").populate("agency").lean();
+    return SalaryModel.find(filter)
+      .populate([
+        { path: "employee", populate: { path: "address.city" } },
+        { path: "agency", populate: { path: "address.city" } },
+      ])
+      .lean();
   };
 }
 

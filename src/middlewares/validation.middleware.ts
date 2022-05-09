@@ -13,6 +13,6 @@ export default (schema: AnySchema, validateWhat: "body" | "query" | "params" = "
 
       next();
     } catch (err) {
-      return next(exceptions.throwBadRequest(err.errors.map((message: string) => message).join(" & ")));
+      next(exceptions.throwBadRequest(err.errors.map((message: string) => message).join(" & ")));
     }
   };

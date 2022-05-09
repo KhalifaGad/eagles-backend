@@ -22,7 +22,7 @@ const repaymentConfigSchema = {
   iban: { type: String },
 };
 
-export const companySchema = new Schema<CompanyInterface>(
+const companySchema = new Schema<CompanyInterface>(
   {
     name: { type: String, required: true, unique: true },
     commercialNo: { type: String },
@@ -31,7 +31,7 @@ export const companySchema = new Schema<CompanyInterface>(
     repaymentConfig: { type: repaymentConfigSchema, required: true },
     address: { type: addressSchema, required: true },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 export const CompanyModel = model<CompanyInterface>(Schemas.company, companySchema);

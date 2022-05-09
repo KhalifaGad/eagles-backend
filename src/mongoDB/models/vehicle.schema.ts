@@ -27,7 +27,7 @@ const vehicleSchema = new Schema<VehicleInterface>(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 export const VehicleModel = model<VehicleInterface>(Schemas.vehicle, vehicleSchema);

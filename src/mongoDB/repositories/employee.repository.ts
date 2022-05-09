@@ -9,15 +9,15 @@ class EmployeeRepository extends DefaultRepository<EmployeeInterface> {
   }
 
   findById = async (id: string): Promise<EmployeeInterface> => {
-    return EmployeeModel.findById(id).populate("employee").populate("agency").lean();
+    return EmployeeModel.findById(id).populate({ path: "address.city" }).lean();
   };
 
   findOne = async (filter: FilterQuery<EmployeeInterface> = {}): Promise<EmployeeInterface> => {
-    return EmployeeModel.findOne(filter).populate("employee").populate("agency").lean();
+    return EmployeeModel.findOne(filter).populate({ path: "address.city" }).lean();
   };
 
   list = async (filter: FilterQuery<EmployeeInterface> = {}): Promise<EmployeeInterface[]> => {
-    return EmployeeModel.find(filter).populate("employee").populate("agency").lean();
+    return EmployeeModel.find(filter).populate({ path: "address.city" }).lean();
   };
 }
 

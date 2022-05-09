@@ -14,7 +14,7 @@ const agencySchema = new Schema<AgencyInterface>(
     sentPackagePercentage: { type: Number, required: true },
     shareBusPercentage: { type: Number, required: true },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 export const AgencyModel = model<AgencyInterface>(Schemas.agency, agencySchema);

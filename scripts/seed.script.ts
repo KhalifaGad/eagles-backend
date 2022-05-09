@@ -2,7 +2,7 @@ import { establishConnection, seeder } from "../src/mongoDB";
 
 const run = async () => {
   await establishConnection();
-  await seeder();
+  if (process.env.NODE_ENV === "Seeding") return seeder();
 };
 
 run()

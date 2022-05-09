@@ -17,7 +17,7 @@ const credentialSchema = new Schema<CredentialInterface>(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 export const CredentialModel = model<CredentialInterface>(Schemas.credential, credentialSchema);

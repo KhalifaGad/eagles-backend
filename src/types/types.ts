@@ -6,7 +6,7 @@ export interface ListMetadataInterface {
 }
 
 export type MongooseID = MongooseTypes.ObjectId;
-type Entity<T> = NonNullable<MongoosePopulatedDoc<T>>;
+type Entity<T> = NonNullable<MongoosePopulatedDoc<T>> | MongooseID;
 
 type ShipmentProductType = {
   name: string;

@@ -10,28 +10,64 @@ class RideRepository extends DefaultRepository<RideInterface> {
 
   findById = async (id: string): Promise<RideInterface> => {
     return RideModel.findById(id)
-      .populate("employees")
-      .populate("vehicle")
-      .populate("shipments")
-      .populate("locations.city")
+      .populate([
+        { path: "employees", populate: { path: "address.city" } },
+        { path: "vehicle" },
+        {
+          path: "shipments",
+          populate: [
+            { path: "consignee", populate: { path: "address.city" } },
+            { path: "consignor", populate: { path: "address.city" } },
+            { path: "originAgency", populate: { path: "address.city" } },
+            { path: "destinationAgency", populate: { path: "address.city" } },
+            { path: "events.employee", populate: { path: "address.city" } },
+            { path: "events.products" },
+          ],
+        },
+        { path: "locations.city" },
+      ])
       .lean();
   };
 
   findOne = async (filter: FilterQuery<RideInterface> = {}): Promise<RideInterface> => {
     return RideModel.findOne(filter)
-      .populate("employees")
-      .populate("vehicle")
-      .populate("shipments")
-      .populate("locations.city")
+      .populate([
+        { path: "employees", populate: { path: "address.city" } },
+        { path: "vehicle" },
+        {
+          path: "shipments",
+          populate: [
+            { path: "consignee", populate: { path: "address.city" } },
+            { path: "consignor", populate: { path: "address.city" } },
+            { path: "originAgency", populate: { path: "address.city" } },
+            { path: "destinationAgency", populate: { path: "address.city" } },
+            { path: "events.employee", populate: { path: "address.city" } },
+            { path: "events.products" },
+          ],
+        },
+        { path: "locations.city" },
+      ])
       .lean();
   };
 
   list = async (filter: FilterQuery<RideInterface> = {}): Promise<RideInterface[]> => {
     return RideModel.find(filter)
-      .populate("employees")
-      .populate("vehicle")
-      .populate("shipments")
-      .populate("locations.city")
+      .populate([
+        { path: "employees", populate: { path: "address.city" } },
+        { path: "vehicle" },
+        {
+          path: "shipments",
+          populate: [
+            { path: "consignee", populate: { path: "address.city" } },
+            { path: "consignor", populate: { path: "address.city" } },
+            { path: "originAgency", populate: { path: "address.city" } },
+            { path: "destinationAgency", populate: { path: "address.city" } },
+            { path: "events.employee", populate: { path: "address.city" } },
+            { path: "events.products" },
+          ],
+        },
+        { path: "locations.city" },
+      ])
       .lean();
   };
 }

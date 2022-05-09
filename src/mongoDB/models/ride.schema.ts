@@ -33,7 +33,7 @@ const rideSchema = new Schema<RideInterface>(
     startDate: { type: Date, required: true },
     endDate: { type: Date },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 ).index({ code: 1 });
 
 export const RideModel = model<RideInterface>(Schemas.ride, rideSchema);

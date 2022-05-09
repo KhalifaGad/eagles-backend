@@ -10,34 +10,40 @@ class ShipmentRepository extends DefaultRepository<ShipmentInterface> {
 
   findById = async (id: string): Promise<ShipmentInterface> => {
     return ShipmentModel.findById(id)
-      .populate("consignee")
-      .populate("consignor")
-      .populate("originAgency")
-      .populate("destinationAgency")
-      .populate("events.employee")
-      .populate("events.products")
+      .populate([
+        { path: "consignee", populate: { path: "address.city" } },
+        { path: "consignor", populate: { path: "address.city" } },
+        { path: "originAgency", populate: { path: "address.city" } },
+        { path: "destinationAgency", populate: { path: "address.city" } },
+        { path: "events.employee", populate: { path: "address.city" } },
+        { path: "events.products" },
+      ])
       .lean();
   };
 
   findOne = async (filter: FilterQuery<ShipmentInterface> = {}): Promise<ShipmentInterface> => {
     return ShipmentModel.findOne(filter)
-      .populate("consignee")
-      .populate("consignor")
-      .populate("originAgency")
-      .populate("destinationAgency")
-      .populate("events.employee")
-      .populate("events.products")
+      .populate([
+        { path: "consignee", populate: { path: "address.city" } },
+        { path: "consignor", populate: { path: "address.city" } },
+        { path: "originAgency", populate: { path: "address.city" } },
+        { path: "destinationAgency", populate: { path: "address.city" } },
+        { path: "events.employee", populate: { path: "address.city" } },
+        { path: "events.products" },
+      ])
       .lean();
   };
 
   list = async (filter: FilterQuery<ShipmentInterface> = {}): Promise<ShipmentInterface[]> => {
     return ShipmentModel.find(filter)
-      .populate("consignee")
-      .populate("consignor")
-      .populate("originAgency")
-      .populate("destinationAgency")
-      .populate("events.employee")
-      .populate("events.products")
+      .populate([
+        { path: "consignee", populate: { path: "address.city" } },
+        { path: "consignor", populate: { path: "address.city" } },
+        { path: "originAgency", populate: { path: "address.city" } },
+        { path: "destinationAgency", populate: { path: "address.city" } },
+        { path: "events.employee", populate: { path: "address.city" } },
+        { path: "events.products" },
+      ])
       .lean();
   };
 

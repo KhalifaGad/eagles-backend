@@ -19,7 +19,7 @@ const salarySchema = new Schema<SalaryInterface>(
     rewardReason: { type: String },
     billed: { type: Boolean, default: false },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 export const SalaryModel = model<SalaryInterface>(Schemas.salary, salarySchema);

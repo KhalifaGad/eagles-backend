@@ -22,7 +22,7 @@ const merchantSchema = new Schema<MerchantInterface>(
     email: { type: String },
     mobile: { type: String },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 export const MerchantModel = model<MerchantInterface>(Schemas.merchant, merchantSchema);

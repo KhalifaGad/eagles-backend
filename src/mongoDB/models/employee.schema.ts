@@ -16,7 +16,7 @@ export const employeeSchema = new Schema<EmployeeInterface>(
     salary: { type: Number, required: true },
     address: { type: addressSchema },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 export const EmployeeModel = model<EmployeeInterface>(Schemas.employee, employeeSchema);

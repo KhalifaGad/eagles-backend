@@ -12,7 +12,7 @@ const clientSchema = new Schema<ClientInterface>(
     email: { type: String, required: true, unique: true },
     mobile: { type: String, required: true, unique: true },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 export const ClientModel = model<ClientInterface>(Schemas.client, clientSchema);

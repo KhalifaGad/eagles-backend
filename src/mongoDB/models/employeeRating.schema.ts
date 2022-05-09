@@ -21,7 +21,7 @@ const employeeRatingSchema = new Schema<EmployeeRatingInterface>(
     reward: { type: String },
     deduction: { type: String },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 export const EmployeeRatingModel = model<EmployeeRatingInterface>(Schemas.employeeRating, employeeRatingSchema);

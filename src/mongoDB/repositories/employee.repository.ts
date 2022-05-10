@@ -1,14 +1,14 @@
 import { FilterQuery } from "mongoose";
 import DefaultRepository from "./default.repository";
 import { EmployeeModel } from "../models";
-import { EmployeeInterface } from "../../types";
+import { EmployeeInterface, MongooseID } from "../../types";
 
 class EmployeeRepository extends DefaultRepository<EmployeeInterface> {
   constructor() {
     super(EmployeeModel);
   }
 
-  findById = async (id: string): Promise<EmployeeInterface> => {
+  findById = async (id: MongooseID): Promise<EmployeeInterface> => {
     return EmployeeModel.findById(id).populate({ path: "address.city" }).lean();
   };
 

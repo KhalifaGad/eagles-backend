@@ -1,14 +1,14 @@
 import { FilterQuery } from "mongoose";
 import DefaultRepository from "./default.repository";
 import { ShipmentModel } from "../models";
-import { ShipmentInterface } from "../../types";
+import { ShipmentInterface, MongooseID } from "../../types";
 
 class ShipmentRepository extends DefaultRepository<ShipmentInterface> {
   constructor() {
     super(ShipmentModel);
   }
 
-  findById = async (id: string): Promise<ShipmentInterface> => {
+  findById = async (id: MongooseID): Promise<ShipmentInterface> => {
     return ShipmentModel.findById(id)
       .populate([
         { path: "consignee", populate: { path: "address.city" } },

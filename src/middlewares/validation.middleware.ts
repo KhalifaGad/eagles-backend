@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AnySchema } from "yup";
-import exceptions from "../errors";
+import { badRequest } from "../errors";
 
 export default (schema: AnySchema, validateWhat: "body" | "query" | "params" = "body") =>
   (req: Request, _res: Response, next: NextFunction) => {
@@ -13,6 +13,6 @@ export default (schema: AnySchema, validateWhat: "body" | "query" | "params" = "
 
       next();
     } catch (err) {
-      next(exceptions.throwBadRequest(err.errors.map((message: string) => message).join(" & ")));
+      next(badRequest(err.errors.map((message: string) => message).join(" & ")));
     }
   };

@@ -1,25 +1,11 @@
-import { notFound, unauthorized, forbidden, badData, badRequest } from "@hapi/Boom";
+import boom from "@hapi/Boom";
 
-class Errors {
-  throwNotFound(message?: string) {
-    throw notFound(message);
-  }
+export const notFound = (message?: string) => boom.notFound(message);
 
-  throwUnauthorized(message?: string) {
-    throw unauthorized(message);
-  }
+export const unauthorized = (message?: string) => boom.unauthorized(message);
 
-  throwForbidden(message?: string) {
-    throw forbidden(message);
-  }
+export const forbidden = (message?: string) => boom.forbidden(message);
 
-  throwBadData(message?: string) {
-    throw badData(message);
-  }
+export const badData = (message?: string) => boom.badData(message);
 
-  throwBadRequest(message?: string) {
-    throw badRequest(message);
-  }
-}
-
-export default new Errors();
+export const badRequest = (message?: string) => boom.badRequest(message);

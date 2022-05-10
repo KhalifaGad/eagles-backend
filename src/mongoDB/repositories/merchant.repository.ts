@@ -1,14 +1,14 @@
 import { FilterQuery } from "mongoose";
 import DefaultRepository from "./default.repository";
 import { MerchantModel } from "../models";
-import { MerchantInterface } from "../../types";
+import { MerchantInterface, MongooseID } from "../../types";
 
 class MerchantRepository extends DefaultRepository<MerchantInterface> {
   constructor() {
     super(MerchantModel);
   }
 
-  findById = async (id: string): Promise<MerchantInterface> => {
+  findById = async (id: MongooseID): Promise<MerchantInterface> => {
     return MerchantModel.findById(id)
       .populate([{ path: "company", populate: { path: "address.city" } }, { path: "address.city" }])
       .lean();

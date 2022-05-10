@@ -13,7 +13,6 @@ import salaryRoutes from "./salary.routes";
 import shipmentRoutes from "./shipment.routes";
 import vehicleRoutes from "./vehicle.routes";
 import { authenticateMiddleware, errorHandlerMiddleware } from "../middlewares";
-import exceptions from "../errors";
 
 const router = Router();
 
@@ -37,7 +36,5 @@ router.use(shipmentRoutes);
 router.use(vehicleRoutes);
 
 router.use(errorHandlerMiddleware);
-
-router.use((_req, _res, next) => next(exceptions.throwNotFound));
 
 export default router;

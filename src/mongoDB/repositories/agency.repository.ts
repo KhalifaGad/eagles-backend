@@ -1,14 +1,14 @@
 import { FilterQuery } from "mongoose";
 import DefaultRepository from "./default.repository";
 import { AgencyModel } from "../models";
-import { AgencyInterface } from "../../types";
+import { AgencyInterface, MongooseID } from "../../types";
 
 class AgencyRepository extends DefaultRepository<AgencyInterface> {
   constructor() {
     super(AgencyModel);
   }
 
-  findById = async (id: string): Promise<AgencyInterface> => {
+  findById = async (id: MongooseID): Promise<AgencyInterface> => {
     return AgencyModel.findById(id).populate({ path: "address.city" }).lean();
   };
 

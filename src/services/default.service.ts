@@ -1,5 +1,6 @@
 import { FilterQuery } from "mongoose";
 import Repository from "../mongoDB/repositories";
+import { MongooseID } from "../types";
 
 export default class DefaultService<T> {
   private repository: Repository<T>;
@@ -12,7 +13,7 @@ export default class DefaultService<T> {
     return this.repository.list(filter);
   };
 
-  show = async (id: string) => {
+  show = async (id: MongooseID) => {
     return this.repository.findById(id);
   };
 
@@ -24,11 +25,11 @@ export default class DefaultService<T> {
     return this.repository.insertMany(data);
   };
 
-  update = async (id: string, data: T) => {
+  update = async (id: MongooseID, data: T) => {
     return this.repository.updateWhereId(id, data);
   };
 
-  delete = async (id: string): Promise<T | null> => {
+  delete = async (id: MongooseID): Promise<T | null> => {
     return this.repository.deleteById(id);
   };
 }

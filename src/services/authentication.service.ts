@@ -2,9 +2,9 @@ import { sign } from "jsonwebtoken";
 import { FilterQuery } from "mongoose";
 import { credentialRepository } from "../mongoDB/repositories";
 import DefaultService from "./default.service";
-import { CredentialInterface } from "../types";
+import { CredentialInterface, MongooseID } from "../types";
 import { createHash, verifyHash } from "../utilities";
-import exceptions from "../errors";
+import { unauthorized } from "../errors";
 import config from "../../config";
 
 class AuthenticationService extends DefaultService<CredentialInterface> {
@@ -22,7 +22,7 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
     const credential = await credentialRepository.findOne({ mobile });
 
     if (!credential || !(await verifyHash(credential.password as string, password))) {
-      exceptions.throwUnauthorized("Invalid credentials");
+      throw unauthorized("Invalid credentials");
     }
 
     delete credential.password;
@@ -39,7 +39,7 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
     });
   };
 
-  show = async (id: string) => {
+  show = async (id: MongooseID) => {
     const data = await credentialRepository.findById(id);
     delete data.password;
     return data;
@@ -63,7 +63,7 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
     );
   };
 
-  update = async (id: string, { password, ...data }: CredentialInterface) => {
+  update = async (id: MongooseID, { password, ...data }: CredentialInterface) => {
     return credentialRepository.updateWhereId(id, {
       ...data,
       password: await createHash(password as string),

@@ -1,14 +1,14 @@
 import { FilterQuery } from "mongoose";
 import DefaultRepository from "./default.repository";
 import { EmployeeRatingModel } from "../models";
-import { EmployeeRatingInterface } from "../../types";
+import { EmployeeRatingInterface, MongooseID } from "../../types";
 
 class EmployeeRatingRepository extends DefaultRepository<EmployeeRatingInterface> {
   constructor() {
     super(EmployeeRatingModel);
   }
 
-  findById = async (id: string): Promise<EmployeeRatingInterface> => {
+  findById = async (id: MongooseID): Promise<EmployeeRatingInterface> => {
     return EmployeeRatingModel.findById(id)
       .populate([
         { path: "employee", populate: { path: "address.city" } },

@@ -1,14 +1,14 @@
 import { FilterQuery } from "mongoose";
 import DefaultRepository from "./default.repository";
 import { SalaryModel } from "../models";
-import { SalaryInterface } from "../../types";
+import { SalaryInterface, MongooseID } from "../../types";
 
 class SalaryRepository extends DefaultRepository<SalaryInterface> {
   constructor() {
     super(SalaryModel);
   }
 
-  findById = async (id: string): Promise<SalaryInterface> => {
+  findById = async (id: MongooseID): Promise<SalaryInterface> => {
     return SalaryModel.findById(id)
       .populate([
         { path: "employee", populate: { path: "address.city" } },

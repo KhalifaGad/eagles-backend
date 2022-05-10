@@ -1,14 +1,14 @@
 import { FilterQuery } from "mongoose";
 import DefaultRepository from "./default.repository";
 import { RideModel } from "../models";
-import { RideInterface } from "../../types";
+import { RideInterface, MongooseID } from "../../types";
 
 class RideRepository extends DefaultRepository<RideInterface> {
   constructor() {
     super(RideModel);
   }
 
-  findById = async (id: string): Promise<RideInterface> => {
+  findById = async (id: MongooseID): Promise<RideInterface> => {
     return RideModel.findById(id)
       .populate([
         { path: "employees", populate: { path: "address.city" } },

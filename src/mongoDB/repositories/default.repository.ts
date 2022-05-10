@@ -1,4 +1,5 @@
 import { Model, FilterQuery } from "mongoose";
+import { MongooseID } from "../../types";
 
 export default class DefaultRepository<T> {
   private model: Model<T>;
@@ -7,7 +8,20 @@ export default class DefaultRepository<T> {
     this.model = model;
   }
 
-  findById = async (id: string): Promise<T> => {
+  private search = (filter: FilterQuery<T> = {}): FilterQuery<T> => {
+    const filterQuery: FilterQuery<T> = {};
+
+    Object.keys(filter).forEach(key => {
+      if (typeof filter[key] === "string") {
+        return Object.assign(filterQuery, { [key]: { $regex: filter[key], $options: "i" } });
+      }
+      Object.assign(filterQuery, { [key]: filter[key] });
+    });
+
+    return filterQuery;
+  };
+
+  findById = async (id: MongooseID): Promise<T> => {
     return this.model.findById(id).lean();
   };
 
@@ -16,7 +30,7 @@ export default class DefaultRepository<T> {
   };
 
   list = async (filter: FilterQuery<T> = {}): Promise<T[]> => {
-    return this.model.find(filter).lean();
+    return this.model.find(this.search(filter)).lean();
   };
 
   count = async (filter: FilterQuery<T> = {}): Promise<number> => {
@@ -31,11 +45,11 @@ export default class DefaultRepository<T> {
     return this.model.insertMany(data);
   };
 
-  deleteById = async (id: string): Promise<T | null> => {
+  deleteById = async (id: MongooseID): Promise<T | null> => {
     return this.model.findByIdAndDelete(id);
   };
 
-  updateWhereId = async (id: string, data = {}): Promise<T | null> => {
+  updateWhereId = async (id: MongooseID, data = {}): Promise<T | null> => {
     return this.model.findByIdAndUpdate(id, data, { new: true });
   };
 }

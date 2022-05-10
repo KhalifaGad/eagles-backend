@@ -8,7 +8,7 @@ import { badData } from "../errors";
 export default (error: Boom | MongoError | Error, _req: Request, res: Response, _next: NextFunction) => {
   if (error instanceof MongoError && error.code === 11000) {
     error = badData(
-      `${error.message
+      `The ${error.message
         .split("index: ")[1]
         .split("_")[0]
         .split("")

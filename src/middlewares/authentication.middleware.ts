@@ -1,6 +1,6 @@
 import { verify } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import { unauthorized } from "../errors";
+import { forbidden } from "../errors";
 import config from "../../config";
 
 export default (req: Request, _res: Response, next: NextFunction) => {
@@ -8,7 +8,7 @@ export default (req: Request, _res: Response, next: NextFunction) => {
     const token = (req.headers.authorization ?? "").replace("Bearer ", "");
 
     verify(token, config.jwtSecret, (err, data) => {
-      if (err || !data) throw unauthorized();
+      if (err || !data) throw forbidden();
 
       req.client = data;
     });

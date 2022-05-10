@@ -1,20 +1,31 @@
 import { Request, Response, NextFunction } from "express";
-import { isBoom } from "@hapi/boom";
+import { isBoom, Boom } from "@hapi/boom";
+import { MongoError } from "mongodb";
 import { logger } from "../utilities";
+import { badData } from "../errors";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default (err: Error, _req: Request, res: Response, _next: NextFunction) => {
-  if (isBoom(err)) {
-    return res.status(err.output.payload.statusCode).send(err.output.payload);
+export default (error: Boom | MongoError | Error, _req: Request, res: Response, _next: NextFunction) => {
+  if (error instanceof MongoError && error.code === 11000) {
+    error = badData(
+      `${error.message
+        .split("index: ")[1]
+        .split("_")[0]
+        .split("")
+        .map(char => (/[A-Z]/.test(char) ? ` ${char.toLowerCase()}` : char))
+        .join("")} already exist`
+    );
   }
 
-  // TODO: Database errors handling
+  if (isBoom(error)) {
+    return res.status(error.output.payload.statusCode).send(error.output.payload);
+  }
 
-  logger.error(err.message);
+  logger.error(error.message);
 
   return res.status(500).send({
     statusCode: 500,
     error: "Internal Server Error",
-    message: "Oops! Something went wrong!",
+    message: "Something went wrong! please try again later",
   });
 };

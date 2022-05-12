@@ -12,9 +12,9 @@ import rideRoutes from "./ride.routes";
 import salaryRoutes from "./salary.routes";
 import shipmentRoutes from "./shipment.routes";
 import vehicleRoutes from "./vehicle.routes";
-import { authenticateMiddleware, errorHandlerMiddleware } from "../middlewares";
+import { queryParamsMiddleware, authenticateMiddleware, errorHandlerMiddleware } from "../middlewares";
 
-const router = Router();
+const router = Router().use(queryParamsMiddleware);
 
 router.route("/ping").get((_req, res) => res.send({ success: true }));
 

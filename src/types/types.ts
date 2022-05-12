@@ -1,12 +1,26 @@
-import { Types as MongooseTypes, PopulatedDoc as MongoosePopulatedDoc } from "mongoose";
+import { Types as MongooseTypes, PopulatedDoc, FilterQuery } from "mongoose";
 import * as Enums from "./enums";
 
-export interface ListMetadataInterface {
+export interface ListOptionsInterface {
+  page: number;
+  pageLimit: number;
+  sortBy: string;
+  sortDirection: string;
+  showAll?: boolean;
+}
+
+export interface ListArgumentsInterface<T> {
+  filter?: FilterQuery<T>;
+  options?: ListOptionsInterface;
+}
+
+export interface ListInterface<T> {
+  data: T[];
   totalCount: number;
 }
 
 export type MongooseID = MongooseTypes.ObjectId;
-type Entity<T> = NonNullable<MongoosePopulatedDoc<T>> | MongooseID;
+type Entity<T> = NonNullable<PopulatedDoc<T>> | MongooseID;
 
 type ShipmentProductType = {
   name: string;

@@ -13,3 +13,10 @@ export const Schemas = {
   shipment: "Shipment",
   vehicle: "Vehicle",
 };
+
+export const defaultListOptions = {
+  page: 0,
+  pageLimit: 10,
+  sortBy: "_id",
+  sortDirection: "asc",
+};

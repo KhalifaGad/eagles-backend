@@ -1,6 +1,6 @@
-import { FilterQuery } from "mongoose";
+import { Types } from "mongoose";
 import Repository from "../mongoDB/repositories";
-import { MongooseID } from "../types";
+import { ListArgumentsInterface } from "../types";
 
 export default class DefaultService<T> {
   private repository: Repository<T>;
@@ -9,27 +9,15 @@ export default class DefaultService<T> {
     this.repository = repository;
   }
 
-  list = async (filter: FilterQuery<T> = {}) => {
-    return this.repository.list(filter);
-  };
+  list = async (listArguments: ListArgumentsInterface<T>) => this.repository.list(listArguments);
 
-  show = async (id: MongooseID) => {
-    return this.repository.findById(id);
-  };
+  show = async (id: string) => this.repository.findById(new Types.ObjectId(id));
 
-  create = async (data: T) => {
-    return this.repository.create(data);
-  };
+  create = async (data: T) => this.repository.create(data);
 
-  bulkCreate = async (data: T[]): Promise<T[]> => {
-    return this.repository.insertMany(data);
-  };
+  bulkCreate = async (data: T[]): Promise<T[]> => this.repository.insertMany(data);
 
-  update = async (id: MongooseID, data: T) => {
-    return this.repository.updateWhereId(id, data);
-  };
+  update = async (id: string, data: T) => this.repository.updateWhereId(new Types.ObjectId(id), data);
 
-  delete = async (id: MongooseID): Promise<T | null> => {
-    return this.repository.deleteById(id);
-  };
+  delete = async (id: string): Promise<T | null> => this.repository.deleteById(new Types.ObjectId(id));
 }

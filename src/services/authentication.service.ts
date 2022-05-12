@@ -1,9 +1,10 @@
+import { Types } from "mongoose";
 import { sign } from "jsonwebtoken";
-import { FilterQuery } from "mongoose";
 import { credentialRepository } from "../mongoDB/repositories";
 import DefaultService from "./default.service";
-import { CredentialInterface, MongooseID } from "../types";
+import { CredentialInterface, ListArgumentsInterface, ListInterface } from "../types";
 import { createHash, verifyHash } from "../utilities";
+import { destroyProperties } from "../helpers";
 import { unauthorized } from "../errors";
 import config from "../../config";
 
@@ -25,50 +26,44 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
       throw unauthorized("Invalid credentials");
     }
 
-    delete credential.password;
-    return {
-      ...credential,
-      token: sign(credential, config.jwtSecret, { expiresIn: config.jwtLifeTime }),
-    };
-  };
-
-  list = async (filter: FilterQuery<CredentialInterface> = {}) => {
-    return (await credentialRepository.list(filter)).map(element => {
-      delete element.password;
-      return element;
-    });
-  };
-
-  show = async (id: MongooseID) => {
-    const data = await credentialRepository.findById(id);
-    delete data.password;
-    return data;
-  };
-
-  create = async ({ password, ...data }: CredentialInterface) => {
-    return credentialRepository.create({
-      ...data,
-      password: await createHash(password as string),
-    });
-  };
-
-  bulkCreate = async (data: CredentialInterface[]): Promise<CredentialInterface[]> => {
-    return credentialRepository.insertMany(
-      await Promise.all(
-        data.map(async ({ password, ...element }) => ({
-          ...element,
-          password: await createHash(password as string),
-        }))
-      )
+    return destroyProperties(
+      { ...credential, token: sign(credential, config.jwtSecret, { expiresIn: config.jwtLifeTime }) },
+      ["password"]
     );
   };
 
-  update = async (id: MongooseID, { password, ...data }: CredentialInterface) => {
-    return credentialRepository.updateWhereId(id, {
-      ...data,
-      password: await createHash(password as string),
-    });
+  list = async (
+    listArguments: ListArgumentsInterface<CredentialInterface>
+  ): Promise<ListInterface<CredentialInterface>> => {
+    const { data, totalCount } = await credentialRepository.list(listArguments);
+
+    return { data: data.map(credential => destroyProperties(credential, ["password"])), totalCount };
   };
+
+  show = async (id: string) =>
+    destroyProperties(await credentialRepository.findById(new Types.ObjectId(id)), ["password"]);
+
+  create = async ({ password, ...data }: CredentialInterface) =>
+    destroyProperties(await credentialRepository.create({ ...data, password: await createHash(password as string) }), [
+      "password",
+    ]);
+
+  bulkCreate = async (data: CredentialInterface[]): Promise<CredentialInterface[]> => {
+    data = await Promise.all(
+      data.map(async ({ password, ...element }) => ({ ...element, password: await createHash(password as string) }))
+    );
+
+    return (await credentialRepository.insertMany(data)).map(credential => destroyProperties(credential, ["password"]));
+  };
+
+  update = async (id: string, { password, ...data }: CredentialInterface) =>
+    destroyProperties(
+      await credentialRepository.updateWhereId(
+        new Types.ObjectId(id),
+        password ? { ...data, password: await createHash(password) } : data
+      ),
+      ["password"]
+    );
 }
 
 export default new AuthenticationService();

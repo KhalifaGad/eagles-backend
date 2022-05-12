@@ -16,7 +16,34 @@
             "url": {
               "raw": "{{base-URL}}/agencies",
               "host": ["{{base-URL}}"],
-              "path": ["agencies"]
+              "path": ["agencies"],
+              "query": [
+                {
+                  "key": "pageLimit",
+                  "value": "5",
+                  "description": "default 10"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "default 0"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "englishName",
+                  "description": "default _id"
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "desc",
+                  "description": "{  desc, asc } - default asc"
+                },
+                {
+                  "key": "showAll",
+                  "value": "true",
+                  "disabled": true
+                }
+              ]
             }
           },
           "response": []
@@ -33,7 +60,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -45,15 +72,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/agency",
               "host": ["{{base-URL}}"],
@@ -67,15 +86,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "[\r\n    {\r\n        \"name\": \"string\",\r\n        \"address\": {\r\n            \"area\": \"string\",\r\n            \"street\": \"string\"\r\n        },\r\n        \"telephone\": \"string\",\r\n        \"mobile\": \"string\",\r\n        \"shareBusPercentage\": 0,\r\n        \"inCityPackagePercentage\": 0,\r\n        \"sentPackagePercentage\": 0,\r\n        \"receivedPackagePercentage\": 0\r\n    }\r\n]",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/agencies",
               "host": ["{{base-URL}}"],
@@ -89,15 +100,7 @@
           "request": {
             "method": "PUT",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string-updated\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/agency/:id",
               "host": ["{{base-URL}}"],
@@ -105,7 +108,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -124,7 +127,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -141,15 +144,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"mobile\": \"string\",\r\n    \"password\": \"string\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/login",
               "host": ["{{base-URL}}"],
@@ -166,7 +161,34 @@
             "url": {
               "raw": "{{base-URL}}/credentials",
               "host": ["{{base-URL}}"],
-              "path": ["credentials"]
+              "path": ["credentials"],
+              "query": [
+                {
+                  "key": "pageLimit",
+                  "value": "5",
+                  "description": "default 10"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "default 0"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "englishName",
+                  "description": "default _id"
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "desc",
+                  "description": "{  desc, asc } - default asc"
+                },
+                {
+                  "key": "showAll",
+                  "value": "true",
+                  "disabled": true
+                }
+              ]
             }
           },
           "response": []
@@ -183,7 +205,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -195,15 +217,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/credential",
               "host": ["{{base-URL}}"],
@@ -217,15 +231,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "[\r\n    {\r\n        \"name\": \"string\",\r\n        \"address\": {\r\n            \"area\": \"string\",\r\n            \"street\": \"string\"\r\n        },\r\n        \"telephone\": \"string\",\r\n        \"mobile\": \"string\",\r\n        \"shareBusPercentage\": 0,\r\n        \"inCityPackagePercentage\": 0,\r\n        \"sentPackagePercentage\": 0,\r\n        \"receivedPackagePercentage\": 0\r\n    }\r\n]",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/credentials",
               "host": ["{{base-URL}}"],
@@ -239,15 +245,7 @@
           "request": {
             "method": "PUT",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string-updated\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/credential/:id",
               "host": ["{{base-URL}}"],
@@ -255,7 +253,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -274,7 +272,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -292,9 +290,46 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base-URL}}/cities",
+              "raw": "{{base-URL}}/cities?pageLimit=5&page=1&sortBy=englishName&sortDirection=desc",
               "host": ["{{base-URL}}"],
-              "path": ["cities"]
+              "path": ["cities"],
+              "query": [
+                {
+                  "key": "englishName",
+                  "value": "english",
+                  "disabled": true
+                },
+                {
+                  "key": "arabicName",
+                  "value": "arabic",
+                  "disabled": true
+                },
+                {
+                  "key": "pageLimit",
+                  "value": "5",
+                  "description": "default 10"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "default 0"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "englishName",
+                  "description": "default _id"
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "desc",
+                  "description": "{  desc, asc } - default asc"
+                },
+                {
+                  "key": "showAll",
+                  "value": "true",
+                  "disabled": true
+                }
+              ]
             }
           },
           "response": []
@@ -311,7 +346,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": "6678dee85eb9652bdd062f73"
                 }
               ]
             }
@@ -323,15 +358,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/city",
               "host": ["{{base-URL}}"],
@@ -345,15 +372,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "[\r\n    {\r\n        \"name\": \"string\",\r\n        \"address\": {\r\n            \"area\": \"string\",\r\n            \"street\": \"string\"\r\n        },\r\n        \"telephone\": \"string\",\r\n        \"mobile\": \"string\",\r\n        \"shareBusPercentage\": 0,\r\n        \"inCityPackagePercentage\": 0,\r\n        \"sentPackagePercentage\": 0,\r\n        \"receivedPackagePercentage\": 0\r\n    }\r\n]",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/cities",
               "host": ["{{base-URL}}"],
@@ -367,15 +386,7 @@
           "request": {
             "method": "PUT",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string-updated\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/city/:id",
               "host": ["{{base-URL}}"],
@@ -383,7 +394,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -402,7 +413,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -422,7 +433,34 @@
             "url": {
               "raw": "{{base-URL}}/clients",
               "host": ["{{base-URL}}"],
-              "path": ["clients"]
+              "path": ["clients"],
+              "query": [
+                {
+                  "key": "pageLimit",
+                  "value": "5",
+                  "description": "default 10"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "default 0"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "englishName",
+                  "description": "default _id"
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "desc",
+                  "description": "{  desc, asc } - default asc"
+                },
+                {
+                  "key": "showAll",
+                  "value": "true",
+                  "disabled": true
+                }
+              ]
             }
           },
           "response": []
@@ -439,7 +477,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -451,15 +489,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/client",
               "host": ["{{base-URL}}"],
@@ -473,15 +503,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "[\r\n    {\r\n        \"name\": \"string\",\r\n        \"address\": {\r\n            \"area\": \"string\",\r\n            \"street\": \"string\"\r\n        },\r\n        \"telephone\": \"string\",\r\n        \"mobile\": \"string\",\r\n        \"shareBusPercentage\": 0,\r\n        \"inCityPackagePercentage\": 0,\r\n        \"sentPackagePercentage\": 0,\r\n        \"receivedPackagePercentage\": 0\r\n    }\r\n]",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/clients",
               "host": ["{{base-URL}}"],
@@ -495,15 +517,7 @@
           "request": {
             "method": "PUT",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string-updated\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/client/:id",
               "host": ["{{base-URL}}"],
@@ -511,7 +525,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -530,7 +544,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -550,7 +564,34 @@
             "url": {
               "raw": "{{base-URL}}/companies",
               "host": ["{{base-URL}}"],
-              "path": ["companies"]
+              "path": ["companies"],
+              "query": [
+                {
+                  "key": "pageLimit",
+                  "value": "5",
+                  "description": "default 10"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "default 0"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "englishName",
+                  "description": "default _id"
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "desc",
+                  "description": "{  desc, asc } - default asc"
+                },
+                {
+                  "key": "showAll",
+                  "value": "true",
+                  "disabled": true
+                }
+              ]
             }
           },
           "response": []
@@ -567,7 +608,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -579,15 +620,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/company",
               "host": ["{{base-URL}}"],
@@ -601,15 +634,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "[\r\n    {\r\n        \"name\": \"string\",\r\n        \"address\": {\r\n            \"area\": \"string\",\r\n            \"street\": \"string\"\r\n        },\r\n        \"telephone\": \"string\",\r\n        \"mobile\": \"string\",\r\n        \"shareBusPercentage\": 0,\r\n        \"inCityPackagePercentage\": 0,\r\n        \"sentPackagePercentage\": 0,\r\n        \"receivedPackagePercentage\": 0\r\n    }\r\n]",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/companies",
               "host": ["{{base-URL}}"],
@@ -623,15 +648,7 @@
           "request": {
             "method": "PUT",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string-updated\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/company/:id",
               "host": ["{{base-URL}}"],
@@ -639,7 +656,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -658,7 +675,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -678,7 +695,34 @@
             "url": {
               "raw": "{{base-URL}}/employees",
               "host": ["{{base-URL}}"],
-              "path": ["employees"]
+              "path": ["employees"],
+              "query": [
+                {
+                  "key": "pageLimit",
+                  "value": "5",
+                  "description": "default 10"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "default 0"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "englishName",
+                  "description": "default _id"
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "desc",
+                  "description": "{  desc, asc } - default asc"
+                },
+                {
+                  "key": "showAll",
+                  "value": "true",
+                  "disabled": true
+                }
+              ]
             }
           },
           "response": []
@@ -695,7 +739,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -707,15 +751,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/employee",
               "host": ["{{base-URL}}"],
@@ -729,15 +765,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "[\r\n    {\r\n        \"name\": \"string\",\r\n        \"address\": {\r\n            \"area\": \"string\",\r\n            \"street\": \"string\"\r\n        },\r\n        \"telephone\": \"string\",\r\n        \"mobile\": \"string\",\r\n        \"shareBusPercentage\": 0,\r\n        \"inCityPackagePercentage\": 0,\r\n        \"sentPackagePercentage\": 0,\r\n        \"receivedPackagePercentage\": 0\r\n    }\r\n]",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/employees",
               "host": ["{{base-URL}}"],
@@ -751,15 +779,7 @@
           "request": {
             "method": "PUT",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string-updated\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/employee/:id",
               "host": ["{{base-URL}}"],
@@ -767,7 +787,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -786,7 +806,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -806,7 +826,34 @@
             "url": {
               "raw": "{{base-URL}}/employees-rating",
               "host": ["{{base-URL}}"],
-              "path": ["employees-rating"]
+              "path": ["employees-rating"],
+              "query": [
+                {
+                  "key": "pageLimit",
+                  "value": "5",
+                  "description": "default 10"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "default 0"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "englishName",
+                  "description": "default _id"
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "desc",
+                  "description": "{  desc, asc } - default asc"
+                },
+                {
+                  "key": "showAll",
+                  "value": "true",
+                  "disabled": true
+                }
+              ]
             }
           },
           "response": []
@@ -823,7 +870,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -835,15 +882,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/employee-rating",
               "host": ["{{base-URL}}"],
@@ -857,15 +896,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "[\r\n    {\r\n        \"name\": \"string\",\r\n        \"address\": {\r\n            \"area\": \"string\",\r\n            \"street\": \"string\"\r\n        },\r\n        \"telephone\": \"string\",\r\n        \"mobile\": \"string\",\r\n        \"shareBusPercentage\": 0,\r\n        \"inCityPackagePercentage\": 0,\r\n        \"sentPackagePercentage\": 0,\r\n        \"receivedPackagePercentage\": 0\r\n    }\r\n]",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/employees-rating",
               "host": ["{{base-URL}}"],
@@ -879,15 +910,7 @@
           "request": {
             "method": "PUT",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string-updated\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/employee-rating/:id",
               "host": ["{{base-URL}}"],
@@ -895,7 +918,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -914,7 +937,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -934,7 +957,34 @@
             "url": {
               "raw": "{{base-URL}}/hubs",
               "host": ["{{base-URL}}"],
-              "path": ["hubs"]
+              "path": ["hubs"],
+              "query": [
+                {
+                  "key": "pageLimit",
+                  "value": "5",
+                  "description": "default 10"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "default 0"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "englishName",
+                  "description": "default _id"
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "desc",
+                  "description": "{  desc, asc } - default asc"
+                },
+                {
+                  "key": "showAll",
+                  "value": "true",
+                  "disabled": true
+                }
+              ]
             }
           },
           "response": []
@@ -951,7 +1001,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -963,15 +1013,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/hub",
               "host": ["{{base-URL}}"],
@@ -985,15 +1027,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "[\r\n    {\r\n        \"name\": \"string\",\r\n        \"address\": {\r\n            \"area\": \"string\",\r\n            \"street\": \"string\"\r\n        },\r\n        \"telephone\": \"string\",\r\n        \"mobile\": \"string\",\r\n        \"shareBusPercentage\": 0,\r\n        \"inCityPackagePercentage\": 0,\r\n        \"sentPackagePercentage\": 0,\r\n        \"receivedPackagePercentage\": 0\r\n    }\r\n]",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/hubs",
               "host": ["{{base-URL}}"],
@@ -1007,15 +1041,7 @@
           "request": {
             "method": "PUT",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string-updated\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/hub/:id",
               "host": ["{{base-URL}}"],
@@ -1023,7 +1049,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -1042,7 +1068,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -1062,7 +1088,34 @@
             "url": {
               "raw": "{{base-URL}}/merchants",
               "host": ["{{base-URL}}"],
-              "path": ["merchants"]
+              "path": ["merchants"],
+              "query": [
+                {
+                  "key": "pageLimit",
+                  "value": "5",
+                  "description": "default 10"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "default 0"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "englishName",
+                  "description": "default _id"
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "desc",
+                  "description": "{  desc, asc } - default asc"
+                },
+                {
+                  "key": "showAll",
+                  "value": "true",
+                  "disabled": true
+                }
+              ]
             }
           },
           "response": []
@@ -1079,7 +1132,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -1091,15 +1144,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/merchant",
               "host": ["{{base-URL}}"],
@@ -1113,15 +1158,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "[\r\n    {\r\n        \"name\": \"string\",\r\n        \"address\": {\r\n            \"area\": \"string\",\r\n            \"street\": \"string\"\r\n        },\r\n        \"telephone\": \"string\",\r\n        \"mobile\": \"string\",\r\n        \"shareBusPercentage\": 0,\r\n        \"inCityPackagePercentage\": 0,\r\n        \"sentPackagePercentage\": 0,\r\n        \"receivedPackagePercentage\": 0\r\n    }\r\n]",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/merchants",
               "host": ["{{base-URL}}"],
@@ -1135,15 +1172,7 @@
           "request": {
             "method": "PUT",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string-updated\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/merchant/:id",
               "host": ["{{base-URL}}"],
@@ -1151,7 +1180,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -1170,7 +1199,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -1190,7 +1219,34 @@
             "url": {
               "raw": "{{base-URL}}/rides",
               "host": ["{{base-URL}}"],
-              "path": ["rides"]
+              "path": ["rides"],
+              "query": [
+                {
+                  "key": "pageLimit",
+                  "value": "5",
+                  "description": "default 10"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "default 0"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "englishName",
+                  "description": "default _id"
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "desc",
+                  "description": "{  desc, asc } - default asc"
+                },
+                {
+                  "key": "showAll",
+                  "value": "true",
+                  "disabled": true
+                }
+              ]
             }
           },
           "response": []
@@ -1207,7 +1263,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -1219,15 +1275,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/ride",
               "host": ["{{base-URL}}"],
@@ -1241,15 +1289,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "[\r\n    {\r\n        \"name\": \"string\",\r\n        \"address\": {\r\n            \"area\": \"string\",\r\n            \"street\": \"string\"\r\n        },\r\n        \"telephone\": \"string\",\r\n        \"mobile\": \"string\",\r\n        \"shareBusPercentage\": 0,\r\n        \"inCityPackagePercentage\": 0,\r\n        \"sentPackagePercentage\": 0,\r\n        \"receivedPackagePercentage\": 0\r\n    }\r\n]",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/rides",
               "host": ["{{base-URL}}"],
@@ -1263,15 +1303,7 @@
           "request": {
             "method": "PUT",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string-updated\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/ride/:id",
               "host": ["{{base-URL}}"],
@@ -1279,7 +1311,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -1298,7 +1330,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -1318,7 +1350,34 @@
             "url": {
               "raw": "{{base-URL}}/salaries",
               "host": ["{{base-URL}}"],
-              "path": ["salaries"]
+              "path": ["salaries"],
+              "query": [
+                {
+                  "key": "pageLimit",
+                  "value": "5",
+                  "description": "default 10"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "default 0"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "englishName",
+                  "description": "default _id"
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "desc",
+                  "description": "{  desc, asc } - default asc"
+                },
+                {
+                  "key": "showAll",
+                  "value": "true",
+                  "disabled": true
+                }
+              ]
             }
           },
           "response": []
@@ -1335,7 +1394,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -1347,15 +1406,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/salary",
               "host": ["{{base-URL}}"],
@@ -1369,15 +1420,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "[\r\n    {\r\n        \"name\": \"string\",\r\n        \"address\": {\r\n            \"area\": \"string\",\r\n            \"street\": \"string\"\r\n        },\r\n        \"telephone\": \"string\",\r\n        \"mobile\": \"string\",\r\n        \"shareBusPercentage\": 0,\r\n        \"inCityPackagePercentage\": 0,\r\n        \"sentPackagePercentage\": 0,\r\n        \"receivedPackagePercentage\": 0\r\n    }\r\n]",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/salaries",
               "host": ["{{base-URL}}"],
@@ -1391,15 +1434,7 @@
           "request": {
             "method": "PUT",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string-updated\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/salary/:id",
               "host": ["{{base-URL}}"],
@@ -1407,7 +1442,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -1426,7 +1461,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -1446,7 +1481,34 @@
             "url": {
               "raw": "{{base-URL}}/shipments",
               "host": ["{{base-URL}}"],
-              "path": ["shipments"]
+              "path": ["shipments"],
+              "query": [
+                {
+                  "key": "pageLimit",
+                  "value": "5",
+                  "description": "default 10"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "default 0"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "englishName",
+                  "description": "default _id"
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "desc",
+                  "description": "{  desc, asc } - default asc"
+                },
+                {
+                  "key": "showAll",
+                  "value": "true",
+                  "disabled": true
+                }
+              ]
             }
           },
           "response": []
@@ -1463,7 +1525,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -1475,15 +1537,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/shipment",
               "host": ["{{base-URL}}"],
@@ -1497,15 +1551,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "[\r\n    {\r\n        \"name\": \"string\",\r\n        \"address\": {\r\n            \"area\": \"string\",\r\n            \"street\": \"string\"\r\n        },\r\n        \"telephone\": \"string\",\r\n        \"mobile\": \"string\",\r\n        \"shareBusPercentage\": 0,\r\n        \"inCityPackagePercentage\": 0,\r\n        \"sentPackagePercentage\": 0,\r\n        \"receivedPackagePercentage\": 0\r\n    }\r\n]",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/shipments",
               "host": ["{{base-URL}}"],
@@ -1519,15 +1565,7 @@
           "request": {
             "method": "PUT",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string-updated\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/shipment/:id",
               "host": ["{{base-URL}}"],
@@ -1535,7 +1573,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -1554,7 +1592,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -1574,7 +1612,34 @@
             "url": {
               "raw": "{{base-URL}}/vehicles",
               "host": ["{{base-URL}}"],
-              "path": ["vehicles"]
+              "path": ["vehicles"],
+              "query": [
+                {
+                  "key": "pageLimit",
+                  "value": "5",
+                  "description": "default 10"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "default 0"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "englishName",
+                  "description": "default _id"
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "desc",
+                  "description": "{  desc, asc } - default asc"
+                },
+                {
+                  "key": "showAll",
+                  "value": "true",
+                  "disabled": true
+                }
+              ]
             }
           },
           "response": []
@@ -1591,7 +1656,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -1603,15 +1668,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/vehicle",
               "host": ["{{base-URL}}"],
@@ -1625,15 +1682,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "[\r\n    {\r\n        \"name\": \"string\",\r\n        \"address\": {\r\n            \"area\": \"string\",\r\n            \"street\": \"string\"\r\n        },\r\n        \"telephone\": \"string\",\r\n        \"mobile\": \"string\",\r\n        \"shareBusPercentage\": 0,\r\n        \"inCityPackagePercentage\": 0,\r\n        \"sentPackagePercentage\": 0,\r\n        \"receivedPackagePercentage\": 0\r\n    }\r\n]",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/vehicles",
               "host": ["{{base-URL}}"],
@@ -1647,15 +1696,7 @@
           "request": {
             "method": "PUT",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"string-updated\",\r\n    \"address\": {\r\n        \"area\": \"string\",\r\n        \"street\": \"string\"\r\n    },\r\n    \"telephone\": \"string\",\r\n    \"mobile\": \"string\",\r\n    \"shareBusPercentage\": 0,\r\n    \"inCityPackagePercentage\": 0,\r\n    \"sentPackagePercentage\": 0,\r\n    \"receivedPackagePercentage\": 0\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "body": {},
             "url": {
               "raw": "{{base-URL}}/vehicle/:id",
               "host": ["{{base-URL}}"],
@@ -1663,7 +1704,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -1682,7 +1723,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "62780df983a522fe52964e5a"
+                  "value": ""
                 }
               ]
             }
@@ -1705,6 +1746,16 @@
       "response": []
     }
   ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Mjc4ZGVlODVlYjk2NTJiZGQwNjJmOTciLCJtb2JpbGUiOiIrMjAxMTE0MDU3NzM2IiwiYWNjb3VudFR5cGUiOiJFbXBsb3llZSIsImFjY291bnQiOnsiX2lkIjoiNjI3OGRlZTg1ZWI5NjUyYmRkMDYyZjk1IiwibmFtZSI6IlNhaHJhZ3R5IiwibW9iaWxlIjoiKzIwMTExNDA1NzczNiIsImVtYWlsIjoib21hcl9lbHNhaHJhZ3R5QGhvdG1haWwuY29tIiwiYmlydGhkYXRlIjoiMTk5Ny0wMi0xM1QwMDowMDowMC4wMDBaIiwicG9zaXRpb24iOiJBbGV4YW5kcmlhIiwibmF0aW9uYWxJZCI6IjAwMDAwMDAwMDAwMDAwIiwicXVhbGlmaWNhdGlvbiI6IkR1bW15Iiwic29jaWFsU3RhdHVzIjoiRHVtbXkiLCJzYWxhcnkiOjg2OTI0LCJhZGRyZXNzIjp7ImNpdHkiOnsiX2lkIjoiNjI3OGRlZTg1ZWI5NjUyYmRkMDYyZjY5IiwiYXJhYmljTmFtZSI6Itin2YTYp9iz2YPZhtiv2LHZitmHIiwiZW5nbGlzaE5hbWUiOiJBbGV4YW5kcmlhIn0sImFyZWEiOiJTbW91aGEiLCJzdHJlZXQiOiJEdW1teSJ9LCJjcmVhdGVkQXQiOiIyMDIyLTA1LTA5VDA5OjI5OjEyLjk2NFoiLCJ1cGRhdGVkQXQiOiIyMDIyLTA1LTA5VDA5OjI5OjEyLjk2NFoifSwiY3JlYXRlZEF0IjoiMjAyMi0wNS0wOVQwOToyOToxMi45NjhaIiwidXBkYXRlZEF0IjoiMjAyMi0wNS0wOVQwOToyOToxMi45NjhaIiwiaWF0IjoxNjUyMDg4NTY3LCJleHAiOjE2ODM2NDYxNjd9.9Ue8zxkEqeFMEm2NnBeRF5f9rHQY5JKSITILKd1Gl84",
+        "type": "string"
+      }
+    ]
+  },
   "event": [
     {
       "listen": "prerequest",

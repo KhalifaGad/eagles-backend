@@ -27,7 +27,6 @@
     "dev": "NODE_ENV=Development nodemon",
     "seed": "NODE_ENV=Seeding ts-node ./scripts/seed.script.ts",
     "test": "mocha",
-    "test:circular-dependencies": "madge --circular --warning --extensions ts .",
     "lint": "eslint .",
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --write ."

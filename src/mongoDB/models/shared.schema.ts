@@ -4,7 +4,7 @@ import { AddressInterface } from "../../types";
 
 export const addressSchema = new Schema<AddressInterface>(
   {
-    city: { type: Schema.Types.ObjectId, ref: Schemas.city },
+    city: { type: Schema.Types.ObjectId, ref: Schemas.city, required: true },
     area: { type: String, required: true },
     street: { type: String, required: true },
     name: { type: String },

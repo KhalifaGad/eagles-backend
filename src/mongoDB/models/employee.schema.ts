@@ -1,9 +1,9 @@
 import { Schema, model } from "mongoose";
-import { addressSchema } from "./shared";
+import { addressSchema } from "./shared.schema";
 import { EmployeeInterface } from "../../types";
 import { Schemas } from "../../../constants";
 
-export const employeeSchema = new Schema<EmployeeInterface>(
+const employeeSchema = new Schema<EmployeeInterface>(
   {
     name: { type: String, required: true },
     mobile: { type: String, required: true },
@@ -14,7 +14,7 @@ export const employeeSchema = new Schema<EmployeeInterface>(
     qualification: { type: String, required: true },
     socialStatus: { type: String, required: true },
     salary: { type: Number, required: true },
-    address: { type: addressSchema },
+    address: { type: addressSchema, required: true },
   },
   { timestamps: true, versionKey: false }
 );

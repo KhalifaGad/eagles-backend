@@ -1,1 +1,14 @@
-// TODO: Add validation schemas
+export * from "./agency.validation";
+export * from "./city.validation";
+export * from "./client.validation";
+export * from "./company.validation";
+export * from "./credential.validation";
+export * from "./employee.validation";
+export * from "./employeeRating.validation";
+export * from "./hub.validation";
+export * from "./merchant.validation";
+export * from "./ride.validation";
+export * from "./salary.validation";
+export * from "./shipment.validation";
+export * from "./vehicle.validation";
+export * from "./shared.validation";

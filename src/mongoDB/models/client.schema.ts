@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { addressSchema } from "./shared";
+import { addressSchema } from "./shared.schema";
 import { ClientInterface } from "../../types";
 import { Schemas } from "../../../constants";
 

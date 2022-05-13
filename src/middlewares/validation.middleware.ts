@@ -1,15 +1,18 @@
+import * as yup from "yup";
 import { Request, Response, NextFunction } from "express";
-import { AnySchema } from "yup";
 import { badRequest } from "../errors";
 
-export default (schema: AnySchema, validateWhat: "body" | "query" | "params" = "body") =>
+export default (schema: yup.AnySchema, validateWhat: "body" | "query" | "params" = "body") =>
   (req: Request, _res: Response, next: NextFunction) => {
     try {
-      req[validateWhat] = schema.validateSync(req[validateWhat], {
-        abortEarly: false,
-        strict: true,
-        stripUnknown: true,
-      });
+      req[validateWhat] = (Array.isArray(req[validateWhat]) ? yup.array().of(schema).min(2) : schema).validateSync(
+        req[validateWhat],
+        {
+          strict: true,
+          abortEarly: false,
+          stripUnknown: true,
+        }
+      );
 
       next();
     } catch (err) {

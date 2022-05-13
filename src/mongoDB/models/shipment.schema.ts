@@ -11,7 +11,7 @@ import { Schemas } from "../../../constants";
 const shipmentProductSchemaObject = {
   name: { type: String, required: true },
   description: { type: String },
-  price: Number,
+  price: { type: Number },
 };
 
 const shipmentSchema = new Schema<ShipmentInterface>(

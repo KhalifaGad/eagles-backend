@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { addressSchema } from "./shared";
+import { addressSchema } from "./shared.schema";
 import { CompanyEmployeesPositionEnum, MerchantInterface } from "../../types";
 import { Schemas } from "../../../constants";
 

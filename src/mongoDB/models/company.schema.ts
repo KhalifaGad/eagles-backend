@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { CompanyInterface, RepaymentEnum } from "../../types";
-import { addressSchema } from "./shared";
+import { addressSchema } from "./shared.schema";
 import { Schemas } from "../../../constants";
 
 const companyURLSchema = {

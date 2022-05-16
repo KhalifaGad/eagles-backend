@@ -164,6 +164,7 @@ export interface CompanyInterface {
   companyType: Enums.CompaniesEnum;
   commercialNo?: string;
   taxNo?: string;
+  businessType: string;
   address: AddressInterface;
   urls: { value: string; description: string }[];
   repaymentConfig: RepaymentConfigInterface;

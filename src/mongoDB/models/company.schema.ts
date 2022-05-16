@@ -27,6 +27,7 @@ const companySchema = new Schema<CompanyInterface>(
     name: { type: String, required: true, unique: true },
     commercialNo: { type: String },
     taxNo: { type: String },
+    businessType: { type: String, required: true },
     urls: [companyURLSchema],
     repaymentConfig: { type: repaymentConfigSchema, required: true },
     address: { type: addressSchema, required: true },

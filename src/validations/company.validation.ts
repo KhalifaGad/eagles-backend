@@ -7,6 +7,7 @@ export const companySchema = yup
     name: yup.string().required(),
     commercialNo: yup.string(),
     taxNo: yup.string(),
+    businessType: yup.string().required(),
     urls: yup.array().of(
       yup.object({
         value: yup.string().required(),

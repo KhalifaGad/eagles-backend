@@ -13,6 +13,7 @@ export const companySchema = yup
         description: yup.string(),
       })
     ),
+    companyType: yup.mixed().oneOf(["ECommerce", "Traditional"]).required(),
     repaymentConfig: yup.object({
       default: yup.mixed().oneOf(["Cash", "Wallet", "BankAccount"]).required(),
       walletNumber: yup.string(),

@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { CompanyInterface, RepaymentEnum } from "../../types";
+import { CompaniesEnum, CompanyInterface, RepaymentEnum } from "../../types";
 import { addressSchema } from "./shared.schema";
 import { Schemas } from "../../../constants";
 
@@ -30,6 +30,12 @@ const companySchema = new Schema<CompanyInterface>(
     urls: [companyURLSchema],
     repaymentConfig: { type: repaymentConfigSchema, required: true },
     address: { type: addressSchema, required: true },
+    companyType: {
+      type: String,
+      enum: CompaniesEnum,
+      required: true,
+      default: CompaniesEnum.Traditional
+    }
   },
   { timestamps: true, versionKey: false }
 );

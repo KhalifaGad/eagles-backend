@@ -210,6 +210,7 @@ export interface EmployeeRatingInterface {
 export interface ShipmentInterface {
   _id?: MongooseID;
   code: string;
+  referenceNumber: string;
   consignorType: Enums.ShipmentConsignorEnum;
   consignor: Entity<CompanyInterface | ClientInterface>;
   consigneeType: Enums.ShipmentConsigneeEnum;

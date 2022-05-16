@@ -3,7 +3,7 @@ import * as yup from "yup";
 export const shipmentSchema = yup
   .object()
   .shape({
-    code: yup.string().required(),
+    referenceNumber: yup.string().required(),
     consigneeType: yup.mixed().oneOf(["Client", "Company"]),
     consignee: yup.string().required(),
     consignorType: yup.mixed().oneOf(["Client", "Company"]),

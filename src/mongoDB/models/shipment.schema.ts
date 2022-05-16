@@ -17,6 +17,7 @@ const shipmentProductSchemaObject = {
 const shipmentSchema = new Schema<ShipmentInterface>(
   {
     code: { type: String, required: true, unique: true },
+    referenceNumber: { type: String, required: true },
     consigneeType: { type: String, enum: ShipmentConsigneeEnum, required: true },
     consignee: { type: Schema.Types.ObjectId, refPath: "consigneeType" },
     consignorType: { type: String, enum: ShipmentConsignorEnum, required: true },
@@ -48,6 +49,6 @@ const shipmentSchema = new Schema<ShipmentInterface>(
     ],
   },
   { timestamps: true, versionKey: false }
-);
+).index({ referenceNumber: 1,  originAgency: 1}, { unique: true });
 
 export const ShipmentModel = model<ShipmentInterface>(Schemas.shipment, shipmentSchema);

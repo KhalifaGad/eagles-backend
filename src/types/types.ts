@@ -142,6 +142,7 @@ export interface ClientInterface {
   firstName: string;
   familyName: string;
   mobile: string;
+  secondMobile: string;
   address: AddressInterface;
   birthdate?: Date;
   email?: string;

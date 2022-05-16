@@ -9,6 +9,7 @@ export const clientSchema = yup
     address: addressSchema.required(),
     email: yup.string().required(),
     mobile: yup.string().required(),
+    secondMobile: yup.string(),
     birthdate: yup
       .string()
       .required()

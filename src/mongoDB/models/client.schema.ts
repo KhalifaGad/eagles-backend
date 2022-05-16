@@ -11,6 +11,14 @@ const clientSchema = new Schema<ClientInterface>(
     address: { type: addressSchema, required: true },
     email: { type: String, required: true, unique: true },
     mobile: { type: String, required: true, unique: true },
+    secondMobile: {
+      type: String, index: {
+        unique: true,
+        partialFilterExpression: {
+          secondMobile: { $type: "string" }
+        }
+      }
+    },
   },
   { timestamps: true, versionKey: false }
 );

@@ -12,12 +12,13 @@ const clientSchema = new Schema<ClientInterface>(
     email: { type: String, required: true, unique: true },
     mobile: { type: String, required: true, unique: true },
     secondMobile: {
-      type: String, index: {
+      type: String,
+      index: {
         unique: true,
         partialFilterExpression: {
-          secondMobile: { $type: "string" }
-        }
-      }
+          secondMobile: { $type: "string" },
+        },
+      },
     },
   },
   { timestamps: true, versionKey: false }

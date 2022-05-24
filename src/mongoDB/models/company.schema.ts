@@ -35,8 +35,8 @@ const companySchema = new Schema<CompanyInterface>(
       type: String,
       enum: CompaniesEnum,
       required: true,
-      default: CompaniesEnum.Traditional
-    }
+      default: CompaniesEnum.Traditional,
+    },
   },
   { timestamps: true, versionKey: false }
 );

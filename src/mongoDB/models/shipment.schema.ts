@@ -49,6 +49,6 @@ const shipmentSchema = new Schema<ShipmentInterface>(
     ],
   },
   { timestamps: true, versionKey: false }
-).index({ referenceNumber: 1,  originAgency: 1}, { unique: true });
+).index({ referenceNumber: 1, originAgency: 1 }, { unique: true });
 
 export const ShipmentModel = model<ShipmentInterface>(Schemas.shipment, shipmentSchema);

@@ -23,7 +23,7 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
     const credential = await credentialRepository.findOne({ mobile });
 
     if (!credential || !(await verifyHash(credential.password as string, password))) {
-      throw unauthorized("Invalid credentials");
+      throw unauthorized("رقم الهاتف المحمول أو كلمة المرور غير صحيحة");
     }
 
     return destroyProperties(

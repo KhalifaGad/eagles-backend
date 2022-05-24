@@ -1,11 +1,11 @@
 import boom from "@hapi/Boom";
 
-export const notFound = (message?: string) => boom.notFound(message);
+export const notFound = (message = "لا يوجد شيء") => boom.notFound(message);
 
-export const unauthorized = (message?: string) => boom.unauthorized(message);
+export const unauthorized = (message = "غير مصرح") => boom.unauthorized(message);
 
-export const forbidden = (message?: string) => boom.forbidden(message);
+export const forbidden = (message = "مُحرَّم") => boom.forbidden(message);
 
-export const badData = (message?: string) => boom.badData(message);
+export const badData = (message = "بيانات سيئة") => boom.badData(message);
 
-export const badRequest = (message?: string) => boom.badRequest(message);
+export const badRequest = (message = "اقتراح غير جيد") => boom.badRequest(message);

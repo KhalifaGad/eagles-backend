@@ -12,9 +12,9 @@ export const rideSchema = yup
       .of(
         yup.object({
           order: yup.number().required(),
+          city: yup.string().required(),
           area: yup.string().required(),
           street: yup.string().required(),
-          city: yup.string().required(),
           lat: yup.number(),
           lng: yup.number(),
           meterReading: yup.number(),

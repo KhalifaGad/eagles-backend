@@ -11,21 +11,13 @@ const vehicleSchema = new Schema<VehicleInterface>(
     tonnage: { type: String, required: true },
     type: { type: String, required: true },
     condition: { type: String, required: true },
-    license: {
-      type: {
-        id: { type: String, required: true, unique: true },
-        startDate: { type: Date, required: true },
-        renewalDate: { type: Date, required: true },
-      },
-      required: true,
-    },
-    insurance: {
-      type: {
-        startDate: { type: Date, required: true },
-        renewalDate: { type: Date, required: true },
-      },
-      required: true,
-    },
+
+    licenseId: { type: String, required: true, unique: true },
+    licenseStartDate: { type: Date, required: true },
+    licenseRenewalDate: { type: Date, required: true },
+
+    insuranceStartDate: { type: Date, required: true },
+    insuranceRenewalDate: { type: Date, required: true },
   },
   { timestamps: true, versionKey: false }
 );

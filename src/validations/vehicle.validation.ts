@@ -10,30 +10,28 @@ export const vehicleSchema = yup
     tonnage: yup.string().required(),
     type: yup.string().required(),
     condition: yup.string().required(),
-    license: yup.object().shape({
-      id: yup.string().required(),
-      startDate: yup
-        .string()
-        .required()
-        .trim()
-        .matches(/^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/),
-      renewalDate: yup
-        .string()
-        .required()
-        .trim()
-        .matches(/^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/),
-    }),
-    insurance: yup.object().shape({
-      startDate: yup
-        .string()
-        .required()
-        .trim()
-        .matches(/^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/),
-      renewalDate: yup
-        .string()
-        .required()
-        .trim()
-        .matches(/^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/),
-    }),
+
+    licenseId: yup.string().required(),
+    licenseStartDate: yup
+      .string()
+      .required()
+      .trim()
+      .matches(/^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/),
+    licenseRenewalDate: yup
+      .string()
+      .required()
+      .trim()
+      .matches(/^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/),
+
+    insuranceStartDate: yup
+      .string()
+      .required()
+      .trim()
+      .matches(/^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/),
+    insuranceRenewalDate: yup
+      .string()
+      .required()
+      .trim()
+      .matches(/^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/),
   })
   .noUnknown();

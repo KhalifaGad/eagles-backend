@@ -3,8 +3,8 @@ import * as yup from "yup";
 export const employeeRatingSchema = yup
   .object()
   .shape({
-    employee: yup.string(),
-    agency: yup.string(),
+    employee: yup.string().required(),
+    agency: yup.string().required(),
     appearance: yup.number().required().min(1).max(100),
     hygiene: yup.number().required().min(1).max(100),
     individualTasks: yup.number().required().min(1).max(100),

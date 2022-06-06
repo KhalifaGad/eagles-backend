@@ -236,15 +236,11 @@ export interface VehicleInterface {
   condition: string;
   tonnage: string;
   chassisNo: string;
-  license: {
-    id: string;
-    startDate: Date;
-    renewalDate: Date;
-  };
-  insurance: {
-    startDate: Date;
-    renewalDate: Date;
-  };
+  licenseId: string;
+  licenseStartDate: Date;
+  licenseRenewalDate: Date;
+  insuranceStartDate: Date;
+  insuranceRenewalDate: Date;
 }
 
 export interface RideInterface {

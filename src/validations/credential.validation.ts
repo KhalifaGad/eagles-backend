@@ -13,7 +13,7 @@ export const credentialSchema = yup
 export const credentialLoginSchema = yup
   .object()
   .shape({
-    mobile: yup.string().required(),
-    password: yup.string().required(),
+    mobile: yup.string().trim().required(),
+    password: yup.string().min(8).required(),
   })
   .noUnknown();

@@ -6,8 +6,8 @@ const numericRating = { type: Number, required: true, min: 0, max: 100 };
 
 const employeeRatingSchema = new Schema<EmployeeRatingInterface>(
   {
-    employee: { type: Schema.Types.ObjectId, ref: Schemas.employee },
-    agency: { type: Schema.Types.ObjectId, ref: Schemas.agency },
+    employee: { type: Schema.Types.ObjectId, ref: Schemas.employee, required: true },
+    agency: { type: Schema.Types.ObjectId, ref: Schemas.agency, required: true },
     appearance: numericRating,
     hygiene: numericRating,
     individualTasks: numericRating,

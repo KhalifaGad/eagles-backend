@@ -5,9 +5,9 @@ import { hubSchema } from "../validations";
 
 const router = Router();
 
-router.route("/hubs").get(hubController.list).post(validateMiddleware(hubSchema), hubController.bulkCreate);
+router.route("/hubs").get(hubController.list).post(validateMiddleware(hubSchema));
 
-router.route("/hub").post(validateMiddleware(hubSchema), hubController.create);
+router.route("/hubs").post(validateMiddleware(hubSchema), hubController.create);
 
 router
   .route("/hub/:id")

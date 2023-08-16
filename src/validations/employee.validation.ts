@@ -6,17 +6,21 @@ export const employeeSchema = yup
   .shape({
     name: yup.string().required(),
     mobile: yup.string().required(),
-    email: yup.string().required(),
+    email: yup.string().nullable().nullable(),
     position: yup.string().required(),
     nationalId: yup.string().required(),
     qualification: yup.string().required(),
     socialStatus: yup.string().required(),
     salary: yup.string().required(),
-    address: addressSchema.required(),
+    agency: yup.string().nullable(),
+    isAdmin: yup.boolean().nullable(),
+    isAgencyAdmin: yup.boolean().nullable(),
+    address: addressSchema.nullable(),
+    hub: yup.string().nullable(),
     birthdate: yup
       .string()
-      .required()
+      .nullable()
       .trim()
-      .matches(/^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/),
+      .matches(/^(19|20)\d\d(-)(0[1-9]|1[012])\2(0[1-9]|[12]\d|3[01])$/),
   })
   .noUnknown();

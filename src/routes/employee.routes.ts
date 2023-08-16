@@ -8,9 +8,8 @@ const router = Router();
 router
   .route("/employees")
   .get(employeeController.list)
-  .post(validateMiddleware(employeeSchema), employeeController.bulkCreate);
+  .post(validateMiddleware(employeeSchema), employeeController.create);
 
-router.route("/employee").post(validateMiddleware(employeeSchema), employeeController.create);
 
 router
   .route("/employee/:id")

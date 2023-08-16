@@ -1,58 +1,65 @@
-import { Model, FilterQuery, PopulateOptions } from "mongoose";
-import { MongooseID, ListArgumentsInterface, ListOptionsInterface, ListInterface } from "../../types";
-import { buildSearch, buildListOptions } from "../../helpers";
+import { FilterQuery, Model, PopulateOptions } from "mongoose";
+import { ListArgumentsInterface, ListInterface, ListOptionsInterface, MongooseID } from "../../types";
+import { buildListOptions, buildSearch } from "../helpers";
 
 export default class DefaultRepository<T> {
-  private model: Model<T>;
-  private population?: PopulateOptions | PopulateOptions[];
+	private model: Model<T>;
+	private population?: PopulateOptions | PopulateOptions[];
 
-  constructor(model: Model<T>, population?: PopulateOptions | PopulateOptions[]) {
-    this.model = model;
-    this.population = population;
-  }
+	constructor(model: Model<T>, population?: PopulateOptions | PopulateOptions[]) {
+		this.model = model;
+		this.population = population;
+	}
 
-  findById = async (id: MongooseID): Promise<T> => {
-    if (this.population) return this.model.findById(id).populate(this.population).lean();
-    return this.model.findById(id).lean();
-  };
+	findById = async (id: MongooseID): Promise<T> => {
+		if (this.population) return this.model.findById(id).populate(this.population).lean();
+		return this.model.findById(id).lean();
+	};
 
-  findOne = async (filter: FilterQuery<T> = {}): Promise<T> => {
-    if (this.population) return this.model.findOne(filter).populate(this.population).lean();
-    return this.model.findOne(filter).lean();
-  };
+	findOne = async (filter: FilterQuery<T> = {}): Promise<T> => {
+		if (this.population) return this.model.findOne(filter).populate(this.population).lean();
+		return this.model.findOne(filter).lean();
+	};
 
-  list = async ({ filter = {}, options }: ListArgumentsInterface<T>): Promise<ListInterface<T>> => {
-    const search = buildSearch(filter);
-    const { page, pageLimit, sortBy, sortDirection, showAll } = buildListOptions(options as ListOptionsInterface);
-    const curser = this.model.find(search).sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 });
+	findMany = async (filter: FilterQuery<T> = {}): Promise<T[]> => {
+		if (this.population) return this.model.find(filter).populate(this.population).lean();
+		return this.model.find(filter).lean();
+	};
 
-    if (!showAll) curser.skip(page * pageLimit).limit(pageLimit);
+	list = async ({ filter = {}, options }: ListArgumentsInterface<T>): Promise<ListInterface<T>> => {
+		const search = buildSearch(filter);
+		const { page, pageLimit, sortBy, sortDirection, showAll } = buildListOptions(options as ListOptionsInterface);
+		const cursor = this.model.find(search).sort({ [sortBy]: sortDirection === "desc" ? 1 : -1 });
 
-    if (this.population) curser.populate(this.population).lean();
+		if (!showAll) cursor.skip(page * pageLimit).limit(pageLimit);
 
-    return {
-      data: await curser.lean(),
-      totalCount: await this.count(search),
-    };
-  };
+		if (this.population) cursor.populate(this.population).lean();
 
-  count = async (filter: FilterQuery<T> = {}): Promise<number> => {
-    return this.model.countDocuments(filter);
-  };
+		return {
+			data: await cursor.lean(),
+			totalCount: await this.count(search),
+		};
+	};
 
-  create = async (data: T): Promise<T> => {
-    return this.model.create(data);
-  };
+	count = async (filter: FilterQuery<T> = {}): Promise<number> => {
+		return this.model.countDocuments(filter);
+	};
 
-  insertMany = async (data: T[]): Promise<T[]> => {
-    return this.model.insertMany(data);
-  };
+	create = async (data: T): Promise<T> => {
+		const createdData = await this.model.create(data);
+		return this.findById(createdData._id);
+	};
 
-  deleteById = async (id: MongooseID): Promise<T | null> => {
-    return this.model.findByIdAndDelete(id);
-  };
+	insertMany = async (data: T[]): Promise<T[]> => {
+		const documents = await this.model.insertMany(data);
+		return this.findMany({ _id: { $in: documents.map(doc => doc._id) } });
+	};
 
-  updateWhereId = async (id: MongooseID, data = {}): Promise<T | null> => {
-    return this.model.findByIdAndUpdate(id, data, { new: true });
-  };
+	deleteById = async (id: MongooseID): Promise<T | null> => {
+		return this.model.findByIdAndDelete(id);
+	};
+
+	updateWhereId = async (id: MongooseID, data = {}): Promise<T | null> => {
+		return this.model.findByIdAndUpdate(id, data, { new: true, populate: this.population, lean: true });
+	};
 }

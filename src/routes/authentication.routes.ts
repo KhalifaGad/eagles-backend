@@ -5,7 +5,7 @@ import { credentialSchema, credentialLoginSchema } from "../validations";
 
 const router = Router();
 
-router.route("/login").post(validateMiddleware(credentialLoginSchema), authenticationController.login);
+router.route("/authentications").post(validateMiddleware(credentialLoginSchema), authenticationController.login);
 
 router.use(authenticateMiddleware);
 
@@ -14,10 +14,10 @@ router
   .get(authenticationController.list)
   .post(validateMiddleware(credentialSchema), authenticationController.bulkCreate);
 
-router.route("/credential").post(validateMiddleware(credentialSchema), authenticationController.create);
+router.route("/credentials").post(validateMiddleware(credentialSchema), authenticationController.create);
 
 router
-  .route("/credential/:id")
+  .route("/credentials/:id")
   .get(authenticationController.show)
   .put(validateMiddleware(credentialSchema), authenticationController.update)
   .delete(authenticationController.delete);

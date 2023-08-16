@@ -8,11 +8,10 @@ export const shipmentSchema = yup
     consignee: yup.string().required(),
     consignorType: yup.mixed().oneOf(["Client", "Company"]),
     consignor: yup.string(),
-    shouldCollectCash: yup.boolean().required(),
     shippingFees: yup.string().required(),
     collectCashFees: yup.string().required(),
+    shipmentPrice: yup.number().default(0),
     originAgency: yup.string().required(),
-    destinationAgency: yup.string().required(),
     isInCity: yup.boolean(),
     notes: yup.array().of(yup.string()),
     products: yup

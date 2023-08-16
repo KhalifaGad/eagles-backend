@@ -1,8 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default (object: any, properties: string[] = []) => {
-  if (!object) return;
+import { ExcludeKeys } from "../types";
 
-  properties.forEach(property => delete object[property as keyof typeof object]);
-
-  return object;
-};
+export default <T, K extends Array<keyof T>>(obj: T, keys: K): ExcludeKeys<T, K> => {
+	const result = { ...obj };
+	keys.forEach((key) => {
+		delete result[key];
+	});
+	return result;
+}

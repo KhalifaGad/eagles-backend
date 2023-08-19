@@ -8,12 +8,10 @@ const router = Router();
 router
   .route("/companies")
   .get(companyController.list)
-  .post(validateMiddleware(companySchema), companyController.bulkCreate);
-
-router.route("/company").post(validateMiddleware(companySchema), companyController.create);
+  .post(validateMiddleware(companySchema), companyController.create);
 
 router
-  .route("/company/:id")
+  .route("/companies/:id")
   .get(companyController.show)
   .put(validateMiddleware(companySchema), companyController.update)
   .delete(companyController.delete);

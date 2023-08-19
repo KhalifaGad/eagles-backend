@@ -6,7 +6,6 @@ export * from "./credential.validation";
 export * from "./employee.validation";
 export * from "./employeeRating.validation";
 export * from "./hub.validation";
-export * from "./merchant.validation";
 export * from "./ride.validation";
 export * from "./salary.validation";
 export * from "./shipment.validation";

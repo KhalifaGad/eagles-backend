@@ -1,5 +1,5 @@
 export enum AccountEnum {
-  Merchant = "Merchant",
+  Company = "Company",
   Client = "Client",
   Employee = "Employee",
 }
@@ -11,10 +11,11 @@ export enum RepaymentEnum {
 }
 
 export enum CompanyEmployeesPositionEnum {
-  Owner = "Owner",
-  ShippingResponsible = "Shipping Responsible",
-  MarketingManager = "Marketing Manager",
-  GeneralManager = "General Manager",
+  Owner = "OWNER",
+  ShippingResponsible = "SHIPPING_RESPONSIBLE",
+  MarketingManager = "MARKETING_MANAGER",
+  GeneralManager = "GENERAL_MANAGER",
+  Other = "OTHER",
 }
 
 export enum CompaniesEnum {

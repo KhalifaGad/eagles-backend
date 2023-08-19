@@ -8,7 +8,6 @@ export { default as authenticationService } from "./authentication.service";
 export { default as employeeService } from "./employee.service";
 export { default as employeeRatingService } from "./employeeRating.service";
 export { default as hubService } from "./hub.service";
-export { default as merchantService } from "./merchant.service";
 export { default as rideService } from "./ride.service";
 export { default as salaryService } from "./salary.service";
 export { default as shipmentService } from "./shipment.service";

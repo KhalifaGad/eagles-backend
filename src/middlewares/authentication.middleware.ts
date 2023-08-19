@@ -4,17 +4,17 @@ import config from "../../config";
 import { forbidden } from "../errors";
 
 export default (req: Request, _res: Response, next: NextFunction) => {
-	try {
-		const token = (req.headers.authorization ?? "").replace("Bearer ", "");
+  try {
+    const token = (req.headers.authorization ?? "").replace("Bearer ", "");
 
-		verify(token, config.jwtSecret, (err, data) => {
-			if (err || !data) throw forbidden();
+    verify(token, config.jwtSecret, (err, data) => {
+      if (err || !data) throw forbidden();
 
-			req.client = data;
-		});
-	} catch (err) {
-		next(err);
-	}
+      req.client = data;
+    });
+  } catch (err) {
+    next(err);
+  }
 
-	next();
+  next();
 };

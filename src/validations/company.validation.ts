@@ -1,9 +1,25 @@
 import * as yup from "yup";
 import { addressSchema } from "./shared.validation";
 
+export const companyEmployeeSchema = yup
+  .object()
+  .shape({
+    _id: yup.string().nullable(),
+    name: yup.string().required(),
+    position: yup
+      .mixed()
+      .oneOf(["OTHER", "OWNER", "SHIPPING_RESPONSIBLE", "MARKETING_MANAGER", "GENERAL_MANAGER"])
+      .required(),
+    email: yup.string().email().nullable(),
+    mobile: yup.string().required(),
+    password: yup.string().nullable(),
+  })
+  .noUnknown();
+
 export const companySchema = yup
   .object()
   .shape({
+    _id: yup.string().nullable(),
     name: yup.string().required(),
     commercialNo: yup.string(),
     taxNo: yup.string(),
@@ -25,5 +41,6 @@ export const companySchema = yup
       iban: yup.string(),
     }),
     address: addressSchema.required(),
+    employees: yup.array().of(companyEmployeeSchema).min(1).required(),
   })
   .noUnknown();

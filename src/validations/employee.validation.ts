@@ -9,14 +9,16 @@ export const employeeSchema = yup
     email: yup.string().nullable().nullable(),
     position: yup.string().required(),
     nationalId: yup.string().required(),
-    qualification: yup.string().required(),
-    socialStatus: yup.string().required(),
+    qualification: yup.string().nullable(),
+    socialStatus: yup.string().nullable(),
     salary: yup.string().required(),
     agency: yup.string().nullable(),
     isAdmin: yup.boolean().nullable(),
+    isCustomerService: yup.boolean().nullable(),
     isAgencyAdmin: yup.boolean().nullable(),
     address: addressSchema.nullable(),
     hub: yup.string().nullable(),
+    password: yup.string().nullable(),
     birthdate: yup
       .string()
       .nullable()

@@ -10,9 +10,8 @@ router
   .get(employeeController.list)
   .post(validateMiddleware(employeeSchema), employeeController.create);
 
-
 router
-  .route("/employee/:id")
+  .route("/employees/:id")
   .get(employeeController.show)
   .put(validateMiddleware(employeeSchema), employeeController.update)
   .delete(employeeController.delete);

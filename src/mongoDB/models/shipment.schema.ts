@@ -9,46 +9,46 @@ import {
 import { Schemas } from "../constants";
 
 const shipmentProductSchemaObject = {
-	name: { type: String, required: true },
-	description: { type: String },
-	price: { type: Number },
+  name: { type: String, required: true },
+  description: { type: String },
+  price: { type: Number },
 };
 
 const shipmentSchema = new Schema<ShipmentInterface>(
-	{
-		code: { type: String, required: true, unique: true },
-		referenceNumber: { type: String, required: true },
-		consigneeType: { type: String, enum: ShipmentConsigneeEnum, required: true },
-		consignee: { type: Schema.Types.ObjectId, refPath: "consigneeType" },
-		consignorType: { type: String, enum: ShipmentConsignorEnum, required: true },
-		consignor: { type: Schema.Types.ObjectId, refPath: "consignorType" },
-		shippingFees: { type: Number, required: true },
-		collectCashFees: { type: Number, required: true },
-		shipmentPrice: { type: Number, required: true, default: 0 },
-		originAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency, required: true },
-		destinationAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency, required: true },
-		isInCity: {
-			type: Boolean,
-			default: false,
-		},
-		notes: [String],
-		products: {
-			type: [shipmentProductSchemaObject],
-			min: 1,
-		},
-		returns: [shipmentProductSchemaObject],
-		events: [
-			{
-				name: { type: String, required: true, enum: ShipmentEventNamesEnum },
-				date: { type: Date, required: true },
-				employee: { type: Schema.Types.ObjectId, ref: Schemas.employee },
-				hub: { type: Schema.Types.ObjectId, ref: Schemas.hub },
-				destinationType: { type: String, enum: ShipmentDestinationEnum },
-				products: [shipmentProductSchemaObject],
-			},
-		],
-	},
-	{ timestamps: true, versionKey: false }
+  {
+    code: { type: String, required: true, unique: true },
+    referenceNumber: { type: String, required: true },
+    consigneeType: { type: String, enum: ShipmentConsigneeEnum, required: true },
+    consignee: { type: Schema.Types.ObjectId, refPath: "consigneeType" },
+    consignorType: { type: String, enum: ShipmentConsignorEnum, required: true },
+    consignor: { type: Schema.Types.ObjectId, refPath: "consignorType" },
+    shippingFees: { type: Number, required: true },
+    collectCashFees: { type: Number, required: true },
+    shipmentPrice: { type: Number, required: true, default: 0 },
+    originAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency, required: true },
+    destinationAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency, required: true },
+    isInCity: {
+      type: Boolean,
+      default: false,
+    },
+    notes: [String],
+    products: {
+      type: [shipmentProductSchemaObject],
+      min: 1,
+    },
+    returns: [shipmentProductSchemaObject],
+    events: [
+      {
+        name: { type: String, required: true, enum: ShipmentEventNamesEnum },
+        date: { type: Date, required: true },
+        employee: { type: Schema.Types.ObjectId, ref: Schemas.employee },
+        hub: { type: Schema.Types.ObjectId, ref: Schemas.hub },
+        destinationType: { type: String, enum: ShipmentDestinationEnum },
+        products: [shipmentProductSchemaObject],
+      },
+    ],
+  },
+  { timestamps: true, versionKey: false }
 ).index({ referenceNumber: 1, originAgency: 1 }, { unique: true });
 
 export const ShipmentModel = model<ShipmentInterface>(Schemas.shipment, shipmentSchema);

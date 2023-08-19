@@ -8,7 +8,6 @@ export { default as authenticationController } from "./authentication.controller
 export { default as employeeController } from "./employee.controller";
 export { default as employeeRatingController } from "./employeeRating.controller";
 export { default as hubController } from "./hub.controller";
-export { default as merchantController } from "./merchant.controller";
 export { default as rideController } from "./ride.controller";
 export { default as salaryController } from "./salary.controller";
 export { default as shipmentController } from "./shipment.controller";

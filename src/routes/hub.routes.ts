@@ -10,7 +10,7 @@ router.route("/hubs").get(hubController.list).post(validateMiddleware(hubSchema)
 router.route("/hubs").post(validateMiddleware(hubSchema), hubController.create);
 
 router
-  .route("/hub/:id")
+  .route("/hubs/:id")
   .get(hubController.show)
   .put(validateMiddleware(hubSchema), hubController.update)
   .delete(hubController.delete);

@@ -8,7 +8,6 @@ export { default as credentialRepository } from "./credential.repository";
 export { default as employeeRepository } from "./employee.repository";
 export { default as employeeRatingRepository } from "./employeeRating.repository";
 export { default as hubRepository } from "./hub.repository";
-export { default as merchantRepository } from "./merchant.repository";
 export { default as rideRepository } from "./ride.repository";
 export { default as salaryRepository } from "./salary.repository";
 export { default as shipmentRepository } from "./shipment.repository";

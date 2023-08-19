@@ -3,7 +3,7 @@ import Repository from "../mongoDB/repositories";
 import { ListArgumentsInterface } from "../types";
 
 export default class DefaultService<T> {
-  private repository: Repository<T>;
+  repository: Repository<T>;
 
   constructor(repository: Repository<T>) {
     this.repository = repository;

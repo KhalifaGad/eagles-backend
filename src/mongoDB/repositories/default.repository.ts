@@ -56,9 +56,9 @@ export default class DefaultRepository<T> {
     return this.findMany({ _id: { $in: documents.map(doc => doc._id) } });
   };
 
-  upsert(data: T , key: keyof T) {
-    const query = {[key]: data[key] } as FilterQuery<T>
-    return this.model.findOneAndUpdate(query, { $set: data } , {upsert: true, new: true} )
+  upsert(data: T, key: keyof T) {
+    const query = { [key]: data[key] } as FilterQuery<T>;
+    return this.model.findOneAndUpdate(query, { $set: data }, { upsert: true, new: true });
   }
 
   deleteById = async (id: MongooseID): Promise<T | null> => {

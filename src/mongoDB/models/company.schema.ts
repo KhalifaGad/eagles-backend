@@ -14,8 +14,8 @@ const companyURL = {
   description: { type: String },
 };
 
-const repaymentConfig = {
-  default: {
+const paymentConfig = {
+  defaultMethod: {
     type: String,
     enum: RepaymentEnum,
     default: RepaymentEnum.Cash,
@@ -25,6 +25,7 @@ const repaymentConfig = {
   accountNumber: { type: String },
   bank: { type: String },
   branch: { type: String },
+  branchAddress: { type: String },
   swftCode: { type: String },
   iban: { type: String },
 };
@@ -47,11 +48,12 @@ const CompanyEmployeeSchema = new Schema<MerchantInterface>(
 const companySchema = new Schema<CompanyInterface>(
   {
     name: { type: String, required: true, unique: true },
+    mobile: { type: String, required: true },
     commercialNo: { type: String },
     taxNo: { type: String },
     businessType: { type: String, required: true },
     urls: [companyURL],
-    repaymentConfig: { type: repaymentConfig, required: true },
+    paymentConfig: { type: paymentConfig, required: true },
     address: { type: addressSchema, required: true },
     companyType: {
       type: String,

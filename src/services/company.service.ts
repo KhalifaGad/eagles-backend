@@ -60,12 +60,15 @@ class CompanyService extends DefaultService<CompanyInterface> {
     if (employeesWithPassword.length) {
       // eslint-disable-next-line no-loops/no-loops
       for (const employee of employeesWithPassword) {
-        await this.credentialRepository.upsert({
-          mobile: employee.mobile,
-          account: company,
-          accountType: AccountEnum.Company,
-          password: await createHash(String(employee.password)),
-        }, "mobile");
+        await this.credentialRepository.upsert(
+          {
+            mobile: employee.mobile,
+            account: company,
+            accountType: AccountEnum.Company,
+            password: await createHash(String(employee.password)),
+          },
+          "mobile"
+        );
       }
     }
 

@@ -21,24 +21,30 @@ export default async () => {
   );
 
   // ***********  Employee *********** //
-  const account = await repositories.employeeRepository.upsert({
-    name: ADMIN_NAME,
-    mobile: ADMIN_PHONE,
-    email: ADMIN_EMAIL,
-    position: "Super Admin",
-    nationalId: "00000000000000",
-    qualification: "Dummy",
-    socialStatus: "Dummy",
-    isAdmin: true,
-    salary: 0,
-    isAgencyAdmin: false,
-    isCustomerService: false,
-  }, "mobile")
-  
-  await repositories.credentialRepository.upsert({
-    mobile: ADMIN_PHONE,
-    accountType: AccountEnum.Employee,
-    password: await createHash(ADMIN_PASS),
-    account,
-  }, "mobile");
+  const account = await repositories.employeeRepository.upsert(
+    {
+      name: ADMIN_NAME,
+      mobile: ADMIN_PHONE,
+      email: ADMIN_EMAIL,
+      position: "Super Admin",
+      nationalId: "00000000000000",
+      qualification: "Dummy",
+      socialStatus: "Dummy",
+      isAdmin: true,
+      salary: 0,
+      isAgencyAdmin: false,
+      isCustomerService: false,
+    },
+    "mobile"
+  );
+
+  await repositories.credentialRepository.upsert(
+    {
+      mobile: ADMIN_PHONE,
+      accountType: AccountEnum.Employee,
+      password: await createHash(ADMIN_PASS),
+      account,
+    },
+    "mobile"
+  );
 };

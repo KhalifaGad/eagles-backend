@@ -5,7 +5,6 @@ import DefaultRepository, { credentialRepository, employeeRepository } from "../
 import { AccountEnum, CredentialInterface, EmployeeInterface, MongooseID, ProbablyWithPassword } from "../types";
 import DefaultService from "./default.service";
 
-
 class EmployeeService extends DefaultService<EmployeeInterface> {
   constructor(private credentialRepository: DefaultRepository<CredentialInterface>) {
     super(employeeRepository);
@@ -31,20 +30,21 @@ class EmployeeService extends DefaultService<EmployeeInterface> {
     return account;
   };
 
-
   update = async (id: string, data: ProbablyWithPassword<EmployeeInterface>) => {
     const { password, ...employeeData } = data;
-    if(password){
-      await this.credentialRepository.upsert({
-        mobile: employeeData.mobile,
-        account: employeeData._id as MongooseID,
-        accountType: AccountEnum.Employee,
-        password: await createHash(password),
-      }, "mobile");
+    if (password) {
+      await this.credentialRepository.upsert(
+        {
+          mobile: employeeData.mobile,
+          account: employeeData._id as MongooseID,
+          accountType: AccountEnum.Employee,
+          password: await createHash(password),
+        },
+        "mobile"
+      );
     }
-    return this.repository.updateWhereId(new Types.ObjectId(id), employeeData)
+    return this.repository.updateWhereId(new Types.ObjectId(id), employeeData);
   };
-
 }
 
 export default new EmployeeService(credentialRepository);

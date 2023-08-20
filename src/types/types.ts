@@ -113,16 +113,16 @@ export interface ClientInterface {
   email?: string;
 }
 
-export interface RepaymentConfigInterface {
-  default: Enums.RepaymentEnum;
+export interface CompanyPaymentConfigInterface {
+  defaultMethod: Enums.RepaymentEnum;
   walletNumber?: string;
   accountNumber?: string;
   bank?: string;
   branch?: string;
+  branchAddress?: string;
   swftCode?: string;
   iban?: string;
 }
-
 
 export interface MerchantInterface {
   _id?: MongooseID;
@@ -130,20 +130,20 @@ export interface MerchantInterface {
   position: Enums.CompanyEmployeesPositionEnum;
   mobile: string;
   email?: string;
-  address?: AddressInterface;
   isAdmin: boolean;
 }
 
 export interface CompanyInterface {
   _id?: MongooseID;
   name: string;
+  mobile: string;
   companyType: Enums.CompaniesEnum;
   commercialNo?: string;
   taxNo?: string;
   businessType: string;
   address: AddressInterface;
   urls: { value: string; description: string }[];
-  repaymentConfig: RepaymentConfigInterface;
+  paymentConfig: CompanyPaymentConfigInterface;
   employees: MerchantInterface[];
 }
 
@@ -283,4 +283,3 @@ export interface RideInterface {
   startDate: Date;
   endDate?: Date;
 }
-

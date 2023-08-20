@@ -13,6 +13,7 @@ export const companyEmployeeSchema = yup
     email: yup.string().email().nullable(),
     mobile: yup.string().required(),
     password: yup.string().nullable(),
+    isAdmin: yup.boolean().nullable(),
   })
   .noUnknown();
 
@@ -21,6 +22,7 @@ export const companySchema = yup
   .shape({
     _id: yup.string().nullable(),
     name: yup.string().required(),
+    mobile: yup.string().required(),
     commercialNo: yup.string(),
     taxNo: yup.string(),
     businessType: yup.string().required(),
@@ -31,12 +33,13 @@ export const companySchema = yup
       })
     ),
     companyType: yup.mixed().oneOf(["ECommerce", "Traditional"]).required(),
-    repaymentConfig: yup.object({
-      default: yup.mixed().oneOf(["Cash", "Wallet", "BankAccount"]).required(),
+    paymentConfig: yup.object({
+      defaultMethod: yup.mixed().oneOf(["Cash", "Wallet", "BankAccount"]).required(),
       walletNumber: yup.string(),
       accountNumber: yup.string(),
       bank: yup.string(),
       branch: yup.string(),
+      branchAddress: yup.string(),
       swftCode: yup.string(),
       iban: yup.string(),
     }),

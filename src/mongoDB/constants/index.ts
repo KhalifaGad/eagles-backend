@@ -2,6 +2,7 @@ export const Schemas = {
   agency: "Agency",
   city: "City",
   company: "Company",
+  companyProduct: "companyProduct",
   client: "Client",
   credential: "Credential",
   employee: "Employee",

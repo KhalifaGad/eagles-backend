@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authenticationController } from "../controllers";
 import { authenticateMiddleware, validateMiddleware } from "../middlewares";
-import { credentialSchema, credentialLoginSchema } from "../validations";
+import { credentialSchema, credentialLoginSchema, updateCredentialSchema } from "../validations";
 
 const router = Router();
 
@@ -19,7 +19,7 @@ router.route("/credentials").post(validateMiddleware(credentialSchema), authenti
 router
   .route("/credentials/:id")
   .get(authenticationController.show)
-  .put(validateMiddleware(credentialSchema), authenticationController.update)
+  .put(validateMiddleware(updateCredentialSchema), authenticationController.update)
   .delete(authenticationController.delete);
 
 export default router;

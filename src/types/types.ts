@@ -25,7 +25,7 @@ type Entity<T> = NonNullable<PopulatedDoc<T>> | MongooseID;
 type ShipmentProductType = {
   name: string;
   description?: string;
-  price?: number;
+  price: number;
 };
 
 type PlacedEventNameType = "PLACED";
@@ -104,11 +104,11 @@ type ReturnType = EventType & {
 
 export interface ClientInterface {
   _id?: MongooseID;
-  firstName: string;
-  familyName: string;
+  name: string;
   mobile: string;
   secondMobile: string;
   address: AddressInterface;
+  defaultNearestAgency: Entity<AgencyInterface>
   birthdate?: Date;
   email?: string;
 }
@@ -145,6 +145,15 @@ export interface CompanyInterface {
   urls: { value: string; description: string }[];
   paymentConfig: CompanyPaymentConfigInterface;
   employees: MerchantInterface[];
+}
+
+export interface CompanyProductInterface {
+  _id?: MongooseID;
+  name: string;
+  description?: string;
+  price: number;
+  reference: string;
+  company: Entity<CompanyInterface>;
 }
 
 export interface EmployeeInterface {
@@ -253,6 +262,7 @@ export interface ShipmentInterface {
   isInCity: boolean;
   originAgency: Entity<AgencyInterface>;
   destinationAgency: Entity<AgencyInterface>;
+  hub: Entity<HubInterface>;
   events: ShipmentEventTypes[];
   shippingFees: number;
   collectCashFees?: number;
@@ -267,7 +277,7 @@ export interface RideInterface {
   code: string;
   employees: Entity<EmployeeInterface[]>;
   shipments: Entity<ShipmentInterface[]>;
-  vehicle: Entity<VehicleInterface>;
+  vehicle?: Entity<VehicleInterface>;
   locations: {
     order: number;
     area: string;
@@ -280,6 +290,6 @@ export interface RideInterface {
     arrivalDate?: Date;
     departureDate?: Date;
   }[];
-  startDate: Date;
+  startDate?: Date;
   endDate?: Date;
 }

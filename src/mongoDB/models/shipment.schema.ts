@@ -11,7 +11,7 @@ import { Schemas } from "../constants";
 const shipmentProductSchemaObject = {
   name: { type: String, required: true },
   description: { type: String },
-  price: { type: Number },
+  price: { type: Number, required: true, default: 0 },
 };
 
 const shipmentSchema = new Schema<ShipmentInterface>(
@@ -22,11 +22,12 @@ const shipmentSchema = new Schema<ShipmentInterface>(
     consignee: { type: Schema.Types.ObjectId, refPath: "consigneeType" },
     consignorType: { type: String, enum: ShipmentConsignorEnum, required: true },
     consignor: { type: Schema.Types.ObjectId, refPath: "consignorType" },
-    shippingFees: { type: Number, required: true },
-    collectCashFees: { type: Number, required: true },
+    shippingFees: { type: Number, required: true, default: 20 }, // TODO: check the default value
+    collectCashFees: { type: Number, required: true, default: 0 },
     shipmentPrice: { type: Number, required: true, default: 0 },
     originAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency, required: true },
     destinationAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency, required: true },
+    hub: { type: Schema.Types.ObjectId, ref: Schemas.hub, required: true },
     isInCity: {
       type: Boolean,
       default: false,

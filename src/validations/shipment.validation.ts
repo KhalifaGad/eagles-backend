@@ -20,7 +20,7 @@ export const shipmentSchema = yup
         yup.object({
           name: yup.string().required(),
           description: yup.string(),
-          price: yup.string(),
+          price: yup.number(),
         })
       )
       .min(1),
@@ -65,3 +65,31 @@ export const shipmentSchema = yup
     ),
   })
   .noUnknown();
+
+export const createShipmentSchema = yup
+  .object()
+  .shape({
+      referenceNumber: yup.string(),
+      consigneeType: yup.mixed().oneOf(["Client", "Company"]),
+      consignee: yup.string().required(),
+      consignorType: yup.mixed().oneOf(["Client", "Company"]).required(),
+      consignor: yup.string().required(),
+      shippingFees: yup.number().default(0),
+      collectCashFees: yup.number().default(0),
+      shipmentPrice: yup.number().default(0),
+      originAgency: yup.string().nullable(),
+      destinationAgency: yup.string().nullable(),
+      isInCity: yup.boolean(),
+      notes: yup.array().of(yup.string()).nullable(),
+      products: yup
+        .array()
+        .of(
+          yup.object({
+              name: yup.string().required(),
+              description: yup.string(),
+              price: yup.number().default(0),
+          })
+        )
+        .min(1),
+  });
+

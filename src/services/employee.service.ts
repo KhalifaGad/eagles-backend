@@ -30,13 +30,13 @@ class EmployeeService extends DefaultService<EmployeeInterface> {
     return account;
   };
 
-  update = async (id: string, data: ProbablyWithPassword<EmployeeInterface>) => {
+  update = async (id: string, data: ProbablyWithPassword<Partial<EmployeeInterface>>) => {
     const { password, ...employeeData } = data;
-    if (password) {
+    if (password && employeeData.mobile) {
       await this.credentialRepository.upsert(
         {
           mobile: employeeData.mobile,
-          account: employeeData._id as MongooseID,
+          account: new Types.ObjectId(id),
           accountType: AccountEnum.Employee,
           password: await createHash(password),
         },

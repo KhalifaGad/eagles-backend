@@ -1,19 +1,17 @@
 import { Router } from "express";
 import { shipmentController } from "../controllers";
 import { validateMiddleware } from "../middlewares";
-import { shipmentSchema } from "../validations";
+import { shipmentSchema, createShipmentSchema} from "../validations";
 
 const router = Router();
 
 router
   .route("/shipments")
   .get(shipmentController.list)
-  .post(validateMiddleware(shipmentSchema), shipmentController.bulkCreate);
-
-router.route("/shipment").post(validateMiddleware(shipmentSchema), shipmentController.create);
+  .post(validateMiddleware(createShipmentSchema), shipmentController.create);
 
 router
-  .route("/shipment/:id")
+  .route("/shipments/:id")
   .get(shipmentController.show)
   .put(validateMiddleware(shipmentSchema), shipmentController.update)
   .delete(shipmentController.delete);

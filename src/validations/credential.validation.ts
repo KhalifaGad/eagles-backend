@@ -10,6 +10,14 @@ export const credentialSchema = yup
   })
   .noUnknown();
 
+export const updateCredentialSchema = yup
+  .object()
+  .shape({
+    mobile: yup.string(),
+    password: yup.string(),
+  })
+  .noUnknown();
+
 export const credentialLoginSchema = yup
   .object()
   .shape({

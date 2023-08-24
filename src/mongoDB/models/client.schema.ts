@@ -5,12 +5,12 @@ import { addressSchema } from "./shared.schema";
 
 const clientSchema = new Schema<ClientInterface>(
   {
-    firstName: { type: String, required: true },
-    familyName: { type: String, required: true },
+    name: { type: String, required: true },
     birthdate: { type: Date },
     address: { type: addressSchema, required: true },
-    email: { type: String, unique: true },
+    email: { type: String, unique: true, required: false },
     mobile: { type: String, required: true, unique: true },
+    defaultNearestAgency:{ type: Schema.Types.ObjectId, ref: Schemas.agency },
     secondMobile: {
       type: String,
       index: {

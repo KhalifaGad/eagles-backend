@@ -1,4 +1,4 @@
-import { AnyBulkWriteOperation } from "mongodb";
+import { AnyBulkWriteOperation, DeleteResult } from "mongodb";
 import { FilterQuery, Model, PopulateOptions, UpdateQuery } from "mongoose";
 import { ListArgumentsInterface, ListInterface, ListOptionsInterface, MongooseID } from "../../types";
 import { buildListOptions, buildSearch } from "../helpers";
@@ -63,6 +63,10 @@ export default class DefaultRepository<T> {
 
   deleteById = async (id: MongooseID): Promise<T | null> => {
     return this.model.findByIdAndDelete(id);
+  };
+
+  deleteBy = async (criteria: FilterQuery<T>): Promise<DeleteResult> => {
+    return this.model.deleteMany(criteria);
   };
 
   updateWhereId = async (id: MongooseID, data = {}): Promise<T | null> => {

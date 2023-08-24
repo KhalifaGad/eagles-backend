@@ -1,5 +1,6 @@
 import { sign } from "jsonwebtoken";
 import { Types } from "mongoose";
+import EmployeeService from "./employee.service";
 import config from "../../config";
 import { unauthorized } from "../errors";
 import { destroyProperties } from "../helpers";
@@ -76,8 +77,19 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
     );
     if (!credential) return null;
 
-    return destroyProperties(credential, ["password"]);
+    if(data.mobile){
+      await this.updateCredentialAccountMobile(String(credential.account._id), credential.accountType, data.mobile)
+    }
+
+    return this.show(id)
   };
+
+  updateCredentialAccountMobile = async (accountId: string, accountType: AccountEnum, mobile: string) =>  {
+    if(!accountId) return;
+    if(accountType === AccountEnum.Employee){
+      await EmployeeService.update(accountId, { mobile });
+    }
+  }
 }
 
 export default new AuthenticationService();

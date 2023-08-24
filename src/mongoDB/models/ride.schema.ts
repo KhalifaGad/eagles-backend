@@ -10,7 +10,7 @@ const rideSchema = new Schema<RideInterface>(
       min: 2,
       required: true,
     },
-    vehicle: { type: Schema.Types.ObjectId, required: true, ref: Schemas.vehicle },
+    vehicle: { type: Schema.Types.ObjectId, ref: Schemas.vehicle },
     shipments: [{ type: Schema.Types.ObjectId, required: true, ref: Schemas.shipment }],
     locations: {
       type: [
@@ -30,7 +30,7 @@ const rideSchema = new Schema<RideInterface>(
       required: true,
       min: 3,
     },
-    startDate: { type: Date, required: true },
+    startDate: { type: Date },
     endDate: { type: Date },
   },
   { timestamps: true, versionKey: false }

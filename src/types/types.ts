@@ -1,4 +1,5 @@
 import { FilterQuery, PopulatedDoc, Types as MongooseTypes } from "mongoose";
+import { ShipmentConsigneeEnum, ShipmentConsignorEnum } from "./enums";
 import * as Enums from "./enums";
 
 export interface ListOptionsInterface {
@@ -292,4 +293,20 @@ export interface RideInterface {
   }[];
   startDate?: Date;
   endDate?: Date;
+}
+
+export interface CreateShipmentInterface {
+  referenceNumber?: string;
+  consigneeType: ShipmentConsigneeEnum;
+  consignee: string;
+  consignorType: ShipmentConsignorEnum;
+  consignor: string;
+  shippingFees: number;
+  collectCashFees: number;
+  shipmentPrice: number;
+  originAgency?: string;
+  destinationAgency: string;
+  isInCity?: boolean;
+  notes: string[];
+  products: ShipmentProductType[];
 }

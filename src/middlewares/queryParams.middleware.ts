@@ -9,10 +9,10 @@ const parser = (stringifiedJSON: string) => {
 };
 
 export default (req: Request, _res: Response, next: NextFunction) => {
-  const optionsFelids = ["page", "pageLimit", "sortBy", "sortDirection", "showAll"];
+  const optionsFields = ["page", "pageLimit", "sortBy", "sortDirection", "showAll"];
 
   req.query = Object.keys(req.query).reduce((accumulator, key) => {
-    const accumulatorKey = (optionsFelids.includes(key) ? "options" : "filter") as keyof typeof accumulator;
+    const accumulatorKey = (optionsFields.includes(key) ? "options" : "filter") as keyof typeof accumulator;
 
     return Object.assign(accumulator, {
       [accumulatorKey]: {

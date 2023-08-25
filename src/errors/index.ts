@@ -1,4 +1,4 @@
-import boom from "@hapi/Boom";
+import boom from "@hapi/boom";
 
 export const notFound = (message = "لا يوجد شيء") => boom.notFound(message);
 

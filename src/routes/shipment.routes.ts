@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { shipmentController } from "../controllers";
 import { validateMiddleware } from "../middlewares";
-import { shipmentSchema, createShipmentSchema} from "../validations";
+import { shipmentSchema, createShipmentSchema } from "../validations";
 
 const router = Router();
 

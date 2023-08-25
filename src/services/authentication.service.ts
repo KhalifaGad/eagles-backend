@@ -77,19 +77,19 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
     );
     if (!credential) return null;
 
-    if(data.mobile){
-      await this.updateCredentialAccountMobile(String(credential.account._id), credential.accountType, data.mobile)
+    if (data.mobile) {
+      await this.updateCredentialAccountMobile(String(credential.account._id), credential.accountType, data.mobile);
     }
 
-    return this.show(id)
+    return this.show(id);
   };
 
-  updateCredentialAccountMobile = async (accountId: string, accountType: AccountEnum, mobile: string) =>  {
-    if(!accountId) return;
-    if(accountType === AccountEnum.Employee){
+  updateCredentialAccountMobile = async (accountId: string, accountType: AccountEnum, mobile: string) => {
+    if (!accountId) return;
+    if (accountType === AccountEnum.Employee) {
       await EmployeeService.update(accountId, { mobile });
     }
-  }
+  };
 }
 
 export default new AuthenticationService();

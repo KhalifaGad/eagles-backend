@@ -10,7 +10,7 @@ const clientSchema = new Schema<ClientInterface>(
     address: { type: addressSchema, required: true },
     email: { type: String, unique: true, required: false },
     mobile: { type: String, required: true, unique: true },
-    defaultNearestAgency:{ type: Schema.Types.ObjectId, ref: Schemas.agency },
+    defaultNearestAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency },
     secondMobile: {
       type: String,
       index: {

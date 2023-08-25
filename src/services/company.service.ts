@@ -56,11 +56,14 @@ class CompanyService extends DefaultService<CompanyInterface> {
     if (!company) throw badData("الشركة غير موجودة");
 
     await this.updateEmployeesCredentials(company, data.employees);
-    return  this.update(id, data);
+    return this.update(id, data);
   };
 
-  updateEmployeesCredentials = async (company: CompanyInterface, employees: ProbablyWithPassword<MerchantInterface>[]) => {
-    const existingEmployees  = company.employees;
+  updateEmployeesCredentials = async (
+    company: CompanyInterface,
+    employees: ProbablyWithPassword<MerchantInterface>[]
+  ) => {
+    const existingEmployees = company.employees;
 
     const updatedEmployees: ProbablyWithPassword<MerchantInterface>[] = [];
     const deletedEmployees: ProbablyWithPassword<MerchantInterface>[] = [];
@@ -69,17 +72,18 @@ class CompanyService extends DefaultService<CompanyInterface> {
     // eslint-disable-next-line no-loops/no-loops
     for (const employee of employees) {
       const isNewEmployee = !employee._id;
-      const isDeletedEmployee = !isNewEmployee && !existingEmployees.find(existingEmployee => existingEmployee._id === employee._id);
+      const isDeletedEmployee =
+        !isNewEmployee && !existingEmployees.find(existingEmployee => existingEmployee._id === employee._id);
       const isUpdatedEmployee = !isNewEmployee && !isDeletedEmployee;
-      if(isDeletedEmployee){
+      if (isDeletedEmployee) {
         deletedEmployees.push(employee);
       }
 
-      if(isUpdatedEmployee){
+      if (isUpdatedEmployee) {
         updatedEmployees.push(employee);
       }
 
-      if(isNewEmployee){
+      if (isNewEmployee) {
         newEmployees.push(employee);
       }
     }
@@ -97,7 +101,7 @@ class CompanyService extends DefaultService<CompanyInterface> {
       }
     }
 
-    if(deletedEmployees.length){
+    if (deletedEmployees.length) {
       await this.credentialRepository.deleteBy({ mobile: { $in: deletedEmployees.map(employee => employee.mobile) } });
     }
 
@@ -106,16 +110,18 @@ class CompanyService extends DefaultService<CompanyInterface> {
       return existingEmployee && existingEmployee.mobile !== employee.mobile;
     });
 
-    if(mobileUpdatedEmployees.length){
-      const credentials = await this.credentialRepository.findMany({ account: company._id } );
+    if (mobileUpdatedEmployees.length) {
+      const credentials = await this.credentialRepository.findMany({ account: company._id });
       // eslint-disable-next-line no-loops/no-loops
       for (const mobileUpdatedEmployee of mobileUpdatedEmployees) {
-        const oldEmployee = existingEmployees.find(existingEmployee => existingEmployee._id === mobileUpdatedEmployee._id);
+        const oldEmployee = existingEmployees.find(
+          existingEmployee => existingEmployee._id === mobileUpdatedEmployee._id
+        );
         const employeeCredential = credentials.find(credential => credential.mobile === oldEmployee?.mobile);
-        if(!employeeCredential) continue;
+        if (!employeeCredential) continue;
         await this.credentialRepository.updateWhereId(new Types.ObjectId(employeeCredential._id), {
-          mobile: mobileUpdatedEmployee.mobile
-        })
+          mobile: mobileUpdatedEmployee.mobile,
+        });
       }
     }
   };

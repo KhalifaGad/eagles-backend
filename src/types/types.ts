@@ -108,7 +108,7 @@ export interface ClientInterface {
   mobile: string;
   secondMobile: string;
   address: AddressInterface;
-  defaultNearestAgency: Entity<AgencyInterface>
+  defaultNearestAgency: Entity<AgencyInterface>;
   birthdate?: Date;
   email?: string;
 }

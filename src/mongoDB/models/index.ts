@@ -10,4 +10,4 @@ export * from "./ride.schema";
 export * from "./salary.schema";
 export * from "./shipment.schema";
 export * from "./vehicle.schema";
-export * from "./rideTemplate.schema"
+export * from "./rideTemplate.schema";

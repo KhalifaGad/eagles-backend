@@ -3,9 +3,9 @@ import DefaultService from "./default.service";
 import { RideTemplateInterface } from "../types";
 
 class RideTemplateService extends DefaultService<RideTemplateInterface> {
-	constructor() {
-		super(rideTemplateRepository);
-	}
+  constructor() {
+    super(rideTemplateRepository);
+  }
 }
 
 export default new RideTemplateService();

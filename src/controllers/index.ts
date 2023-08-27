@@ -12,4 +12,4 @@ export { default as rideController } from "./ride.controller";
 export { default as salaryController } from "./salary.controller";
 export { default as shipmentController } from "./shipment.controller";
 export { default as vehicleController } from "./vehicle.controller";
-export { default as rideTemplateController } from "./rideTemplate.controller"
+export { default as rideTemplateController } from "./rideTemplate.controller";

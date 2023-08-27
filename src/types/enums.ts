@@ -52,5 +52,5 @@ export enum ShipmentDestinationEnum {
 
 export enum StepLocationTypeEnum {
   Agency = "Agency",
-  Hub = "Hub"
+  Hub = "Hub",
 }

@@ -1,10 +1,5 @@
 import { FilterQuery, LeanDocument } from "mongoose";
-import {
-  AccountEnum,
-  ShipmentConsigneeEnum,
-  ShipmentConsignorEnum,
-  StepLocationTypeEnum
-} from "./enums";
+import { AccountEnum, ShipmentConsigneeEnum, ShipmentConsignorEnum, StepLocationTypeEnum } from "./enums";
 import * as Enums from "./enums";
 
 export interface ListOptionsInterface {

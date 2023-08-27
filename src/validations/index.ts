@@ -11,4 +11,4 @@ export * from "./salary.validation";
 export * from "./shipment.validation";
 export * from "./vehicle.validation";
 export * from "./shared.validation";
-export * from "./rideTemplate.validation"
+export * from "./rideTemplate.validation";

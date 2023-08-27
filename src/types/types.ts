@@ -1,12 +1,12 @@
-import { FilterQuery, PopulatedDoc, Types as MongooseTypes } from "mongoose";
-import { ShipmentConsigneeEnum, ShipmentConsignorEnum } from "./enums";
+import { FilterQuery, LeanDocument } from "mongoose";
+import { AccountEnum, ShipmentConsigneeEnum, ShipmentConsignorEnum } from "./enums";
 import * as Enums from "./enums";
 
 export interface ListOptionsInterface {
-  page: number;
-  pageLimit: number;
-  sortBy: string;
-  sortDirection: string;
+  page?: number;
+  pageLimit?: number;
+  sortBy?: string;
+  sortDirection?: string;
   showAll?: boolean;
 }
 
@@ -20,32 +20,9 @@ export interface ListInterface<T> {
   totalCount: number;
 }
 
-export type MongooseID = MongooseTypes.ObjectId;
-type Entity<T> = NonNullable<PopulatedDoc<T>> | MongooseID;
+export type MongooseID = string;
+export type Entity<T> = NonNullable<LeanDocument<T>> | MongooseID;
 
-type ShipmentProductType = {
-  name: string;
-  description?: string;
-  price: number;
-};
-
-type PlacedEventNameType = "PLACED";
-type ConfirmedEventNameType = "CONFIRMED";
-type PickedEventNameType = "PICKED";
-type AgencyReceivedEventNameType = "AGENCY_RECEIVED";
-type HubReceivedEventNameType = "HUB_RECEIVED";
-type ShippedEventNameType = "SHIPPED";
-type FailedAttemptEventNameType = "FAILED_ATTEMPT";
-type ReturnEventNameType = "RETURN";
-type shipmentDestinationType = "AGENCY" | "HUB" | "CONSIGNEE";
-
-type EventType = { name: string; date: Date };
-
-type PlacedType = EventType & { name: PlacedEventNameType };
-
-type ConfirmedType = EventType & {
-  name: ConfirmedEventNameType;
-};
 
 export interface CityInterface {
   _id?: MongooseID;
@@ -83,6 +60,49 @@ export interface HubInterface {
   name: string;
   address: AddressInterface;
 }
+
+export interface EmployeeInterface {
+  _id?: MongooseID;
+  name: string;
+  mobile: string;
+  email?: string;
+  birthdate?: Date;
+  position: string;
+  nationalId: string;
+  qualification?: string;
+  socialStatus?: string;
+  address?: AddressInterface;
+  salary: number;
+  isAdmin: boolean;
+  isCustomerService: boolean;
+  isAgencyAdmin: boolean;
+  agency?: Entity<AgencyInterface>;
+  hub?: Entity<HubInterface>;
+}
+
+type ShipmentProductType = {
+  name: string;
+  description?: string;
+  price: number;
+};
+
+type PlacedEventNameType = "PLACED";
+type ConfirmedEventNameType = "CONFIRMED";
+type PickedEventNameType = "PICKED";
+type AgencyReceivedEventNameType = "AGENCY_RECEIVED";
+type HubReceivedEventNameType = "HUB_RECEIVED";
+type ShippedEventNameType = "SHIPPED";
+type FailedAttemptEventNameType = "FAILED_ATTEMPT";
+type ReturnEventNameType = "RETURN";
+type shipmentDestinationType = "AGENCY" | "HUB" | "CONSIGNEE";
+
+type EventType = { name: string; date: Date };
+
+type PlacedType = EventType & { name: PlacedEventNameType, employee?: EmployeeInterface };
+
+type ConfirmedType = EventType & {
+  name: ConfirmedEventNameType;
+};
 
 type HubReceivedType = EventType & {
   name: HubReceivedEventNameType;
@@ -155,25 +175,6 @@ export interface CompanyProductInterface {
   price: number;
   reference: string;
   company: Entity<CompanyInterface>;
-}
-
-export interface EmployeeInterface {
-  _id?: MongooseID;
-  name: string;
-  mobile: string;
-  email?: string;
-  birthdate?: Date;
-  position: string;
-  nationalId: string;
-  qualification?: string;
-  socialStatus?: string;
-  address?: AddressInterface;
-  salary: number;
-  isAdmin: boolean;
-  isCustomerService: boolean;
-  isAgencyAdmin: boolean;
-  agency?: Entity<AgencyInterface>;
-  hub?: Entity<HubInterface>;
 }
 
 export interface CredentialInterface {
@@ -263,12 +264,12 @@ export interface ShipmentInterface {
   isInCity: boolean;
   originAgency: Entity<AgencyInterface>;
   destinationAgency: Entity<AgencyInterface>;
-  hub: Entity<HubInterface>;
+  hub?: Entity<HubInterface>;
   events: ShipmentEventTypes[];
   shippingFees: number;
   collectCashFees?: number;
   shipmentPrice?: number;
-  notes?: string;
+  notes?: string[];
   products: ShipmentProductType[];
   returns: ShipmentProductType[];
 }
@@ -309,4 +310,19 @@ export interface CreateShipmentInterface {
   isInCity?: boolean;
   notes: string[];
   products: ShipmentProductType[];
+}
+
+export interface AuthUser {
+  credentialId: string;
+  accountType: AccountEnum;
+  user: EmployeeInterface | MerchantInterface | ClientInterface
+}
+
+export interface CompanyAuthUser extends AuthUser {
+  user: MerchantInterface;
+  company: Omit<CompanyInterface, "employees">
+}
+
+export interface EmployeeAuthUser extends AuthUser {
+  user: EmployeeInterface;
 }

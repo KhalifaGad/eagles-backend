@@ -27,7 +27,7 @@ const shipmentSchema = new Schema<ShipmentInterface>(
     shipmentPrice: { type: Number, required: true, default: 0 },
     originAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency, required: true },
     destinationAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency, required: true },
-    hub: { type: Schema.Types.ObjectId, ref: Schemas.hub, required: true },
+    hub: { type: Schema.Types.ObjectId, ref: Schemas.hub },
     isInCity: {
       type: Boolean,
       default: false,
@@ -38,16 +38,19 @@ const shipmentSchema = new Schema<ShipmentInterface>(
       min: 1,
     },
     returns: [shipmentProductSchemaObject],
-    events: [
-      {
-        name: { type: String, required: true, enum: ShipmentEventNamesEnum },
-        date: { type: Date, required: true },
-        employee: { type: Schema.Types.ObjectId, ref: Schemas.employee },
-        hub: { type: Schema.Types.ObjectId, ref: Schemas.hub },
-        destinationType: { type: String, enum: ShipmentDestinationEnum },
-        products: [shipmentProductSchemaObject],
-      },
-    ],
+    events: {
+      type: [
+        {
+          name: { type: String, required: true, enum: ShipmentEventNamesEnum },
+          date: { type: Date, required: true },
+          employee: { type: Schema.Types.ObjectId, ref: Schemas.employee },
+          hub: { type: Schema.Types.ObjectId, ref: Schemas.hub },
+          destinationType: { type: String, enum: ShipmentDestinationEnum },
+          products: [shipmentProductSchemaObject],
+        },
+      ],
+      minlength: 1
+    },
   },
   { timestamps: true, versionKey: false }
 ).index({ referenceNumber: 1, originAgency: 1 }, { unique: true });

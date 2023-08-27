@@ -1,26 +1,42 @@
 import { sign } from "jsonwebtoken";
-import { Types } from "mongoose";
 import EmployeeService from "./employee.service";
 import config from "../../config";
-import { unauthorized } from "../errors";
+import { badData, unauthorized } from "../errors";
 import { destroyProperties } from "../helpers";
 import { credentialRepository } from "../mongoDB/repositories";
-import { AccountEnum, CompanyInterface, CredentialInterface, ListArgumentsInterface, ListInterface } from "../types";
-import { createHash, verifyHash } from "../utilities";
+import {
+  AccountEnum,
+  CompanyInterface,
+  CredentialInterface,
+  EmployeeInterface,
+  ListArgumentsInterface,
+  ListInterface,
+} from "../types";
+import { createHash, getEntityRef, verifyHash } from "../utilities";
 import DefaultService from "./default.service";
 
 class AuthenticationService extends DefaultService<CredentialInterface> {
   constructor() {
     super(credentialRepository);
+    this.list = this.list.bind(this);
+    this.login = this.login.bind(this);
+    this.show = this.show.bind(this);
+    this.create = this.create.bind(this);
+    this.bulkCreate = this.bulkCreate.bind(this);
+    this.update = this.update.bind(this);
+    this.updateCredentialAccountMobile = this.updateCredentialAccountMobile.bind(this);
+    this.getTokenPayload = this.getTokenPayload.bind(this);
+    this.getCompanyTokenPayload = this.getCompanyTokenPayload.bind(this);
+    this.getEmployeeTokenPayload = this.getEmployeeTokenPayload.bind(this);
   }
 
-  login = async ({
+  async login({
     mobile,
     password,
   }: {
     mobile: string;
     password: string;
-  }): Promise<void | (CredentialInterface & { token: string })> => {
+  }): Promise<void | (CredentialInterface & { token: string })> {
     const credential = await credentialRepository.findOne({ mobile });
 
     if (!credential || !(await verifyHash(credential.password as string, password))) {
@@ -33,21 +49,23 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
       );
     }
 
-    const token = sign(credential, config.jwtSecret, { expiresIn: config.jwtLifeTime });
+    const tokenPayload = this.getTokenPayload(credential, mobile);
+
+    const token = sign(tokenPayload, config.jwtSecret, { expiresIn: config.jwtLifeTime });
 
     return destroyProperties({ ...credential, token }, ["password"]);
-  };
+  }
 
-  list = async (
+  async list (
     listArguments: ListArgumentsInterface<CredentialInterface>
-  ): Promise<ListInterface<CredentialInterface>> => {
+  ): Promise<ListInterface<CredentialInterface>> {
     const { data, totalCount } = await credentialRepository.list(listArguments);
 
     return { data: data.map(credential => destroyProperties(credential, ["password"])), totalCount };
-  };
+  }
 
-  show = async (id: string) => {
-    const credential = await credentialRepository.findById(new Types.ObjectId(id));
+  async show(id: string) {
+    const credential = await credentialRepository.findById(id);
 
     if (credential.accountType === AccountEnum.Company) {
       (credential.account as CompanyInterface).employees = (credential.account as CompanyInterface).employees.filter(
@@ -55,41 +73,72 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
       );
     }
     return destroyProperties(credential, ["password"]);
-  };
+  }
 
-  create = async ({ password, ...data }: CredentialInterface) =>
-    destroyProperties(await credentialRepository.create({ ...data, password: await createHash(password as string) }), [
-      "password",
-    ]);
+  async create({ password, ...data }: CredentialInterface) {
+    return destroyProperties(
+      await credentialRepository.create({ ...data, password: await createHash(password as string) }),
+      ["password"]
+    );
+  }
 
-  bulkCreate = async (data: CredentialInterface[]): Promise<CredentialInterface[]> => {
+  async bulkCreate(data: CredentialInterface[]): Promise<CredentialInterface[]> {
     data = await Promise.all(
       data.map(async ({ password, ...element }) => ({ ...element, password: await createHash(password as string) }))
     );
 
     return (await credentialRepository.insertMany(data)).map(credential => destroyProperties(credential, ["password"]));
-  };
+  }
 
-  update = async (id: string, { password, ...data }: CredentialInterface) => {
+  async update(id: string, { password, ...data }: CredentialInterface) {
     const credential = await credentialRepository.updateWhereId(
-      new Types.ObjectId(id),
+      id,
       password ? { ...data, password: await createHash(password) } : data
     );
     if (!credential) return null;
 
     if (data.mobile) {
-      await this.updateCredentialAccountMobile(String(credential.account._id), credential.accountType, data.mobile);
+      await this.updateCredentialAccountMobile(getEntityRef(credential.account), credential.accountType, data.mobile);
     }
 
     return this.show(id);
-  };
+  }
 
-  updateCredentialAccountMobile = async (accountId: string, accountType: AccountEnum, mobile: string) => {
+  private async updateCredentialAccountMobile(accountId: string, accountType: AccountEnum, mobile: string) {
     if (!accountId) return;
     if (accountType === AccountEnum.Employee) {
       await EmployeeService.update(accountId, { mobile });
     }
-  };
+  }
+
+  private getTokenPayload(credential: CredentialInterface, mobile: string) {
+    if (credential.accountType === AccountEnum.Company) {
+      return this.getCompanyTokenPayload(credential, mobile);
+    } else {
+      return this.getEmployeeTokenPayload(credential);
+    }
+  }
+
+  private getCompanyTokenPayload(credential: CredentialInterface, mobile: string) {
+    const { employees, ...company } = credential.account as CompanyInterface;
+    const user = employees.find(employee => employee.mobile === mobile);
+    if (!user) throw badData("بيانات المستخدم بها خلل، برجاء الرجوع لخدمة العملاء");
+    return {
+      credentialId: credential._id,
+      accountType: AccountEnum.Company,
+      user,
+      company,
+    };
+  }
+
+  private getEmployeeTokenPayload(credential: CredentialInterface) {
+    const employee = credential.account as EmployeeInterface;
+    return {
+      credentialId: credential._id,
+      accountType: AccountEnum.Employee,
+      user: employee,
+    };
+  }
 }
 
 export default new AuthenticationService();

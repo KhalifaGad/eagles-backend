@@ -1,23 +1,48 @@
 import { Types } from "mongoose";
 import Repository from "../mongoDB/repositories";
-import { ListArgumentsInterface } from "../types";
+import { AuthUser, ListArgumentsInterface, ListInterface } from "../types";
 
 export default class DefaultService<T> {
   repository: Repository<T>;
 
   constructor(repository: Repository<T>) {
     this.repository = repository;
+    this.list = this.list.bind(this);
+    this.show = this.show.bind(this);
+    this.create = this.create.bind(this);
+    this.bulkCreate = this.bulkCreate.bind(this);
+    this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
-  list = async (listArguments: ListArgumentsInterface<T>) => this.repository.list(listArguments);
 
-  show = async (id: string) => this.repository.findById(new Types.ObjectId(id));
+  list(listArguments: ListArgumentsInterface<T>, authUser?: AuthUser): Promise<ListInterface<T>>;
+  async list(listArguments: ListArgumentsInterface<T>) {
+    return this.repository.list(listArguments);
+  }
 
-  create = async (data: T) => this.repository.create(data);
+  show(id: string, authUser?: AuthUser): Promise<T | null>;
+  async show(id: string) {
+    return this.repository.findById(id);
+  }
 
-  bulkCreate = async (data: T[]): Promise<T[]> => this.repository.insertMany(data);
+  create(data: T, authUser?: AuthUser): Promise<T>;
+  async create(data: T) {
+    return this.repository.create(data);
+  }
 
-  update = async (id: string, data: T) => this.repository.updateWhereId(new Types.ObjectId(id), data);
+  bulkCreate(data: T[], authUser?: AuthUser): Promise<T[]>;
+  async bulkCreate(data: T[]): Promise<T[]> {
+    return this.repository.insertMany(data);
+  }
 
-  delete = async (id: string): Promise<T | null> => this.repository.deleteById(new Types.ObjectId(id));
+  update(id: string, data: T, authUser?: AuthUser): Promise<T | null>;
+  async update(id: string, data: T) {
+    return this.repository.updateWhereId(id, data);
+  }
+
+  delete(id: string, authUser?: AuthUser): Promise<T | null>;
+  async delete(id: string): Promise<T | null> {
+    return this.repository.deleteById(id);
+  }
 }

@@ -1,6 +1,5 @@
-import { Types } from "mongoose";
 import { badData } from "../errors";
-import { createHash } from "../utilities";
+import { createHash, getEntityRef } from "../utilities";
 import DefaultRepository, { companyRepository, credentialRepository } from "../mongoDB/repositories";
 import DefaultService from "./default.service";
 import { AccountEnum, CompanyInterface, CredentialInterface, MerchantInterface, ProbablyWithPassword } from "../types";
@@ -12,9 +11,12 @@ interface CompanyMutationInterface extends CompanyInterface {
 class CompanyService extends DefaultService<CompanyInterface> {
   constructor(private credentialRepository: DefaultRepository<CredentialInterface>) {
     super(companyRepository);
+    this.create = this.create.bind(this);
+    this.update = this.update.bind(this);
+    this.updateEmployeesCredentials = this.updateEmployeesCredentials.bind(this);
   }
 
-  create = async (data: CompanyMutationInterface) => {
+  async create(data: CompanyMutationInterface){
     const employeesWithPassword: ProbablyWithPassword<MerchantInterface>[] = [];
     const companyPayload = {
       ...data,
@@ -23,7 +25,7 @@ class CompanyService extends DefaultService<CompanyInterface> {
         employeesWithPassword.push({ ...employeeData, password });
         return employeeData;
       }),
-    };
+    }
 
     if (employeesWithPassword.length) {
       const existingEmployees = await this.credentialRepository.findMany({
@@ -49,27 +51,26 @@ class CompanyService extends DefaultService<CompanyInterface> {
       }
     }
     return company;
-  };
+  }
 
-  updateCompany = async (id: string, data: CompanyMutationInterface) => {
-    const company = await this.repository.findById(new Types.ObjectId(id));
+  async update(id: string, data: CompanyMutationInterface) {
+    const company = await this.repository.findById(id);
     if (!company) throw badData("الشركة غير موجودة");
 
     await this.updateEmployeesCredentials(company, data.employees);
-    return this.update(id, data);
-  };
+    return super.update(id, data);
+  }
 
-  updateEmployeesCredentials = async (
+  private async updateEmployeesCredentials (
     company: CompanyInterface,
     employees: ProbablyWithPassword<MerchantInterface>[]
-  ) => {
+  ) {
     const existingEmployees = company.employees;
 
     const updatedEmployees: ProbablyWithPassword<MerchantInterface>[] = [];
     const deletedEmployees: ProbablyWithPassword<MerchantInterface>[] = [];
     const newEmployees: ProbablyWithPassword<MerchantInterface>[] = [];
 
-    // eslint-disable-next-line no-loops/no-loops
     for (const employee of employees) {
       const isNewEmployee = !employee._id;
       const isDeletedEmployee =
@@ -90,7 +91,6 @@ class CompanyService extends DefaultService<CompanyInterface> {
 
     const newEmployeesWithPassword = newEmployees.filter(employee => !!employee.password);
     if (newEmployeesWithPassword.length) {
-      // eslint-disable-next-line no-loops/no-loops
       for (const employee of newEmployeesWithPassword) {
         await this.credentialRepository.create({
           mobile: employee.mobile,
@@ -112,19 +112,18 @@ class CompanyService extends DefaultService<CompanyInterface> {
 
     if (mobileUpdatedEmployees.length) {
       const credentials = await this.credentialRepository.findMany({ account: company._id });
-      // eslint-disable-next-line no-loops/no-loops
       for (const mobileUpdatedEmployee of mobileUpdatedEmployees) {
         const oldEmployee = existingEmployees.find(
           existingEmployee => existingEmployee._id === mobileUpdatedEmployee._id
         );
         const employeeCredential = credentials.find(credential => credential.mobile === oldEmployee?.mobile);
         if (!employeeCredential) continue;
-        await this.credentialRepository.updateWhereId(new Types.ObjectId(employeeCredential._id), {
+        await this.credentialRepository.updateWhereId(getEntityRef(employeeCredential), {
           mobile: mobileUpdatedEmployee.mobile,
         });
       }
     }
-  };
+  }
 }
 
 export default new CompanyService(credentialRepository);

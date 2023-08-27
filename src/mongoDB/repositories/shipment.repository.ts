@@ -13,13 +13,6 @@ class ShipmentRepository extends DefaultRepository<ShipmentInterface> {
       { path: "events.products" },
     ]);
   }
-
-  create = async (data: ShipmentInterface): Promise<ShipmentInterface> => {
-    return ShipmentModel.create({
-      ...data,
-      isInCity: data.originAgency.toString() === data.destinationAgency.toString(),
-    });
-  };
 }
 
 export default new ShipmentRepository();

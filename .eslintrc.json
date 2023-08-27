@@ -23,7 +23,7 @@
     "promise/no-new-statics": "error",
     "promise/no-return-in-finally": "warn",
     "promise/valid-params": "warn",
-    "no-loops/no-loops": 2,
+    "no-loops/no-loops": "off",
     "indent": "off",
     "no-use-before-define": ["error", { "functions": true, "classes": true, "variables": true }],
     "no-console": ["error", { "allow": ["error"] }],

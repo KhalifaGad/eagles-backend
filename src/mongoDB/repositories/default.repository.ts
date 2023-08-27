@@ -12,7 +12,7 @@ export default class DefaultRepository<T> {
     this.population = population;
   }
 
-  findById = async (id: MongooseID): Promise<T> => {
+  findById = async (id: MongooseID | string): Promise<T> => {
     if (this.population) return this.model.findById(id).populate(this.population).lean();
     return this.model.findById(id).lean();
   };
@@ -29,8 +29,8 @@ export default class DefaultRepository<T> {
 
   list = async ({ filter = {}, options }: ListArgumentsInterface<T>): Promise<ListInterface<T>> => {
     const search = buildSearch(filter);
-    const { page, pageLimit, sortBy, sortDirection, showAll } = buildListOptions(options as ListOptionsInterface);
-    const cursor = this.model.find(search).sort({ [sortBy]: sortDirection === "desc" ? 1 : -1 });
+    const { page = 0, pageLimit = 0, sortBy, sortDirection, showAll } = buildListOptions(options as ListOptionsInterface);
+    const cursor = this.model.find(search).sort({ [sortBy ?? "createdAt"]: sortDirection === "desc" ? 1 : -1 });
 
     if (!showAll) cursor.skip(page * pageLimit).limit(pageLimit);
 
@@ -46,7 +46,7 @@ export default class DefaultRepository<T> {
     return this.model.countDocuments(filter);
   };
 
-  create = async (data: T): Promise<T> => {
+  create = async (data: Partial<T>): Promise<T> => {
     const createdData = await this.model.create(data);
     return this.findById(createdData._id);
   };

@@ -17,6 +17,8 @@ const agencySchema = new Schema<AgencyInterface>(
   { timestamps: true, versionKey: false }
 );
 
+// agencySchema.index({ "address.lat": "2dsphere", "address.lng": "2dsphere" });
+
 export const AgencyModel = model<AgencyInterface>(Schemas.agency, agencySchema);
 
 /*

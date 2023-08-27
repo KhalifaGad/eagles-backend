@@ -13,6 +13,7 @@ export interface ListOptionsInterface {
 export interface ListArgumentsInterface<T> {
   filter?: FilterQuery<T>;
   options?: ListOptionsInterface;
+  ignoreLean?: boolean;
 }
 
 export interface ListInterface<T> {
@@ -278,7 +279,7 @@ export interface ShipmentInterface {
     consigneeMobile: string;
     originAgencyName: string;
     destinationAgencyName: string;
-  }
+  };
 }
 
 export interface CreateShipmentInterface {
@@ -312,10 +313,27 @@ export interface EmployeeAuthUser extends AuthUser {
   user: EmployeeInterface;
 }
 
-export interface RideStepInterface {
+export interface CreateRideStepInterface {
   sequence: number;
   stepLocationType: StepLocationTypeEnum;
   stepLocationEntity: Entity<AgencyInterface | HubInterface>;
+}
+
+export interface CreateRideTemplateInterface {
+  name: string;
+  steps: CreateRideStepInterface[];
+}
+
+export interface RideStepInterface {
+  sequence: number;
+  stepLocationType: StepLocationTypeEnum;
+  area: string;
+  street: string;
+  cityName: string;
+  landmark?: string;
+  lat?: number;
+  lng?: number;
+  name?: string;
 }
 
 export interface RideTemplateInterface {
@@ -329,7 +347,7 @@ export interface RideInterface {
   code: string;
   employees: Entity<EmployeeInterface>[];
   shipments: Entity<ShipmentInterface>[];
-  steps: RideStepInterface[];
+  steps: RideStepInterface[]; // TODO: FIX THIS
   startDate?: Date;
   endDate?: Date;
 }

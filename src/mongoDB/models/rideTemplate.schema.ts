@@ -1,25 +1,24 @@
 import { model, Schema } from "mongoose";
-import { RideStepInterface, RideTemplateInterface, StepLocationTypeEnum } from "../../types";
+import { RideTemplateInterface, StepLocationTypeEnum } from "../../types";
 import { Schemas } from "../constants";
 
-const stepSchema = new Schema({
-  sequence: { type: Number, required: true, min: 1 },
-  stepLocationType: { type: String, enum: StepLocationTypeEnum, required: true },
-  stepLocationEntity: {type: Schema.Types.ObjectId, refPath: "stepLocationType", required: true },
-});
 
 const rideTemplateSchema = new Schema<RideTemplateInterface>(
   {
     name: { type: String, required: true, unique: true },
     steps: {
-      type: [stepSchema],
+      type: [{
+        sequence: { type: Number, required: true, min: 1 },
+        name: { type: String, required: true },
+        cityName: { type: String, required: true },
+        area: { type: String },
+        street: { type: String },
+        landmark: { type: String },
+        lat: { type: Number },
+        lng: { type: Number },
+        stepLocationType: { type: String, enum: StepLocationTypeEnum, required: true },
+      }],
       required: true,
-      validate: {
-        validator: function (value: RideStepInterface[]) {
-          return value.length >= 3;
-        },
-        message: "Steps array must contain at least 3 items.",
-      },
     },
   },
   { timestamps: true, versionKey: false }

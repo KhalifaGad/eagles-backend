@@ -25,6 +25,7 @@
     "start": "NODE_ENV=Production ts-node .",
     "dev": "NODE_ENV=Development nodemon",
     "seed": "NODE_ENV=Seeding ts-node ./scripts/seed.script.ts",
+    "deleteTemplates": "NODE_ENV=Seeding ts-node ./scripts/deleteTemplates.script.ts",
     "test": "mocha",
     "lint": "eslint .",
     "lint:fix": "eslint . --ext .ts --fix",

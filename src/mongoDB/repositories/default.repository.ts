@@ -27,9 +27,8 @@ export default class DefaultRepository<T> {
     return this.model.find(filter).lean();
   };
 
-  list = async ({ filter = {}, options }: ListArgumentsInterface<T>): Promise<ListInterface<T>> => {
+  list = async ({ filter = {}, options, ignoreLean = false }: ListArgumentsInterface<T>): Promise<ListInterface<T>> => {
     const search = buildSearch(filter);
-    console.log(search)
     const {
       page = 0,
       pageLimit = 0,
@@ -44,7 +43,7 @@ export default class DefaultRepository<T> {
     if (this.population) cursor.populate(this.population).lean();
 
     return {
-      data: await cursor.lean(),
+      data: ignoreLean? await cursor : await cursor.lean(),
       totalCount: await this.count(search),
     };
   };

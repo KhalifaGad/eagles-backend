@@ -30,15 +30,19 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
     this.shipmentCreationGuard(payload);
     const consignor = await this.getConsignor(payload.consignorType, payload.consignor);
     const originAgencyId = payload.originAgency;
-    const originAgency = originAgencyId? await agencyRepository.findById(originAgencyId) : await this.getNearestAgency(consignor.address)
-    if (!originAgency) throw notFound("لا يمكن ايجاد وكاله استلام في نفس المدينه")
+    const originAgency = originAgencyId
+      ? await agencyRepository.findById(originAgencyId)
+      : await this.getNearestAgency(consignor.address);
+    if (!originAgency) throw notFound("لا يمكن ايجاد وكاله استلام في نفس المدينه");
 
     const consignee = await this.getConsignee(payload.consigneeType, payload.consignee);
     const isInCity = getEntityRef(consignee.address.city) === getEntityRef(consignor.address.city);
     const destinationAgencyId = isInCity ? originAgency._id : payload.destinationAgency;
-    const destinationAgency = destinationAgencyId? await agencyRepository.findById(destinationAgencyId) : await this.getNearestAgency(consignee.address)
+    const destinationAgency = destinationAgencyId
+      ? await agencyRepository.findById(destinationAgencyId)
+      : await this.getNearestAgency(consignee.address);
 
-    if(!destinationAgency) throw notFound("لا يمكن ايجاد وكاله تسليم في نفس المدينه")
+    if (!destinationAgency) throw notFound("لا يمكن ايجاد وكاله تسليم في نفس المدينه");
 
     const code = await this.generateCode();
 
@@ -55,7 +59,7 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
         consignorMobile: consignor.mobile,
         consigneeMobile: consignee.mobile,
         originAgencyName: originAgency.name,
-        destinationAgencyName: destinationAgency.name
+        destinationAgencyName: destinationAgency.name,
       },
       events: [
         {

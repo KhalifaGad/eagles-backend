@@ -4,7 +4,7 @@ import { RideTemplateInterface } from "../../types";
 
 class RideTemplateRepository extends DefaultRepository<RideTemplateInterface> {
   constructor() {
-    super(RideTemplateModel, [{ path: "steps.stepLocationEntity", populate: { path: "address.city" } }]);
+    super(RideTemplateModel);
   }
 }
 

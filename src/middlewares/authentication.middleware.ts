@@ -1,10 +1,10 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { verify } from "jsonwebtoken";
-import { AuthUser } from "../types";
+import { AppRequest, AuthUser } from "../types";
 import config from "../../config";
 import { forbidden } from "../errors";
 
-export default (req: Request, _res: Response, next: NextFunction) => {
+export default (req: AppRequest, _res: Response, next: NextFunction) => {
   try {
     const token = (req.headers.authorization ?? "").replace("Bearer ", "");
 

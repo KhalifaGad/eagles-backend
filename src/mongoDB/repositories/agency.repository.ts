@@ -2,7 +2,7 @@ import { badData } from "@hapi/boom";
 import DefaultRepository from "./default.repository";
 import { AgencyModel } from "../models";
 import { AddressInterface, AgencyInterface } from "../../types";
-import { calculateDistance } from "../../utilities";
+import { calculateDistance, getEntityRef } from "../../utilities";
 
 class AgencyRepository extends DefaultRepository<AgencyInterface> {
   constructor() {
@@ -11,13 +11,14 @@ class AgencyRepository extends DefaultRepository<AgencyInterface> {
 
   getNearestAgency = async (address: AddressInterface) => {
     const { lat, lng, city } = address;
-    if (!lat || !lng || !city?._id) {
+    const cityEntityRef = getEntityRef(city);
+    if (!lat || !lng || !cityEntityRef) {
       throw badData("عنوان غير سليم");
     }
 
     const { data: agencies } = await this.list({
       filter: {
-        "address.city": city._id,
+        "address.city": cityEntityRef,
       },
       options: {
         showAll: true,

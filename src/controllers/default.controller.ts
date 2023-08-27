@@ -1,4 +1,5 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
+import { AppRequest } from "../types";
 import { notFound } from "../errors";
 import Service from "../services";
 
@@ -9,22 +10,22 @@ export default class DefaultController<T> {
     this.service = service;
   }
 
-  list = async (req: Request, res: Response, next: NextFunction) =>
+  list = async (req: AppRequest, res: Response, next: NextFunction) =>
     this.exec(res, next, this.service.list, req.query, req.locals?.user);
 
-  show = async (req: Request, res: Response, next: NextFunction) =>
+  show = async (req: AppRequest, res: Response, next: NextFunction) =>
     this.exec(res, next, this.service.show, req.params.id, req.locals?.user);
 
-  create = async (req: Request, res: Response, next: NextFunction) =>
+  create = async (req: AppRequest, res: Response, next: NextFunction) =>
     this.exec(res, next, this.service.create, req.body, req.locals?.user);
 
-  bulkCreate = async (req: Request, res: Response, next: NextFunction) =>
+  bulkCreate = async (req: AppRequest, res: Response, next: NextFunction) =>
     this.exec(res, next, this.service.bulkCreate, req.body, req.locals?.user);
 
-  update = async (req: Request, res: Response, next: NextFunction) =>
+  update = async (req: AppRequest, res: Response, next: NextFunction) =>
     this.exec(res, next, this.service.update, req.params.id, req.body, req.locals?.user);
 
-  delete = async (req: Request, res: Response, next: NextFunction) =>
+  delete = async (req: AppRequest, res: Response, next: NextFunction) =>
     this.exec(res, next, this.service.delete, req.params.id, req.locals?.user);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

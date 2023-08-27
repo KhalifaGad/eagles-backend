@@ -21,7 +21,7 @@ export interface ListInterface<T> {
 }
 
 export type MongooseID = string;
-export type Entity<T> = NonNullable<LeanDocument<T>> | MongooseID;
+export type Entity<T> = NonNullable<LeanDocument<T>> & { _id?: MongooseID } | MongooseID;
 
 export interface CityInterface {
   _id?: MongooseID;

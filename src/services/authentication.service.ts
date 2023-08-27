@@ -96,7 +96,9 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
     if (!credential) return null;
 
     if (data.mobile) {
-      await this.updateCredentialAccountMobile(getEntityRef(credential.account), credential.accountType, data.mobile);
+      if (typeof credential.account !== "string") {
+        await this.updateCredentialAccountMobile(String(credential.account._id), credential.accountType, data.mobile);
+      }
     }
 
     return this.show(id);

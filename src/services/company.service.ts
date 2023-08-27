@@ -117,8 +117,8 @@ class CompanyService extends DefaultService<CompanyInterface> {
           existingEmployee => existingEmployee._id === mobileUpdatedEmployee._id
         );
         const employeeCredential = credentials.find(credential => credential.mobile === oldEmployee?.mobile);
-        if (!employeeCredential) continue;
-        await this.credentialRepository.updateWhereId(getEntityRef(employeeCredential), {
+        if (!employeeCredential?._id) continue;
+        await this.credentialRepository.updateWhereId(employeeCredential._id, {
           mobile: mobileUpdatedEmployee.mobile,
         });
       }

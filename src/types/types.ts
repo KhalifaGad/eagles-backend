@@ -1,5 +1,10 @@
 import { FilterQuery, LeanDocument } from "mongoose";
-import { AccountEnum, ShipmentConsigneeEnum, ShipmentConsignorEnum } from "./enums";
+import {
+  AccountEnum,
+  ShipmentConsigneeEnum,
+  ShipmentConsignorEnum,
+  StepLocationTypeEnum
+} from "./enums";
 import * as Enums from "./enums";
 
 export interface ListOptionsInterface {
@@ -324,4 +329,16 @@ export interface CompanyAuthUser extends AuthUser {
 
 export interface EmployeeAuthUser extends AuthUser {
   user: EmployeeInterface;
+}
+
+export interface RideStepInterface {
+  sequence: number;
+  stepLocationType: StepLocationTypeEnum;
+  stepLocationEntity: Entity<AgencyInterface | HubInterface>;
+}
+
+export interface RideTemplateInterface {
+  _id?: string;
+  name: string;
+  steps: RideStepInterface[];
 }

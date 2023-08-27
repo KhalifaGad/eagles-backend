@@ -10,6 +10,7 @@ export const Schemas = {
   hub: "Hub",
   merchant: "Merchant",
   ride: "Ride",
+  rideTemplate: "RideTemplate",
   salary: "Salary",
   shipment: "Shipment",
   vehicle: "Vehicle",

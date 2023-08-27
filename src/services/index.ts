@@ -12,3 +12,4 @@ export { default as rideService } from "./ride.service";
 export { default as salaryService } from "./salary.service";
 export { default as shipmentService } from "./shipment.service";
 export { default as vehicleService } from "./vehicle.service";
+export { default as rideTemplateService } from "./rideTemplate.service"

@@ -49,3 +49,8 @@ export enum ShipmentDestinationEnum {
   HUB = "HUB",
   CONSIGNEE = "CONSIGNEE",
 }
+
+export enum StepLocationTypeEnum {
+  Agency = "Agency",
+  Hub = "Hub"
+}

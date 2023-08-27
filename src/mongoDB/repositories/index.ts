@@ -12,3 +12,4 @@ export { default as rideRepository } from "./ride.repository";
 export { default as salaryRepository } from "./salary.repository";
 export { default as shipmentRepository } from "./shipment.repository";
 export { default as vehicleRepository } from "./vehicle.repository";
+export { default as rideTemplateRepository } from "./rideTemplate.repository"

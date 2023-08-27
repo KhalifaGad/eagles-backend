@@ -1,4 +1,5 @@
 import { badData } from "@hapi/boom";
+import { notFound } from "../errors";
 import { getEntityRef, getUniqueCode } from "../utilities";
 import { agencyRepository, clientRepository, companyRepository, shipmentRepository } from "../mongoDB/repositories";
 import DefaultService from "./default.service";
@@ -28,19 +29,16 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
   async createShipment(payload: CreateShipmentInterface, authUser: AuthUser) {
     this.shipmentCreationGuard(payload);
     const consignor = await this.getConsignor(payload.consignorType, payload.consignor);
-    let originAgency = payload.originAgency;
-    if (!originAgency) {
-      const nearestAgencyToConsignor = await this.getNearestAgency(consignor.address);
-      originAgency = String(nearestAgencyToConsignor._id);
-    }
+    const originAgencyId = payload.originAgency;
+    const originAgency = originAgencyId? await agencyRepository.findById(originAgencyId) : await this.getNearestAgency(consignor.address)
+    if (!originAgency) throw notFound("لا يمكن ايجاد وكاله استلام في نفس المدينه")
 
     const consignee = await this.getConsignee(payload.consigneeType, payload.consignee);
     const isInCity = getEntityRef(consignee.address.city) === getEntityRef(consignor.address.city);
-    let destinationAgency = isInCity ? originAgency : payload.destinationAgency;
-    if (!destinationAgency) {
-      const nearestAgencyToConsignee = await this.getNearestAgency(consignee.address);
-      destinationAgency = String(nearestAgencyToConsignee._id);
-    }
+    const destinationAgencyId = isInCity ? originAgency._id : payload.destinationAgency;
+    const destinationAgency = destinationAgencyId? await agencyRepository.findById(destinationAgencyId) : await this.getNearestAgency(consignee.address)
+
+    if(!destinationAgency) throw notFound("لا يمكن ايجاد وكاله تسليم في نفس المدينه")
 
     const code = await this.generateCode();
 
@@ -49,8 +47,16 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
       code,
       consignor: consignor._id,
       consignee: consignee._id,
-      originAgency: originAgency,
-      destinationAgency: destinationAgency,
+      originAgency: originAgency._id,
+      destinationAgency: destinationAgency._id,
+      searchables: {
+        consignorName: consignor.name,
+        consigneeName: consignee.name,
+        consignorMobile: consignor.mobile,
+        consigneeMobile: consignee.mobile,
+        originAgencyName: originAgency.name,
+        destinationAgencyName: destinationAgency.name
+      },
       events: [
         {
           name: ShipmentEventNamesEnum.PLACED,
@@ -84,14 +90,10 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
   }
 
   private async getNearestAgency(address: AddressInterface) {
-    const agency = await agencyRepository.getNearestAgency(address);
-    if (!agency) {
-      throw badData("لا يوجد وكالة قريبة");
-    }
-    return agency;
+    return agencyRepository.getNearestAgency(address);
   }
 
-  private async shipmentCreationGuard(payload: CreateShipmentInterface) {
+  private shipmentCreationGuard(payload: CreateShipmentInterface) {
     if (payload.referenceNumber && !payload.originAgency) {
       throw badData("يجب ادخال الوكالة المرسلة");
     }

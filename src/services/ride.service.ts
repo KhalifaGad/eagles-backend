@@ -9,16 +9,16 @@ class RideService extends DefaultService<RideInterface> {
     super(rideRepository);
   }
 
-  async createRide(payload: CreateRidePayload){
+  async createRide(payload: CreateRidePayload) {
     const { rideTemplateId, ...restPayload } = payload;
     const rideTemplate = await rideTemplateRepository.findById(rideTemplateId);
-    if(!rideTemplateId) throw notFound("لا يمكن إيجاد نموذج الرحله");
+    if (!rideTemplateId) throw notFound("لا يمكن إيجاد نموذج الرحله");
     const { steps } = rideTemplate;
     return this.create({
       ...restPayload,
       steps,
-      code: getUniqueCode()
-    })
+      code: getUniqueCode(),
+    });
   }
 }
 

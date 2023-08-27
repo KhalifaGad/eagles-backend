@@ -271,6 +271,14 @@ export interface ShipmentInterface {
   notes?: string[];
   products: ShipmentProductType[];
   returns: ShipmentProductType[];
+  searchables: {
+    consignorName: string;
+    consigneeName: string;
+    consignorMobile: string;
+    consigneeMobile: string;
+    originAgencyName: string;
+    destinationAgencyName: string;
+  }
 }
 
 export interface CreateShipmentInterface {

@@ -29,6 +29,7 @@ export default class DefaultRepository<T> {
 
   list = async ({ filter = {}, options }: ListArgumentsInterface<T>): Promise<ListInterface<T>> => {
     const search = buildSearch(filter);
+    console.log(search)
     const {
       page = 0,
       pageLimit = 0,

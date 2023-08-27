@@ -28,6 +28,14 @@ const shipmentSchema = new Schema<ShipmentInterface>(
     originAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency, required: true },
     destinationAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency, required: true },
     hub: { type: Schema.Types.ObjectId, ref: Schemas.hub },
+    searchables: {
+      consignorName: { type: String, index: 1 },
+      consigneeName: { type: String, index: 1 },
+      consignorMobile: { type: String, index: 1 },
+      consigneeMobile: { type: String, index: 1 },
+      originAgencyName: { type: String, index: 1 },
+      destinationAgencyName: { type: String, index: 1 },
+    },
     isInCity: {
       type: Boolean,
       default: false,

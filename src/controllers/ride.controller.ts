@@ -12,7 +12,6 @@ class RideController extends DefaultController<RideInterface> {
   async create(req: AppRequest, res: Response, next: NextFunction) {
     return this.exec(res, next, rideService.createRide, req.body, req.locals?.user);
   }
-
 }
 
 export default new RideController();

@@ -9,14 +9,24 @@ function getFilterValue(value: unknown) {
   return value;
 }
 
-export const buildSearch = (filter: Record<string, unknown>): FilterQuery<any> =>
-  Object.keys(filter).length > 0
-    ? {
-        $or: Object.keys(filter).map(property => ({
-          [property]: getFilterValue(filter[property]),
-        })),
-      }
-    : {};
+export function buildSearch(filter: Record<string, unknown>): FilterQuery<any> {
+ const test =  Object.keys(filter).length > 0
+               ? {
+     $or: Object.keys(filter).map(property => {
+       const val = ({
+         [property]: getFilterValue(filter[property]),
+       })
+       // console.log(val)
+       return val
+     }),
+   }
+               : {};
+
+ // console.log(test)
+
+ return test;
+}
+
 
 export const buildListOptions = (options: ListOptionsInterface): ListOptionsInterface => ({
   ...defaultListOptions,

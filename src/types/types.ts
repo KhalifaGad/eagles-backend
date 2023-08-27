@@ -1,4 +1,4 @@
-import { FilterQuery, LeanDocument } from "mongoose";
+import { FilterQuery, LeanDocument, Types as MongooseTypes } from "mongoose";
 import { AccountEnum, ShipmentConsigneeEnum, ShipmentConsignorEnum, StepLocationTypeEnum } from "./enums";
 import * as Enums from "./enums";
 
@@ -21,7 +21,7 @@ export interface ListInterface<T> {
 }
 
 export type MongooseID = string;
-export type Entity<T> = (NonNullable<LeanDocument<T>> & { _id?: MongooseID }) | MongooseID;
+export type Entity<T> = (NonNullable<LeanDocument<T & { _id?: MongooseID } >>) | MongooseID;
 
 export interface CityInterface {
   _id?: MongooseID;
@@ -273,28 +273,6 @@ export interface ShipmentInterface {
   returns: ShipmentProductType[];
 }
 
-export interface RideInterface {
-  _id?: MongooseID;
-  code: string;
-  employees: Entity<EmployeeInterface[]>;
-  shipments: Entity<ShipmentInterface[]>;
-  vehicle?: Entity<VehicleInterface>;
-  locations: {
-    order: number;
-    area: string;
-    street: string;
-    city: Entity<CityInterface>;
-    lat?: number;
-    lng?: number;
-    meterReading?: number;
-    name?: string;
-    arrivalDate?: Date;
-    departureDate?: Date;
-  }[];
-  startDate?: Date;
-  endDate?: Date;
-}
-
 export interface CreateShipmentInterface {
   referenceNumber?: string;
   consigneeType: ShipmentConsigneeEnum;
@@ -336,4 +314,14 @@ export interface RideTemplateInterface {
   _id?: string;
   name: string;
   steps: RideStepInterface[];
+}
+
+export interface RideInterface {
+  _id?: MongooseID;
+  code: string;
+  employees: Entity<EmployeeInterface>[];
+  shipments: Entity<ShipmentInterface>[];
+  steps: RideStepInterface[];
+  startDate?: Date;
+  endDate?: Date;
 }

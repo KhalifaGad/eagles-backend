@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { RideInterface } from "../../types";
+import { RideInterface, StepLocationTypeEnum } from "../../types";
 import { Schemas } from "../constants";
 
 const rideSchema = new Schema<RideInterface>(
@@ -10,21 +10,13 @@ const rideSchema = new Schema<RideInterface>(
       min: 2,
       required: true,
     },
-    vehicle: { type: Schema.Types.ObjectId, ref: Schemas.vehicle },
     shipments: [{ type: Schema.Types.ObjectId, required: true, ref: Schemas.shipment }],
-    locations: {
+    steps: {
       type: [
         {
-          order: { type: Number, required: true },
-          area: { type: String, required: true },
-          street: { type: String, required: true },
-          city: { type: Schema.Types.ObjectId, required: true, ref: Schemas.city },
-          lat: { type: Number },
-          lng: { type: Number },
-          meterReading: { type: Number },
-          name: { type: String },
-          arrivalDate: { type: Date },
-          departureDate: { type: Date },
+          sequence: { type: Number, required: true, min: 1 },
+          stepLocationType: { type: String, enum: StepLocationTypeEnum, required: true },
+          stepLocationEntity: { type: Schema.Types.ObjectId, refPath: "stepLocationType", required: true },
         },
       ],
       required: true,

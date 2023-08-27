@@ -56,9 +56,7 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
     return destroyProperties({ ...credential, token }, ["password"]);
   }
 
-  async list (
-    listArguments: ListArgumentsInterface<CredentialInterface>
-  ): Promise<ListInterface<CredentialInterface>> {
+  async list(listArguments: ListArgumentsInterface<CredentialInterface>): Promise<ListInterface<CredentialInterface>> {
     const { data, totalCount } = await credentialRepository.list(listArguments);
 
     return { data: data.map(credential => destroyProperties(credential, ["password"])), totalCount };

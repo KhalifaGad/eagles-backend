@@ -29,7 +29,13 @@ export default class DefaultRepository<T> {
 
   list = async ({ filter = {}, options }: ListArgumentsInterface<T>): Promise<ListInterface<T>> => {
     const search = buildSearch(filter);
-    const { page = 0, pageLimit = 0, sortBy, sortDirection, showAll } = buildListOptions(options as ListOptionsInterface);
+    const {
+      page = 0,
+      pageLimit = 0,
+      sortBy,
+      sortDirection,
+      showAll,
+    } = buildListOptions(options as ListOptionsInterface);
     const cursor = this.model.find(search).sort({ [sortBy ?? "createdAt"]: sortDirection === "desc" ? 1 : -1 });
 
     if (!showAll) cursor.skip(page * pageLimit).limit(pageLimit);

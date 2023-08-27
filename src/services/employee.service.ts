@@ -11,7 +11,7 @@ class EmployeeService extends DefaultService<EmployeeInterface> {
     this.update = this.update.bind(this);
   }
 
-  async create(payload: ProbablyWithPassword<EmployeeInterface>){
+  async create(payload: ProbablyWithPassword<EmployeeInterface>) {
     const { password, ...employeeData } = payload;
     const shouldCreateCredentials = !!password;
     if (shouldCreateCredentials) {

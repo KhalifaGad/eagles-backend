@@ -23,7 +23,6 @@ export interface ListInterface<T> {
 export type MongooseID = string;
 export type Entity<T> = NonNullable<LeanDocument<T>> | MongooseID;
 
-
 export interface CityInterface {
   _id?: MongooseID;
   arabicName: string;
@@ -98,7 +97,7 @@ type shipmentDestinationType = "AGENCY" | "HUB" | "CONSIGNEE";
 
 type EventType = { name: string; date: Date };
 
-type PlacedType = EventType & { name: PlacedEventNameType, employee?: EmployeeInterface };
+type PlacedType = EventType & { name: PlacedEventNameType; employee?: EmployeeInterface };
 
 type ConfirmedType = EventType & {
   name: ConfirmedEventNameType;
@@ -315,12 +314,12 @@ export interface CreateShipmentInterface {
 export interface AuthUser {
   credentialId: string;
   accountType: AccountEnum;
-  user: EmployeeInterface | MerchantInterface | ClientInterface
+  user: EmployeeInterface | MerchantInterface | ClientInterface;
 }
 
 export interface CompanyAuthUser extends AuthUser {
   user: MerchantInterface;
-  company: Omit<CompanyInterface, "employees">
+  company: Omit<CompanyInterface, "employees">;
 }
 
 export interface EmployeeAuthUser extends AuthUser {

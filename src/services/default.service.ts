@@ -15,7 +15,6 @@ export default class DefaultService<T> {
     this.delete = this.delete.bind(this);
   }
 
-
   list(listArguments: ListArgumentsInterface<T>, authUser?: AuthUser): Promise<ListInterface<T>>;
   async list(listArguments: ListArgumentsInterface<T>) {
     return this.repository.list(listArguments);

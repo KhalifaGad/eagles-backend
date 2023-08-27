@@ -49,7 +49,7 @@ const shipmentSchema = new Schema<ShipmentInterface>(
           products: [shipmentProductSchemaObject],
         },
       ],
-      minlength: 1
+      minlength: 1,
     },
   },
   { timestamps: true, versionKey: false }

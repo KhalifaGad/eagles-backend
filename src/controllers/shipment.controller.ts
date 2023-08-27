@@ -9,8 +9,8 @@ class ShipmentController extends DefaultController<ShipmentInterface> {
   }
 
   create = async (req: Request, res: Response, next: NextFunction) => {
-    return this.exec(res, next, shipmentService.createShipment, req.body, req.locals?.user)
-  }
+    return this.exec(res, next, shipmentService.createShipment, req.body, req.locals?.user);
+  };
 }
 
 export default new ShipmentController();

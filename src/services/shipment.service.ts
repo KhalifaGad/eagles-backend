@@ -83,7 +83,7 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
     return consignee;
   }
 
-  private async getNearestAgency(address: AddressInterface){
+  private async getNearestAgency(address: AddressInterface) {
     const agency = await agencyRepository.getNearestAgency(address);
     if (!agency) {
       throw badData("لا يوجد وكالة قريبة");

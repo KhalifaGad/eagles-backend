@@ -16,7 +16,7 @@ class CompanyService extends DefaultService<CompanyInterface> {
     this.updateEmployeesCredentials = this.updateEmployeesCredentials.bind(this);
   }
 
-  async create(data: CompanyMutationInterface){
+  async create(data: CompanyMutationInterface) {
     const employeesWithPassword: ProbablyWithPassword<MerchantInterface>[] = [];
     const companyPayload = {
       ...data,
@@ -25,7 +25,7 @@ class CompanyService extends DefaultService<CompanyInterface> {
         employeesWithPassword.push({ ...employeeData, password });
         return employeeData;
       }),
-    }
+    };
 
     if (employeesWithPassword.length) {
       const existingEmployees = await this.credentialRepository.findMany({
@@ -61,7 +61,7 @@ class CompanyService extends DefaultService<CompanyInterface> {
     return super.update(id, data);
   }
 
-  private async updateEmployeesCredentials (
+  private async updateEmployeesCredentials(
     company: CompanyInterface,
     employees: ProbablyWithPassword<MerchantInterface>[]
   ) {

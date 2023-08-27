@@ -9,7 +9,8 @@ export default class DefaultController<T> {
     this.service = service;
   }
 
-  list = async (req: Request, res: Response, next: NextFunction) => this.exec(res, next, this.service.list, req.query, req.locals?.user);
+  list = async (req: Request, res: Response, next: NextFunction) =>
+    this.exec(res, next, this.service.list, req.query, req.locals?.user);
 
   show = async (req: Request, res: Response, next: NextFunction) =>
     this.exec(res, next, this.service.show, req.params.id, req.locals?.user);

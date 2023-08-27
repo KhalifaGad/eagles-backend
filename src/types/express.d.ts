@@ -1,11 +1,11 @@
 import { AuthUser } from "./types";
 
 declare global {
-	namespace Express {
-		interface Request {
-			locals: {
-				user: AuthUser
-			};
-		}
-	}
+  namespace Express {
+    interface Request {
+      locals: {
+        user: AuthUser;
+      };
+    }
+  }
 }

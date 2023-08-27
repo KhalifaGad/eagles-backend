@@ -11,7 +11,7 @@ export default (req: AppRequest, _res: Response, next: NextFunction) => {
     verify(token, config.jwtSecret, (err, data) => {
       if (err || !data) throw forbidden();
 
-      req.locals.user = data as AuthUser;
+      req.locals = { user: data as AuthUser };
     });
   } catch (err) {
     next(err);

@@ -42,7 +42,7 @@ export default class DefaultController<T> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-   protected async exec(res: Response, next: NextFunction, logic: (...Args: any) => any, ...args: any) {
+  protected async exec(res: Response, next: NextFunction, logic: (...Args: any) => any, ...args: any) {
     try {
       const data = await logic(...args);
       if (!data) throw notFound();

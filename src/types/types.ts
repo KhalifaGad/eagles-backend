@@ -21,7 +21,7 @@ export interface ListInterface<T> {
 }
 
 export type MongooseID = string;
-export type Entity<T> = (NonNullable<LeanDocument<T & { _id?: MongooseID } >>) | MongooseID;
+export type Entity<T> = NonNullable<LeanDocument<T & { _id?: MongooseID }>> | MongooseID;
 
 export interface CityInterface {
   _id?: MongooseID;
@@ -319,6 +319,15 @@ export interface RideTemplateInterface {
 export interface RideInterface {
   _id?: MongooseID;
   code: string;
+  employees: Entity<EmployeeInterface>[];
+  shipments: Entity<ShipmentInterface>[];
+  steps: RideStepInterface[];
+  startDate?: Date;
+  endDate?: Date;
+}
+
+export interface CreateRidePayload {
+  rideTemplateId: string;
   employees: Entity<EmployeeInterface>[];
   shipments: Entity<ShipmentInterface>[];
   steps: RideStepInterface[];

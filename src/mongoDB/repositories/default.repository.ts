@@ -43,7 +43,7 @@ export default class DefaultRepository<T> {
     if (this.population) cursor.populate(this.population).lean();
 
     return {
-      data: ignoreLean? await cursor : await cursor.lean(),
+      data: ignoreLean ? await cursor : await cursor.lean(),
       totalCount: await this.count(search),
     };
   };

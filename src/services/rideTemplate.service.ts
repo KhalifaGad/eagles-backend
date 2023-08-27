@@ -1,7 +1,7 @@
-import { agencyRepository } from "../mongoDB/repositories";
+import { agencyRepository, hubRepository } from "../mongoDB/repositories";
 import { rideTemplateRepository } from "../mongoDB/repositories";
 import DefaultService from "./default.service";
-import { CreateRideTemplateInterface, RideTemplateInterface } from "../types";
+import { CityInterface, CreateRideTemplateInterface, RideTemplateInterface } from "../types";
 
 class RideTemplateService extends DefaultService<RideTemplateInterface> {
   constructor() {
@@ -15,7 +15,7 @@ class RideTemplateService extends DefaultService<RideTemplateInterface> {
     const agencyIds = steps.filter(step => step.stepLocationType === "Agency").map(step => step.stepLocationEntity);
 
     const agencies = await agencyRepository.findMany({ _id: { $in: agencyIds } });
-    const hubs = await agencyRepository.findMany({ _id: { $in: hubIds } });
+    const hubs = await hubRepository.findMany({ _id: { $in: hubIds } });
 
     const preparedStep = steps.map(step => {
       const locationEntity =
@@ -29,7 +29,7 @@ class RideTemplateService extends DefaultService<RideTemplateInterface> {
         stepLocationType: step.stepLocationType,
         area: locationEntity.address.area,
         street: locationEntity.address.street,
-        cityName: (locationEntity.address.city as any).arabicName,
+        cityName: (locationEntity.address.city as CityInterface).arabicName,
         landmark: locationEntity.address.landmark,
         lat: locationEntity.address.lat,
         lng: locationEntity.address.lng,

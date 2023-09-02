@@ -4,14 +4,13 @@ import { deliveryReceiptService } from "../services";
 import { AppRequest, DeliveryReceiptInterface } from "../types";
 
 class DeliveryReceiptController extends DefaultController<DeliveryReceiptInterface> {
-	constructor() {
-		super(deliveryReceiptService);
-	}
+  constructor() {
+    super(deliveryReceiptService);
+  }
 
-	confirm(req: AppRequest, res: Response, next: NextFunction){
-		return this.exec(res, next, deliveryReceiptService.confirm, req.body, req.locals?.user);
-	}
-
+  confirm(req: AppRequest, res: Response, next: NextFunction) {
+    return this.exec(res, next, deliveryReceiptService.confirm, req.body, req.locals?.user);
+  }
 }
 
 export default new DeliveryReceiptController();

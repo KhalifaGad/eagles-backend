@@ -1,7 +1,7 @@
 import { createHash } from "../utilities";
 import { badData } from "../errors";
 import DefaultRepository, { credentialRepository, employeeRepository } from "../mongoDB/repositories";
-import { AccountEnum, CredentialInterface, EmployeeInterface, ProbablyWithPassword } from "../types";
+import { AccountEnum, CredentialInterface, EmployeeInterface, ID, ProbablyWithPassword } from "../types";
 import DefaultService from "./default.service";
 
 class EmployeeService extends DefaultService<EmployeeInterface> {
@@ -31,7 +31,7 @@ class EmployeeService extends DefaultService<EmployeeInterface> {
     return account;
   }
 
-  async update(id: string, data: ProbablyWithPassword<Partial<EmployeeInterface>>) {
+  async update(id: ID, data: ProbablyWithPassword<Partial<EmployeeInterface>>) {
     const { password, ...employeeData } = data;
     if (password && employeeData.mobile) {
       await this.credentialRepository.upsert(

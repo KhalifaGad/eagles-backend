@@ -64,7 +64,7 @@ export enum ShipmentStatuses {
 export enum DeliveryReceiptAttributedToEnum {
   Hub = "Hub",
   Agency = "Agency",
-  Ride = "Ride"
+  Ride = "Ride",
 }
 
 export enum ShipmentDestinationEnum {

@@ -41,21 +41,21 @@ export class DeliveryReceiptFlow {
     return this.state.getState();
   }
 
-	isValidReceipt(deliveryReceipt: DeliveryReceiptInterface) {
-		return this.state.isValidReceipt(deliveryReceipt);
-	}
+  isValidReceipt(deliveryReceipt: DeliveryReceiptInterface) {
+    return this.state.isValidReceipt(deliveryReceipt);
+  }
 
   onReceiptConfirmed(deliveryReceipt: DeliveryReceiptInterface) {
-		if(!isOfTypeEntity(deliveryReceipt)) throw new Error("Bad implementation");
-		const { recipient, originator } = deliveryReceipt;
+    if (!isOfTypeEntity(deliveryReceipt)) throw new Error("Bad implementation");
+    const { recipient, originator } = deliveryReceipt;
 
-		if(!isOfTypeEntity(recipient) || !isOfTypeEntity(originator)) throw new Error("Bad implementation");
+    if (!isOfTypeEntity(recipient) || !isOfTypeEntity(originator)) throw new Error("Bad implementation");
 
-		const unwrappedDeliveryReceipt: PopulatedEntitiesWrapper<DeliveryReceiptInterface> = {
-			...deliveryReceipt,
-			recipient,
-			originator,
-		}
+    const unwrappedDeliveryReceipt: PopulatedEntitiesWrapper<DeliveryReceiptInterface> = {
+      ...deliveryReceipt,
+      recipient,
+      originator,
+    };
 
     this.state = this.state.onReceiptConfirmed(unwrappedDeliveryReceipt);
   }

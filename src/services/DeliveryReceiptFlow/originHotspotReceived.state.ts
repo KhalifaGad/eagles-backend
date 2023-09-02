@@ -1,18 +1,13 @@
-import {
-  DeliveryReceiptInterface,
-  HubReceivedType,
-  PopulatedEntitiesWrapper,
-  ShipmentStatuses,
-} from "../../types";
+import { DeliveryReceiptInterface, HubReceivedType, PopulatedEntitiesWrapper, ShipmentStatuses } from "../../types";
 import { DeliveryReceiptStateInterface } from "./state";
-import { ShippedToHubState } from "./shippedToHub.state"
+import { ShippedToHubState } from "./shippedToHub.state";
 
 export class OriginHotspotReceivedState implements DeliveryReceiptStateInterface {
   status = ShipmentStatuses.ORIGIN_HOTSPOT_RECEIVED;
   event?: HubReceivedType;
 
   constructor(private deliveryReceipt?: PopulatedEntitiesWrapper<DeliveryReceiptInterface>) {
-      this.initEvent();
+    this.initEvent();
   }
 
   getState() {
@@ -27,7 +22,8 @@ export class OriginHotspotReceivedState implements DeliveryReceiptStateInterface
   onReceiptConfirmed(deliveryReceipt: PopulatedEntitiesWrapper<DeliveryReceiptInterface>) {
     const { attributedTo } = deliveryReceipt;
 
-    if (!this.isValidReceipt(deliveryReceipt as DeliveryReceiptInterface)) throw new Error(`${attributedTo} cannot receipt this shipment`);
+    if (!this.isValidReceipt(deliveryReceipt as DeliveryReceiptInterface))
+      {throw new Error(`${attributedTo} cannot receipt this shipment`);}
 
     return new ShippedToHubState(deliveryReceipt);
   }

@@ -1,2 +1,2 @@
 export * from "./query.hepler";
-export * from "./entity.helper"
+export * from "./entity.helper";

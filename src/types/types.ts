@@ -1,10 +1,11 @@
 import { FilterQuery, LeanDocument, Types as MongooseTypes } from "mongoose";
 import {
-  AccountEnum, DeliveryReceiptAttributedToEnum,
+  AccountEnum,
+  DeliveryReceiptAttributedToEnum,
   ShipmentConsigneeEnum,
   ShipmentConsignorEnum,
   ShipmentStatuses,
-  StepLocationTypeEnum
+  StepLocationTypeEnum,
 } from "./enums";
 import * as Enums from "./enums";
 
@@ -27,7 +28,7 @@ export interface ListInterface<T> {
   totalCount: number;
 }
 
-export type ID =  MongooseTypes.ObjectId;
+export type ID = MongooseTypes.ObjectId;
 export type Entity<T> = NonNullable<LeanDocument<T & Partial<MongooseTypes.ObjectId>>> | ID;
 
 export type PopulatedEntitiesWrapper<T> = {
@@ -305,14 +306,14 @@ export interface ShipmentInterface {
 export interface CreateShipmentInterface {
   referenceNumber?: string;
   consigneeType: ShipmentConsigneeEnum;
-  consignee: string;
+  consignee: ID;
   consignorType: ShipmentConsignorEnum;
-  consignor: string;
+  consignor: ID;
   shippingFees: number;
   collectCashFees: number;
   shipmentPrice: number;
-  originAgency?: string;
-  destinationAgency: string;
+  originAgency?: ID;
+  destinationAgency: ID;
   isInCity?: boolean;
   notes: string[];
   products: ShipmentProductType[];
@@ -373,7 +374,7 @@ export interface RideInterface {
 }
 
 export interface CreateRidePayload {
-  rideTemplateId: string;
+  rideTemplateId: ID;
   employees: Entity<EmployeeInterface>[];
   shipments: Entity<ShipmentInterface>[];
   steps: RideStepInterface[];

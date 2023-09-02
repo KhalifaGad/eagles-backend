@@ -4,7 +4,7 @@ import {
   DeliveryReceiptAttributedToEnum,
   DeliveryReceiptInterface,
   PopulatedEntitiesWrapper,
-  ShipmentStatuses
+  ShipmentStatuses,
 } from "../../types";
 import { DeliveryReceiptStateInterface } from "./state";
 import { HubReceivedState } from "./hubReceived.state";
@@ -20,7 +20,7 @@ export class PlacedState implements DeliveryReceiptStateInterface {
   isValidReceipt(deliveryReceipt: DeliveryReceiptInterface) {
     const { attributedTo } = deliveryReceipt;
     const allowedAttributedTo = [DeliveryReceiptAttributedToEnum.Ride, DeliveryReceiptAttributedToEnum.Hub];
-    return allowedAttributedTo.includes(attributedTo as DeliveryReceiptAttributedToEnum)
+    return allowedAttributedTo.includes(attributedTo as DeliveryReceiptAttributedToEnum);
   }
 
   onReceiptConfirmed(deliveryReceipt: PopulatedEntitiesWrapper<DeliveryReceiptInterface>) {
@@ -28,9 +28,10 @@ export class PlacedState implements DeliveryReceiptStateInterface {
 
     const allowedAttributedTo = [DeliveryReceiptAttributedToEnum.Ride, DeliveryReceiptAttributedToEnum.Hub];
 
-    if (!allowedAttributedTo.includes(attributedTo as DeliveryReceiptAttributedToEnum)) throw new Error(`${attributedTo} cannot receipt this shipment`);
+    if (!allowedAttributedTo.includes(attributedTo as DeliveryReceiptAttributedToEnum))
+      {throw new Error(`${attributedTo} cannot receipt this shipment`);}
 
-    if(attributedTo === DeliveryReceiptAttributedToEnum.Ride) {
+    if (attributedTo === DeliveryReceiptAttributedToEnum.Ride) {
       return new ShippedToHubState(deliveryReceipt);
     }
 

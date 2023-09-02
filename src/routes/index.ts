@@ -12,7 +12,7 @@ import salaryRoutes from "./salary.routes";
 import shipmentRoutes from "./shipment.routes";
 import vehicleRoutes from "./vehicle.routes";
 import rideTemplateRoutes from "./rideTemplate.routes";
-import deliveryReceiptRoutes from "./deliveryReceipt.routes"
+import deliveryReceiptRoutes from "./deliveryReceipt.routes";
 import {
   queryParamsMiddleware,
   authenticateMiddleware,

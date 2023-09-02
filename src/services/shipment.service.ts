@@ -5,7 +5,7 @@ import {
   clientRepository,
   companyRepository,
   hubRepository,
-  shipmentRepository
+  shipmentRepository,
 } from "../mongoDB/repositories";
 import {
   AccountEnum,
@@ -65,7 +65,7 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
       destinationAgency: destinationAgency._id,
       originHotspot: originRelatedHub._id,
       destinationHotspot: destinationAgency.relatedHub,
-      hub: originRelatedHub.isHotspot? originRelatedHub.parentHub : originRelatedHub._id,
+      hub: originRelatedHub.isHotspot ? originRelatedHub.parentHub : originRelatedHub._id,
       status: ShipmentStatuses.PLACED,
       searchables: {
         consignorName: consignor.name,
@@ -85,7 +85,7 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
     });
   }
 
-  private async getConsignor(type: ShipmentConsignorEnum, consignorId: string) {
+  private async getConsignor(type: ShipmentConsignorEnum, consignorId: ID) {
     const consignor =
       type === ShipmentConsignorEnum.Client
         ? await clientRepository.findById(consignorId)
@@ -96,7 +96,7 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
     return consignor;
   }
 
-  private async getConsignee(type: ShipmentConsigneeEnum, consigneeId: string) {
+  private async getConsignee(type: ShipmentConsigneeEnum, consigneeId: ID) {
     const consignee =
       type === ShipmentConsigneeEnum.Client
         ? await clientRepository.findById(consigneeId)

@@ -23,7 +23,7 @@ export default class DefaultRepository<T> {
     this.updateWhereId = this.updateWhereId.bind(this);
   }
 
-  async findById(id: ID): Promise<T>  {
+  async findById(id: ID): Promise<T> {
     if (this.population) return this.model.findById(id).populate(this.population).lean();
     return this.model.findById(id).lean();
   }
@@ -68,7 +68,7 @@ export default class DefaultRepository<T> {
     return this.findById(createdData._id);
   }
 
-  async insertMany(data: T[]): Promise<T[]>{
+  async insertMany(data: T[]): Promise<T[]> {
     const documents = await this.model.insertMany(data);
     return this.findMany({ _id: { $in: documents.map(doc => doc._id) } });
   }

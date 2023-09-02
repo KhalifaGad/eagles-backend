@@ -4,7 +4,8 @@ import {
   ShipmentConsignorEnum,
   ShipmentDestinationEnum,
   ShipmentEventNamesEnum,
-  ShipmentInterface, ShipmentStatuses,
+  ShipmentInterface,
+  ShipmentStatuses,
 } from "../../types";
 import { Schemas } from "../constants";
 

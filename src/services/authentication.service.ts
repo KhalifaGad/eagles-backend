@@ -1,4 +1,5 @@
 import { sign } from "jsonwebtoken";
+import { isOfTypeEntity } from "../mongoDB";
 import EmployeeService from "./employee.service";
 import config from "../../config";
 import { badData, unauthorized } from "../errors";
@@ -8,7 +9,7 @@ import {
   AccountEnum,
   CompanyInterface,
   CredentialInterface,
-  EmployeeInterface,
+  EmployeeInterface, ID,
   ListArgumentsInterface,
   ListInterface,
 } from "../types";
@@ -62,7 +63,7 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
     return { data: data.map(credential => destroyProperties(credential, ["password"])), totalCount };
   }
 
-  async show(id: string) {
+  async show(id: ID) {
     const credential = await credentialRepository.findById(id);
 
     if (credential.accountType === AccountEnum.Company) {
@@ -88,7 +89,7 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
     return (await credentialRepository.insertMany(data)).map(credential => destroyProperties(credential, ["password"]));
   }
 
-  async update(id: string, { password, ...data }: CredentialInterface) {
+  async update(id: ID, { password, ...data }: CredentialInterface) {
     const credential = await credentialRepository.updateWhereId(
       id,
       password ? { ...data, password: await createHash(password) } : data
@@ -96,15 +97,17 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
     if (!credential) return null;
 
     if (data.mobile) {
-      if (typeof credential.account !== "string") {
-        await this.updateCredentialAccountMobile(String(credential.account._id), credential.accountType, data.mobile);
+      if(isOfTypeEntity(credential.account)) {
+        await this.updateCredentialAccountMobile(credential.account._id as ID, credential.accountType, data.mobile);
+      } else {
+        await this.updateCredentialAccountMobile(credential.account as ID, credential.accountType, data.mobile);
       }
     }
 
     return this.show(id);
   }
 
-  private async updateCredentialAccountMobile(accountId: string, accountType: AccountEnum, mobile: string) {
+  private async updateCredentialAccountMobile(accountId: ID, accountType: AccountEnum, mobile: string) {
     if (!accountId) return;
     if (accountType === AccountEnum.Employee) {
       await EmployeeService.update(accountId, { mobile });

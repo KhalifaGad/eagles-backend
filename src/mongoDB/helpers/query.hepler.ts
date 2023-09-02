@@ -10,22 +10,17 @@ function getFilterValue(value: unknown) {
 }
 
 export function buildSearch(filter: Record<string, unknown>): FilterQuery<any> {
-  const test =
-    Object.keys(filter).length > 0
-      ? {
-          $or: Object.keys(filter).map(property => {
-            const val = {
-              [property]: getFilterValue(filter[property]),
-            };
-            // console.log(val)
-            return val;
-          }),
-        }
-      : {};
-
-  // console.log(test)
-
-  return test;
+  return Object.keys(filter).length > 0
+         ? {
+      $or: Object.keys(filter).map(property => {
+        const val = {
+          [property]: getFilterValue(filter[property]),
+        };
+        // console.log(val)
+        return val;
+      }),
+    }
+         : {};
 }
 
 export const buildListOptions = (options: ListOptionsInterface): ListOptionsInterface => ({

@@ -1,19 +1,27 @@
 import { badData } from "@hapi/boom";
 import { notFound } from "../errors";
-import { getEntityRef, getUniqueCode } from "../utilities";
-import { agencyRepository, clientRepository, companyRepository, shipmentRepository } from "../mongoDB/repositories";
-import DefaultService from "./default.service";
+import {
+  agencyRepository,
+  clientRepository,
+  companyRepository,
+  hubRepository,
+  shipmentRepository
+} from "../mongoDB/repositories";
 import {
   AccountEnum,
   AddressInterface,
   AuthUser,
   CreateShipmentInterface,
   EmployeeInterface,
+  ID,
   ShipmentConsigneeEnum,
   ShipmentConsignorEnum,
   ShipmentEventNamesEnum,
   ShipmentInterface,
+  ShipmentStatuses,
 } from "../types";
+import { getEntityRef, getUniqueCode } from "../utilities";
+import DefaultService from "./default.service";
 
 class ShipmentService extends DefaultService<ShipmentInterface> {
   constructor() {
@@ -46,6 +54,8 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
 
     const code = await this.generateCode();
 
+    const originRelatedHub = await hubRepository.findById(originAgency.relatedHub as ID);
+
     return this.repository.create({
       ...payload,
       code,
@@ -53,6 +63,10 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
       consignee: consignee._id,
       originAgency: originAgency._id,
       destinationAgency: destinationAgency._id,
+      originHotspot: originRelatedHub._id,
+      destinationHotspot: destinationAgency.relatedHub,
+      hub: originRelatedHub.isHotspot? originRelatedHub.parentHub : originRelatedHub._id,
+      status: ShipmentStatuses.PLACED,
       searchables: {
         consignorName: consignor.name,
         consigneeName: consignee.name,

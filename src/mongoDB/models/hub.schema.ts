@@ -7,6 +7,14 @@ const hubSchema = new Schema<HubInterface>(
   {
     name: { type: String, required: true, unique: true },
     address: { type: addressSchema, required: true },
+    isHotspot: { type: Boolean, required: true, default: false },
+    parentHub: {
+      type: Schema.Types.ObjectId,
+      ref: Schemas.hub,
+      required: function () {
+        return this.isHotspot;
+      },
+    },
   },
   { timestamps: true, versionKey: false }
 );

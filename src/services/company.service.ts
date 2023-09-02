@@ -2,7 +2,14 @@ import { badData } from "../errors";
 import { createHash, getEntityRef } from "../utilities";
 import DefaultRepository, { companyRepository, credentialRepository } from "../mongoDB/repositories";
 import DefaultService from "./default.service";
-import { AccountEnum, CompanyInterface, CredentialInterface, MerchantInterface, ProbablyWithPassword } from "../types";
+import {
+  AccountEnum,
+  CompanyInterface,
+  CredentialInterface,
+  MerchantInterface,
+  ID,
+  ProbablyWithPassword
+} from "../types";
 
 interface CompanyMutationInterface extends CompanyInterface {
   employees: ProbablyWithPassword<MerchantInterface>[];
@@ -14,6 +21,9 @@ class CompanyService extends DefaultService<CompanyInterface> {
     this.create = this.create.bind(this);
     this.update = this.update.bind(this);
     this.updateEmployeesCredentials = this.updateEmployeesCredentials.bind(this);
+    this.addPasswordToEmployees = this.addPasswordToEmployees.bind(this);
+    this.deleteEmployeeCredentials = this.deleteEmployeeCredentials.bind(this);
+    this.updateEmployeesMobile = this.updateEmployeesMobile.bind(this);
   }
 
   async create(data: CompanyMutationInterface) {
@@ -44,7 +54,7 @@ class CompanyService extends DefaultService<CompanyInterface> {
       for (const employee of employeesWithPassword) {
         await this.credentialRepository.create({
           mobile: employee.mobile,
-          account: company,
+          account: company._id,
           accountType: AccountEnum.Company,
           password: await createHash(String(employee.password)),
         });
@@ -53,7 +63,7 @@ class CompanyService extends DefaultService<CompanyInterface> {
     return company;
   }
 
-  async update(id: string, data: CompanyMutationInterface) {
+  async update(id: ID, data: CompanyMutationInterface) {
     const company = await this.repository.findById(id);
     if (!company) throw badData("الشركة غير موجودة");
 
@@ -65,6 +75,7 @@ class CompanyService extends DefaultService<CompanyInterface> {
     company: CompanyInterface,
     employees: ProbablyWithPassword<MerchantInterface>[]
   ) {
+    if(!company._id) return;
     const existingEmployees = company.employees;
 
     const updatedEmployees: ProbablyWithPassword<MerchantInterface>[] = [];
@@ -90,39 +101,49 @@ class CompanyService extends DefaultService<CompanyInterface> {
     }
 
     const newEmployeesWithPassword = newEmployees.filter(employee => !!employee.password);
-    if (newEmployeesWithPassword.length) {
-      for (const employee of newEmployeesWithPassword) {
-        await this.credentialRepository.create({
-          mobile: employee.mobile,
-          account: company,
-          accountType: AccountEnum.Company,
-          password: await createHash(String(employee.password)),
-        });
-      }
-    }
+    await this.addPasswordToEmployees(newEmployeesWithPassword, company._id)
 
-    if (deletedEmployees.length) {
-      await this.credentialRepository.deleteBy({ mobile: { $in: deletedEmployees.map(employee => employee.mobile) } });
-    }
+    await this.deleteEmployeeCredentials(deletedEmployees);
 
     const mobileUpdatedEmployees = updatedEmployees.filter(employee => {
       const existingEmployee = existingEmployees.find(existingEmployee => existingEmployee._id === employee._id);
       return existingEmployee && existingEmployee.mobile !== employee.mobile;
     });
 
-    if (mobileUpdatedEmployees.length) {
-      const credentials = await this.credentialRepository.findMany({ account: company._id });
-      for (const mobileUpdatedEmployee of mobileUpdatedEmployees) {
-        const oldEmployee = existingEmployees.find(
-          existingEmployee => existingEmployee._id === mobileUpdatedEmployee._id
-        );
-        const employeeCredential = credentials.find(credential => credential.mobile === oldEmployee?.mobile);
-        if (!employeeCredential?._id) continue;
-        await this.credentialRepository.updateWhereId(employeeCredential._id, {
-          mobile: mobileUpdatedEmployee.mobile,
-        });
-      }
+    if (!mobileUpdatedEmployees.length) return
+
+    await this.updateEmployeesMobile(mobileUpdatedEmployees, existingEmployees, company._id);
+  }
+
+  private async updateEmployeesMobile(mobileUpdatedEmployees: MerchantInterface[], allEmployees:  MerchantInterface[], companyId: ID){
+    const credentials = await this.credentialRepository.findMany({ account: companyId });
+    for (const mobileUpdatedEmployee of mobileUpdatedEmployees) {
+      const oldEmployee = allEmployees.find(
+        existingEmployee => existingEmployee._id === mobileUpdatedEmployee._id
+      );
+      const employeeCredential = credentials.find(credential => credential.mobile === oldEmployee?.mobile);
+      if (!employeeCredential?._id) continue;
+      await this.credentialRepository.updateWhereId(employeeCredential._id, {
+        mobile: mobileUpdatedEmployee.mobile,
+      });
     }
+  }
+
+  private async addPasswordToEmployees(employees: ProbablyWithPassword<MerchantInterface>[], companyId: ID){
+    for (const employee of employees) {
+      await this.credentialRepository.create({
+        mobile: employee.mobile,
+        account: companyId,
+        accountType: AccountEnum.Company,
+        password: await createHash(String(employee.password)),
+      });
+    }
+  }
+
+  private async deleteEmployeeCredentials(employees: MerchantInterface[]){
+    if (!employees.length) return
+
+    await this.credentialRepository.deleteBy({ mobile: { $in: employees.map(employee => employee.mobile) } });
   }
 }
 

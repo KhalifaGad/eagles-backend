@@ -4,7 +4,7 @@ import {
   ShipmentConsignorEnum,
   ShipmentDestinationEnum,
   ShipmentEventNamesEnum,
-  ShipmentInterface,
+  ShipmentInterface, ShipmentStatuses,
 } from "../../types";
 import { Schemas } from "../constants";
 
@@ -26,8 +26,13 @@ const shipmentSchema = new Schema<ShipmentInterface>(
     collectCashFees: { type: Number, required: true, default: 0 },
     shipmentPrice: { type: Number, required: true, default: 0 },
     originAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency, required: true },
+    originHotspot: { type: Schema.Types.ObjectId, ref: Schemas.hub, required: true },
     destinationAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency, required: true },
-    hub: { type: Schema.Types.ObjectId, ref: Schemas.hub },
+    destinationHotspot: { type: Schema.Types.ObjectId, ref: Schemas.hub, required: true },
+    hub: { type: Schema.Types.ObjectId, ref: Schemas.hub, required: true },
+    failedAttemptsCount: { type: Number, required: true, default: 0 },
+    isReturning: { type: Boolean, required: true, default: false },
+    status: { type: String, enum: ShipmentStatuses, required: true },
     searchables: {
       consignorName: { type: String, index: 1 },
       consigneeName: { type: String, index: 1 },

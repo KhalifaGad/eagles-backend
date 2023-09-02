@@ -4,8 +4,9 @@ import { MongoError } from "mongodb";
 import { badData } from "../errors";
 import { logger } from "../utilities";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default (error: Boom | MongoError | Error, _req: Request, res: Response, _next: NextFunction) => {
-  logger.info(error);
+  logger.error(error.message, error);
   if (error instanceof MongoError && error.code === 11000) {
     error = badData(
       `${error.message
@@ -20,8 +21,6 @@ export default (error: Boom | MongoError | Error, _req: Request, res: Response, 
   if (isBoom(error)) {
     return res.status(error.output.payload.statusCode).send(error.output.payload);
   }
-
-  logger.error(error.message);
 
   return res.status(500).send({
     statusCode: 500,

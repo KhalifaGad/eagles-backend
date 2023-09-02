@@ -1,5 +1,11 @@
 import { FilterQuery, LeanDocument, Types as MongooseTypes } from "mongoose";
-import { AccountEnum, ShipmentConsigneeEnum, ShipmentConsignorEnum, StepLocationTypeEnum } from "./enums";
+import {
+  AccountEnum, DeliveryReceiptAttributedToEnum,
+  ShipmentConsigneeEnum,
+  ShipmentConsignorEnum,
+  ShipmentStatuses,
+  StepLocationTypeEnum
+} from "./enums";
 import * as Enums from "./enums";
 
 export interface ListOptionsInterface {
@@ -21,11 +27,15 @@ export interface ListInterface<T> {
   totalCount: number;
 }
 
-export type MongooseID = string;
-export type Entity<T> = NonNullable<LeanDocument<T & { _id?: MongooseID }>> | MongooseID;
+export type ID =  MongooseTypes.ObjectId;
+export type Entity<T> = NonNullable<LeanDocument<T & Partial<MongooseTypes.ObjectId>>> | ID;
+
+export type PopulatedEntitiesWrapper<T> = {
+  [K in keyof T]: T[K] extends Entity<infer E> ? E : T[K];
+};
 
 export interface CityInterface {
-  _id?: MongooseID;
+  _id?: ID;
   arabicName: string;
   englishName: string;
 }
@@ -43,8 +53,16 @@ export interface AddressInterface {
   name?: string;
 }
 
+export interface HubInterface {
+  _id?: ID;
+  name: string;
+  address: AddressInterface;
+  isHotspot: boolean;
+  parentHub?: Entity<HubInterface>;
+}
+
 export interface AgencyInterface {
-  _id?: MongooseID;
+  _id?: ID;
   name: string;
   address: AddressInterface;
   telephone: string;
@@ -53,16 +71,11 @@ export interface AgencyInterface {
   inCityPackagePercentage: number;
   sentPackagePercentage: number;
   receivedPackagePercentage: number;
-}
-
-export interface HubInterface {
-  _id?: MongooseID;
-  name: string;
-  address: AddressInterface;
+  relatedHub: Entity<HubInterface>;
 }
 
 export interface EmployeeInterface {
-  _id?: MongooseID;
+  _id?: ID;
   name: string;
   mobile: string;
   email?: string;
@@ -91,6 +104,7 @@ type ConfirmedEventNameType = "CONFIRMED";
 type PickedEventNameType = "PICKED";
 type AgencyReceivedEventNameType = "AGENCY_RECEIVED";
 type HubReceivedEventNameType = "HUB_RECEIVED";
+type HotspotReceivedEventNameType = "HOTSPOT_RECEIVED";
 type ShippedEventNameType = "SHIPPED";
 type FailedAttemptEventNameType = "FAILED_ATTEMPT";
 type ReturnEventNameType = "RETURN";
@@ -100,31 +114,32 @@ type EventType = { name: string; date: Date };
 
 type PlacedType = EventType & { name: PlacedEventNameType; employee?: EmployeeInterface };
 
-type ConfirmedType = EventType & {
+export type ConfirmedType = EventType & {
   name: ConfirmedEventNameType;
 };
 
-type HubReceivedType = EventType & {
-  name: HubReceivedEventNameType;
+export type HubReceivedType = EventType & {
+  name: HubReceivedEventNameType | HotspotReceivedEventNameType;
   hub: Entity<HubInterface>;
 };
 
-type ShippedType = EventType & {
+export type ShippedType = EventType & {
   name: ShippedEventNameType;
   destinationType: shipmentDestinationType;
+  employee: Entity<EmployeeInterface>;
 };
 
-type FailedAttemptType = EventType & {
+export type FailedAttemptType = EventType & {
   name: FailedAttemptEventNameType;
 };
 
-type ReturnType = EventType & {
+export type ReturnType = EventType & {
   name: ReturnEventNameType;
   products: ShipmentProductType[];
 };
 
 export interface ClientInterface {
-  _id?: MongooseID;
+  _id?: ID;
   name: string;
   mobile: string;
   secondMobile: string;
@@ -146,7 +161,7 @@ export interface CompanyPaymentConfigInterface {
 }
 
 export interface MerchantInterface {
-  _id?: MongooseID;
+  _id?: ID;
   name: string;
   position: Enums.CompanyEmployeesPositionEnum;
   mobile: string;
@@ -155,7 +170,7 @@ export interface MerchantInterface {
 }
 
 export interface CompanyInterface {
-  _id?: MongooseID;
+  _id?: ID;
   name: string;
   mobile: string;
   companyType: Enums.CompaniesEnum;
@@ -169,7 +184,7 @@ export interface CompanyInterface {
 }
 
 export interface CompanyProductInterface {
-  _id?: MongooseID;
+  _id?: ID;
   name: string;
   description?: string;
   price: number;
@@ -178,7 +193,7 @@ export interface CompanyProductInterface {
 }
 
 export interface CredentialInterface {
-  _id?: MongooseID;
+  _id?: ID;
   mobile: string;
   password?: string;
   accountType: Enums.AccountEnum;
@@ -186,7 +201,7 @@ export interface CredentialInterface {
 }
 
 export interface EmployeeRatingInterface {
-  _id?: MongooseID;
+  _id?: ID;
   employee: Entity<EmployeeInterface>;
   agency: Entity<AgencyInterface>;
   individualTasks: number;
@@ -204,7 +219,7 @@ export interface EmployeeRatingInterface {
 }
 
 export interface VehicleInterface {
-  _id?: MongooseID;
+  _id?: ID;
   code: string;
   color: string;
   model: string;
@@ -220,7 +235,7 @@ export interface VehicleInterface {
 }
 
 export interface SalaryInterface {
-  _id?: MongooseID;
+  _id?: ID;
   employee: Entity<EmployeeInterface>;
   agency: Entity<AgencyInterface>;
   baseSalary: number;
@@ -243,7 +258,7 @@ type PickedType = EventType & {
   employee: Entity<EmployeeInterface>;
 };
 
-type ShipmentEventTypes =
+export type ShipmentEventType =
   | PlacedType
   | ConfirmedType
   | PickedType
@@ -254,7 +269,7 @@ type ShipmentEventTypes =
   | ReturnType;
 
 export interface ShipmentInterface {
-  _id?: MongooseID;
+  _id?: ID;
   code: string;
   referenceNumber: string;
   consignorType: Enums.ShipmentConsignorEnum;
@@ -263,15 +278,20 @@ export interface ShipmentInterface {
   consignee: Entity<CompanyInterface | ClientInterface>;
   isInCity: boolean;
   originAgency: Entity<AgencyInterface>;
+  originHotspot: Entity<HubInterface>;
   destinationAgency: Entity<AgencyInterface>;
-  hub?: Entity<HubInterface>;
-  events: ShipmentEventTypes[];
+  destinationHotspot: Entity<HubInterface>;
+  hub: Entity<HubInterface>;
+  events: ShipmentEventType[];
   shippingFees: number;
+  status: ShipmentStatuses;
   collectCashFees?: number;
   shipmentPrice?: number;
   notes?: string[];
   products: ShipmentProductType[];
   returns: ShipmentProductType[];
+  failedAttemptsCount: number;
+  isReturning: boolean;
   searchables: {
     consignorName: string;
     consigneeName: string;
@@ -343,7 +363,7 @@ export interface RideTemplateInterface {
 }
 
 export interface RideInterface {
-  _id?: MongooseID;
+  _id?: ID;
   code: string;
   employees: Entity<EmployeeInterface>[];
   shipments: Entity<ShipmentInterface>[];
@@ -359,4 +379,17 @@ export interface CreateRidePayload {
   steps: RideStepInterface[];
   startDate?: Date;
   endDate?: Date;
+}
+
+export interface DeliveryReceiptInterface {
+  type: "Receive" | "Delivery";
+  attributedTo: DeliveryReceiptAttributedToEnum;
+  recipient: Entity<EmployeeInterface>;
+  recipientHub?: Entity<HubInterface>;
+  recipientAgency?: Entity<AgencyInterface>;
+  originator: Entity<EmployeeInterface>;
+  originatorHub?: Entity<HubInterface>;
+  originatorAgency?: Entity<AgencyInterface>;
+  isRecipientConfirmed: boolean;
+  shipments: Entity<ShipmentInterface>[];
 }

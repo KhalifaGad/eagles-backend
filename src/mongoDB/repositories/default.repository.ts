@@ -1,6 +1,6 @@
-import { AnyBulkWriteOperation, DeleteResult } from "mongodb";
-import { FilterQuery, Model, PopulateOptions, UpdateQuery } from "mongoose";
-import { ListArgumentsInterface, ListInterface, ListOptionsInterface, MongooseID } from "../../types";
+import { DeleteResult } from "mongodb";
+import { FilterQuery, Model, PopulateOptions } from "mongoose";
+import { ListArgumentsInterface, ListInterface, ListOptionsInterface, ID } from "../../types";
 import { buildListOptions, buildSearch } from "../helpers";
 
 export default class DefaultRepository<T> {
@@ -10,24 +10,35 @@ export default class DefaultRepository<T> {
   constructor(model: Model<T>, population?: PopulateOptions | PopulateOptions[]) {
     this.model = model;
     this.population = population;
+    this.findById = this.findById.bind(this);
+    this.findOne = this.findOne.bind(this);
+    this.findMany = this.findMany.bind(this);
+    this.list = this.list.bind(this);
+    this.count = this.count.bind(this);
+    this.create = this.create.bind(this);
+    this.insertMany = this.insertMany.bind(this);
+    this.upsert = this.upsert.bind(this);
+    this.deleteById = this.deleteById.bind(this);
+    this.deleteBy = this.deleteBy.bind(this);
+    this.updateWhereId = this.updateWhereId.bind(this);
   }
 
-  findById = async (id: MongooseID | string): Promise<T> => {
+  async findById(id: ID): Promise<T>  {
     if (this.population) return this.model.findById(id).populate(this.population).lean();
     return this.model.findById(id).lean();
-  };
+  }
 
-  findOne = async (filter: FilterQuery<T> = {}): Promise<T> => {
+  async findOne(filter: FilterQuery<T> = {}): Promise<T> {
     if (this.population) return this.model.findOne(filter).populate(this.population).lean();
     return this.model.findOne(filter).lean();
-  };
+  }
 
-  findMany = async (filter: FilterQuery<T> = {}): Promise<T[]> => {
+  async findMany(filter: FilterQuery<T> = {}): Promise<T[]> {
     if (this.population) return this.model.find(filter).populate(this.population).lean();
     return this.model.find(filter).lean();
-  };
+  }
 
-  list = async ({ filter = {}, options, ignoreLean = false }: ListArgumentsInterface<T>): Promise<ListInterface<T>> => {
+  async list({ filter = {}, options, ignoreLean = false }: ListArgumentsInterface<T>): Promise<ListInterface<T>> {
     const search = buildSearch(filter);
     const {
       page = 0,
@@ -43,39 +54,39 @@ export default class DefaultRepository<T> {
     if (this.population) cursor.populate(this.population).lean();
 
     return {
-      data: ignoreLean ? await cursor : await cursor.lean(),
+      data: ignoreLean ? await cursor.exec() : await cursor.lean(),
       totalCount: await this.count(search),
     };
-  };
+  }
 
-  count = async (filter: FilterQuery<T> = {}): Promise<number> => {
+  async count(filter: FilterQuery<T> = {}): Promise<number> {
     return this.model.countDocuments(filter);
-  };
+  }
 
-  create = async (data: Partial<T>): Promise<T> => {
+  async create(data: Partial<T>): Promise<T> {
     const createdData = await this.model.create(data);
     return this.findById(createdData._id);
-  };
+  }
 
-  insertMany = async (data: T[]): Promise<T[]> => {
+  async insertMany(data: T[]): Promise<T[]>{
     const documents = await this.model.insertMany(data);
     return this.findMany({ _id: { $in: documents.map(doc => doc._id) } });
-  };
+  }
 
-  upsert(data: T, key: keyof T) {
+  async upsert(data: T, key: keyof T) {
     const query = { [key]: data[key] } as FilterQuery<T>;
     return this.model.findOneAndUpdate(query, { $set: data }, { upsert: true, new: true });
   }
 
-  deleteById = async (id: MongooseID): Promise<T | null> => {
+  async deleteById(id: ID): Promise<T | null> {
     return this.model.findByIdAndDelete(id);
-  };
+  }
 
-  deleteBy = async (criteria: FilterQuery<T>): Promise<DeleteResult> => {
+  async deleteBy(criteria: FilterQuery<T>): Promise<DeleteResult> {
     return this.model.deleteMany(criteria);
-  };
+  }
 
-  updateWhereId = async (id: MongooseID, data = {}): Promise<T | null> => {
+  async updateWhereId(id: ID, data = {}): Promise<T | null> {
     return this.model.findByIdAndUpdate(id, data, { new: true, populate: this.population, lean: true });
-  };
+  }
 }

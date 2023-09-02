@@ -1,4 +1,4 @@
-import { AccountEnum, MongooseID } from "../../types";
+import { AccountEnum, ID } from "../../types";
 import { createHash } from "../../utilities";
 import * as repositories from "../repositories";
 import { citiesData, hubsData } from "./data";
@@ -13,10 +13,10 @@ export default async () => {
 
   // ***********  Hubs *********** //
   await Promise.all(
-    hubsData.map(async ({ name, cityEnglishName, address }) => {
+    hubsData.map(async ({ name, cityEnglishName, address, isHotspot }) => {
       const city = await repositories.cityRepository.findOne({ englishName: cityEnglishName });
 
-      return repositories.hubRepository.upsert({ name, address: { ...address, city: city._id as MongooseID } }, "name");
+      return repositories.hubRepository.upsert({ name, isHotspot, address: { ...address, city: city._id as ID } }, "name");
     })
   );
 
@@ -43,7 +43,7 @@ export default async () => {
       mobile: ADMIN_PHONE,
       accountType: AccountEnum.Employee,
       password: await createHash(ADMIN_PASS),
-      account,
+      account: account._id,
     },
     "mobile"
   );

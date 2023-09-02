@@ -2,7 +2,8 @@ import { Request, Response, NextFunction } from "express";
 
 const parser = (stringifiedJSON: string) => {
   try {
-    return JSON.parse(stringifiedJSON);
+    const jsonValue =  JSON.parse(stringifiedJSON);
+    return typeof jsonValue === "number" ? stringifiedJSON : jsonValue;
   } catch {
     return stringifiedJSON;
   }

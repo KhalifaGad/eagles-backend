@@ -7,6 +7,7 @@ import { CreateRidePayload, RideInterface } from "../types";
 class RideService extends DefaultService<RideInterface> {
   constructor() {
     super(rideRepository);
+    this.createRide = this.createRide.bind(this);
   }
 
   async createRide(payload: CreateRidePayload) {

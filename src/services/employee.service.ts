@@ -23,7 +23,7 @@ class EmployeeService extends DefaultService<EmployeeInterface> {
     if (shouldCreateCredentials) {
       await this.credentialRepository.create({
         mobile: payload.mobile,
-        account: account,
+        account: account._id,
         accountType: AccountEnum.Employee,
         password: await createHash(password),
       });

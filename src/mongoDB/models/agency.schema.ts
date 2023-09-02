@@ -13,6 +13,7 @@ const agencySchema = new Schema<AgencyInterface>(
     receivedPackagePercentage: { type: Number, required: true },
     sentPackagePercentage: { type: Number, required: true },
     shareBusPercentage: { type: Number, required: true },
+    relatedHub: { type: Schema.Types.ObjectId, ref: Schemas.hub, required: true },
   },
   { timestamps: true, versionKey: false }
 );

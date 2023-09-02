@@ -12,6 +12,7 @@ import salaryRoutes from "./salary.routes";
 import shipmentRoutes from "./shipment.routes";
 import vehicleRoutes from "./vehicle.routes";
 import rideTemplateRoutes from "./rideTemplate.routes";
+import deliveryReceiptRoutes from "./deliveryReceipt.routes"
 import {
   queryParamsMiddleware,
   authenticateMiddleware,
@@ -40,6 +41,7 @@ router.use(salaryRoutes);
 router.use(shipmentRoutes);
 router.use(vehicleRoutes);
 router.use(rideTemplateRoutes);
+router.use(deliveryReceiptRoutes);
 
 router.use(errorHandlerMiddleware);
 

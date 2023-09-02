@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import Repository from "../mongoDB/repositories";
-import { AuthUser, ListArgumentsInterface, ListInterface } from "../types";
+import { AuthUser, ID, ListArgumentsInterface, ListInterface } from "../types";
 
 export default class DefaultService<T> {
   repository: Repository<T>;
@@ -20,8 +20,8 @@ export default class DefaultService<T> {
     return this.repository.list(listArguments);
   }
 
-  show(id: string, authUser?: AuthUser): Promise<T | null>;
-  async show(id: string) {
+  show(id: ID, authUser?: AuthUser): Promise<T | null>;
+  async show(id: ID) {
     return this.repository.findById(id);
   }
 
@@ -35,13 +35,13 @@ export default class DefaultService<T> {
     return this.repository.insertMany(data);
   }
 
-  update(id: string, data: T, authUser?: AuthUser): Promise<T | null>;
-  async update(id: string, data: T) {
+  update(id: ID, data: T, authUser?: AuthUser): Promise<T | null>;
+  async update(id: ID, data: T) {
     return this.repository.updateWhereId(id, data);
   }
 
-  delete(id: string, authUser?: AuthUser): Promise<T | null>;
-  async delete(id: string): Promise<T | null> {
+  delete(id: ID, authUser?: AuthUser): Promise<T | null>;
+  async delete(id: ID): Promise<T | null> {
     return this.repository.deleteById(id);
   }
 }

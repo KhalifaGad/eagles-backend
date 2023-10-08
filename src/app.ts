@@ -1,12 +1,12 @@
-import { establishConnection } from "./mongoDB";
-import Server from "./server";
-import config from "../config";
+import config from "./config/index.js";
+import { establishConnection } from "./infra/index.js";
+import Server from "./server.js";
 
 export default async () => {
   try {
     await establishConnection();
     new Server(config.port).start();
-  } catch (err) {
+  } catch (err: any) {
     console.error(err.message);
     return process.exit(1);
   }

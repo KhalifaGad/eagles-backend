@@ -1,13 +1,18 @@
-import { isOfTypeEntity } from "../../mongoDB";
-import { DeliveryReceiptInterface, PopulatedEntitiesWrapper, ShipmentStatuses, ShippedType } from "../../types";
-import { DeliveryReceiptStateInterface } from "./state";
-import { HubReceivedState } from "./hubReceived.state";
+import { isOfTypeEntity } from "$infra";
+import {
+  PopulatedDeliveryReceipt,
+  PopulatedDeliveryReceiptWithRecipient,
+  ShipmentStatuses,
+  ShippedType,
+} from "$types";
+import { HubReceivedState } from "./hubReceived.state.js";
+import { DeliveryReceiptStateInterface } from "./state.js";
 
 export class ShippedToHubState implements DeliveryReceiptStateInterface {
   status = ShipmentStatuses.SHIPPED_TO_HUB;
   event?: ShippedType;
 
-  constructor(private deliveryReceipt?: PopulatedEntitiesWrapper<DeliveryReceiptInterface>) {
+  constructor(private deliveryReceipt?: PopulatedDeliveryReceiptWithRecipient) {
     this.initEvent();
   }
 
@@ -15,25 +20,21 @@ export class ShippedToHubState implements DeliveryReceiptStateInterface {
     return { status: this.status, event: this.event };
   }
 
-  isValidReceipt(deliveryReceipt: DeliveryReceiptInterface) {
-    const { attributedTo } = deliveryReceipt;
+  isValidReceipt(deliveryReceipt: PopulatedDeliveryReceipt) {
+    const { attributedTo, recipientHub } = deliveryReceipt;
 
-    const employee = deliveryReceipt.type === "Receive" ? deliveryReceipt.originator : deliveryReceipt.recipient;
+    if (!recipientHub) return false;
+    if (!isOfTypeEntity(recipientHub)) throw new Error("Bad implementation");
 
-    if (!isOfTypeEntity(employee)) throw new Error("Bad implementation");
-
-    const employeeHub = employee.hub;
-    if (!employeeHub) return false;
-    if (!isOfTypeEntity(employeeHub)) throw new Error("Bad implementation");
-
-    return attributedTo === "Hub" && !employeeHub.isHotspot;
+    return attributedTo === "Hub" && !recipientHub.isHotspot;
   }
 
-  onReceiptConfirmed(deliveryReceipt: PopulatedEntitiesWrapper<DeliveryReceiptInterface>) {
+  onReceiptConfirmed(deliveryReceipt: PopulatedDeliveryReceiptWithRecipient) {
     const { attributedTo } = deliveryReceipt;
 
-    if (this.isValidReceipt(deliveryReceipt as DeliveryReceiptInterface))
-      {throw new Error(`${attributedTo} cannot receipt this shipment`);}
+    if (this.isValidReceipt(deliveryReceipt)) {
+      throw new Error(`${attributedTo} cannot receipt this shipment`);
+    }
 
     return new HubReceivedState(deliveryReceipt);
   }

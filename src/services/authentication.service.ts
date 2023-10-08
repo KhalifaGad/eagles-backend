@@ -1,20 +1,19 @@
-import { sign } from "jsonwebtoken";
-import { isOfTypeEntity } from "../mongoDB";
-import EmployeeService from "./employee.service";
-import config from "../../config";
-import { badData, unauthorized } from "../errors";
-import { destroyProperties } from "../helpers";
-import { credentialRepository } from "../mongoDB/repositories";
+import config from "$config";
+import { badData, notFound, unauthorized } from "$errors";
+import { credentialRepository, isOfTypeEntity } from "$infra";
 import {
   AccountEnum,
   CompanyInterface,
   CredentialInterface,
-  EmployeeInterface, ID,
+  EmployeeInterface,
+  ID,
   ListArgumentsInterface,
   ListInterface,
-} from "../types";
-import { createHash, getEntityRef, verifyHash } from "../utilities";
-import DefaultService from "./default.service";
+} from "$types";
+import { createHash, destroyProperties, verifyHash } from "$utils";
+import jwt from "jsonwebtoken";
+import DefaultService from "./default.service.js";
+import EmployeeService from "./employee.service.js";
 
 class AuthenticationService extends DefaultService<CredentialInterface> {
   constructor() {
@@ -31,13 +30,12 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
     this.getEmployeeTokenPayload = this.getEmployeeTokenPayload.bind(this);
   }
 
-  async login({
-    mobile,
-    password,
-  }: {
-    mobile: string;
-    password: string;
-  }): Promise<void | (CredentialInterface & { token: string })> {
+  async login({ mobile, password }: { mobile: string; password: string }): Promise<
+    | void
+    | (CredentialInterface & {
+        token: string;
+      })
+  > {
     const credential = await credentialRepository.findOne({ mobile });
 
     if (!credential || !(await verifyHash(credential.password as string, password))) {
@@ -52,7 +50,7 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
 
     const tokenPayload = this.getTokenPayload(credential, mobile);
 
-    const token = sign(tokenPayload, config.jwtSecret, { expiresIn: config.jwtLifeTime });
+    const token = jwt.sign(tokenPayload, config.jwtSecret, { expiresIn: config.jwtLifeTime });
 
     return destroyProperties({ ...credential, token }, ["password"]);
   }
@@ -65,6 +63,8 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
 
   async show(id: ID) {
     const credential = await credentialRepository.findById(id);
+
+    if (!credential) throw notFound("غير موجود");
 
     if (credential.accountType === AccountEnum.Company) {
       (credential.account as CompanyInterface).employees = (credential.account as CompanyInterface).employees.filter(
@@ -97,7 +97,7 @@ class AuthenticationService extends DefaultService<CredentialInterface> {
     if (!credential) return null;
 
     if (data.mobile) {
-      if(isOfTypeEntity(credential.account)) {
+      if (isOfTypeEntity(credential.account)) {
         await this.updateCredentialAccountMobile(credential.account._id as ID, credential.accountType, data.mobile);
       } else {
         await this.updateCredentialAccountMobile(credential.account as ID, credential.accountType, data.mobile);

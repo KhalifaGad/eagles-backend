@@ -1,4 +1,4 @@
-import { establishConnection, seeder } from "../src/mongoDB";
+import { establishConnection, seeder } from "$infra";
 
 const run = async () => {
   await establishConnection();

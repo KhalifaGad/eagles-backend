@@ -1,4 +1,5 @@
 import { FilterQuery, LeanDocument, Types as MongooseTypes } from "mongoose";
+import * as Enums from "./enums.js";
 import {
   AccountEnum,
   DeliveryReceiptAttributedToEnum,
@@ -6,8 +7,7 @@ import {
   ShipmentConsignorEnum,
   ShipmentStatuses,
   StepLocationTypeEnum,
-} from "./enums";
-import * as Enums from "./enums";
+} from "./enums.js";
 
 export interface ListOptionsInterface {
   page?: number;
@@ -32,7 +32,11 @@ export type ID = MongooseTypes.ObjectId;
 export type Entity<T> = NonNullable<LeanDocument<T & Partial<MongooseTypes.ObjectId>>> | ID;
 
 export type PopulatedEntitiesWrapper<T> = {
-  [K in keyof T]: T[K] extends Entity<infer E> ? E : T[K];
+  [K in keyof T]: T[K] extends Entity<infer E> ? E : T[K] extends string ? string : T[K];
+};
+
+export type WithRelation<T, K extends keyof T, NT = NonNullable<T[K]>> = Exclude<T, K> & {
+  [P in K]-?: NonNullable<NT>;
 };
 
 export interface CityInterface {
@@ -277,6 +281,8 @@ export interface ShipmentInterface {
   consignor: Entity<CompanyInterface | ClientInterface>;
   consigneeType: Enums.ShipmentConsigneeEnum;
   consignee: Entity<CompanyInterface | ClientInterface>;
+  // custodian: Entity<EmployeeInterface | CompanyInterface | ClientInterface>;
+  // custodianType: Enums.AccountEnum;
   isInCity: boolean;
   originAgency: Entity<AgencyInterface>;
   originHotspot: Entity<HubInterface>;
@@ -383,9 +389,10 @@ export interface CreateRidePayload {
 }
 
 export interface DeliveryReceiptInterface {
+  reference: string;
   type: "Receive" | "Delivery";
   attributedTo: DeliveryReceiptAttributedToEnum;
-  recipient: Entity<EmployeeInterface>;
+  recipient?: Entity<EmployeeInterface>;
   recipientHub?: Entity<HubInterface>;
   recipientAgency?: Entity<AgencyInterface>;
   originator: Entity<EmployeeInterface>;
@@ -394,3 +401,14 @@ export interface DeliveryReceiptInterface {
   isRecipientConfirmed: boolean;
   shipments: Entity<ShipmentInterface>[];
 }
+
+export type PopulatedDeliveryReceipt = WithRelation<
+  WithRelation<DeliveryReceiptInterface, "originator", EmployeeInterface>,
+  "shipments",
+  Entity<ShipmentInterface>[]
+>;
+export type PopulatedDeliveryReceiptWithRecipient = WithRelation<
+  WithRelation<WithRelation<DeliveryReceiptInterface, "recipient", EmployeeInterface>, "originator", EmployeeInterface>,
+  "shipments",
+  Entity<ShipmentInterface>[]
+>;

@@ -1,6 +1,10 @@
 {
-  "watch": ["constants", "config", "src"],
-  "ignore": [".git"],
+  "watch": [
+    "src"
+  ],
+  "ignore": [
+    ".git"
+  ],
   "ext": "ts,json,js",
-  "exec": "ts-node ."
+  "exec": "npm run start"
 }

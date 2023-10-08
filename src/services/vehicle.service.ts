@@ -1,6 +1,6 @@
-import { vehicleRepository } from "../mongoDB/repositories";
-import DefaultService from "./default.service";
-import { VehicleInterface } from "../types";
+import { vehicleRepository } from "$infra";
+import { VehicleInterface } from "$types";
+import DefaultService from "./default.service.js";
 
 class VehicleService extends DefaultService<VehicleInterface> {
   constructor() {

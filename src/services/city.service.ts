@@ -1,6 +1,6 @@
-import { cityRepository } from "../mongoDB/repositories";
-import DefaultService from "./default.service";
-import { CityInterface } from "../types";
+import { cityRepository } from "$infra";
+import { CityInterface } from "$types";
+import DefaultService from "./default.service.js";
 
 class CityService extends DefaultService<CityInterface> {
   constructor() {

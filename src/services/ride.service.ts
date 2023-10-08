@@ -1,8 +1,8 @@
-import { notFound } from "../errors";
-import { getUniqueCode } from "../utilities";
-import { rideRepository, rideTemplateRepository } from "../mongoDB/repositories";
-import DefaultService from "./default.service";
-import { CreateRidePayload, RideInterface } from "../types";
+import { rideRepository, rideTemplateRepository } from "$infra";
+import { notFound } from "$errors";
+import { CreateRidePayload, RideInterface } from "$types";
+import { getUniqueCode } from "$utils";
+import DefaultService from "./default.service.js";
 
 class RideService extends DefaultService<RideInterface> {
   constructor() {
@@ -13,7 +13,7 @@ class RideService extends DefaultService<RideInterface> {
   async createRide(payload: CreateRidePayload) {
     const { rideTemplateId, ...restPayload } = payload;
     const rideTemplate = await rideTemplateRepository.findById(rideTemplateId);
-    if (!rideTemplateId) throw notFound("لا يمكن إيجاد نموذج الرحله");
+    if (!rideTemplate) throw notFound("لا يمكن إيجاد نموذج الرحله");
     const { steps } = rideTemplate;
     return this.create({
       ...restPayload,

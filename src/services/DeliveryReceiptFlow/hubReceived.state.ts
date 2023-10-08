@@ -1,19 +1,19 @@
-import { ShippedToDestinationHotspot } from "./shippedToDestinationHotspot.state";
-import { ShippedToDestinationAgency } from "./shippedToDestinationAgency.state";
 import {
   DeliveryReceiptAttributedToEnum,
-  DeliveryReceiptInterface,
   HubReceivedType,
-  PopulatedEntitiesWrapper,
+  PopulatedDeliveryReceipt,
+  PopulatedDeliveryReceiptWithRecipient,
   ShipmentStatuses,
-} from "../../types";
-import { DeliveryReceiptStateInterface } from "./state";
+} from "$types";
+import { ShippedToDestinationAgency } from "./shippedToDestinationAgency.state.js";
+import { ShippedToDestinationHotspot } from "./shippedToDestinationHotspot.state.js";
+import { DeliveryReceiptStateInterface } from "./state.js";
 
 export class HubReceivedState implements DeliveryReceiptStateInterface {
   status = ShipmentStatuses.HUB_RECEIVED;
   event?: HubReceivedType;
 
-  constructor(private deliveryReceipt?: PopulatedEntitiesWrapper<DeliveryReceiptInterface>) {
+  constructor(private deliveryReceipt?: PopulatedDeliveryReceiptWithRecipient) {
     this.initEvent();
   }
 
@@ -21,18 +21,19 @@ export class HubReceivedState implements DeliveryReceiptStateInterface {
     return { status: this.status, event: this.event };
   }
 
-  isValidReceipt(deliveryReceipt: DeliveryReceiptInterface) {
+  isValidReceipt(deliveryReceipt: PopulatedDeliveryReceipt) {
     const { attributedTo } = deliveryReceipt;
     const allowedAttributedTo = [DeliveryReceiptAttributedToEnum.Ride, DeliveryReceiptAttributedToEnum.Agency];
 
     return allowedAttributedTo.includes(attributedTo as DeliveryReceiptAttributedToEnum);
   }
 
-  onReceiptConfirmed(deliveryReceipt: PopulatedEntitiesWrapper<DeliveryReceiptInterface>) {
+  onReceiptConfirmed(deliveryReceipt: PopulatedDeliveryReceiptWithRecipient) {
     const { type, attributedTo, recipient, originator } = deliveryReceipt;
 
-    if (!this.isValidReceipt(deliveryReceipt as DeliveryReceiptInterface))
-      {throw new Error(`${attributedTo} cannot receipt this shipment`);}
+    if (!this.isValidReceipt(deliveryReceipt)) {
+      throw new Error(`${attributedTo} cannot receipt this shipment`);
+    }
 
     const isGoingToAgency = type === "Receive" ? !!originator.agency : !!recipient.agency;
     return isGoingToAgency

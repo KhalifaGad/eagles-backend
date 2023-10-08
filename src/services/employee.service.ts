@@ -1,8 +1,8 @@
-import { createHash } from "../utilities";
-import { badData } from "../errors";
-import DefaultRepository, { credentialRepository, employeeRepository } from "../mongoDB/repositories";
-import { AccountEnum, CredentialInterface, EmployeeInterface, ID, ProbablyWithPassword } from "../types";
-import DefaultService from "./default.service";
+import { credentialRepository, DefaultRepository, employeeRepository } from "$infra";
+import { badData } from "$errors";
+import { AccountEnum, CredentialInterface, EmployeeInterface, ID, ProbablyWithPassword } from "$types";
+import { createHash } from "$utils";
+import DefaultService from "./default.service.js";
 
 class EmployeeService extends DefaultService<EmployeeInterface> {
   constructor(private credentialRepository: DefaultRepository<CredentialInterface>) {

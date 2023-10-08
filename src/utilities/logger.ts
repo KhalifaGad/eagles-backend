@@ -12,5 +12,9 @@ export default createLogger({
       filename: "logs/errors.log",
       format,
     }),
+    new transports.Console({
+      level: "info",
+      format,
+    }),
   ],
 });

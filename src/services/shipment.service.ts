@@ -1,12 +1,6 @@
 import { badData } from "@hapi/boom";
-import { notFound } from "../errors";
-import {
-  agencyRepository,
-  clientRepository,
-  companyRepository,
-  hubRepository,
-  shipmentRepository,
-} from "../mongoDB/repositories";
+import { agencyRepository, clientRepository, companyRepository, hubRepository, shipmentRepository } from "$infra";
+import { notFound } from "$errors";
 import {
   AccountEnum,
   AddressInterface,
@@ -19,9 +13,9 @@ import {
   ShipmentEventNamesEnum,
   ShipmentInterface,
   ShipmentStatuses,
-} from "../types";
-import { getEntityRef, getUniqueCode } from "../utilities";
-import DefaultService from "./default.service";
+} from "$types";
+import { getEntityRef, getUniqueCode } from "$utils";
+import DefaultService from "./default.service.js";
 
 class ShipmentService extends DefaultService<ShipmentInterface> {
   constructor() {
@@ -55,6 +49,7 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
     const code = await this.generateCode();
 
     const originRelatedHub = await hubRepository.findById(originAgency.relatedHub as ID);
+    if (!originRelatedHub) throw notFound("لا يمكن ايجاد المستودع");
 
     return this.repository.create({
       ...payload,

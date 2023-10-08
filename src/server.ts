@@ -1,27 +1,19 @@
 import cors from "cors";
+import express, { Express } from "express";
 import helmet from "helmet";
-import express from "express";
-import routes from "./routes";
+import { apiRoutes } from "./api/index.js";
+import { logger } from "./utilities/index.js";
 
 class Server {
-  private port: number;
-  private server;
+  private server: Express;
 
-  constructor(port: number) {
-    this.port = port;
+  constructor(private port: number) {
     this.server = express().use(helmet()).use(cors()).use(express.json());
-    this.server.use("/api", routes);
+    this.server.use("/api", apiRoutes);
   }
 
   start() {
-    // eslint-disable-next-line no-console
-    this.server.listen(this.port, () => console.log(`🚀 Server started on port: ${this.port}`));
-  }
-}
-
-declare module "express-serve-static-core" {
-  interface Request {
-    client?: unknown;
+    this.server.listen(this.port, () => logger.info(`🚀 Server started on port: ${this.port}`));
   }
 }
 

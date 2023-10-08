@@ -1,0 +1,15 @@
+export { default as agencyRepository } from "./agency.repository.js";
+export { default as cityRepository } from "./city.repository.js";
+export { default as clientRepository } from "./client.repository.js";
+export { default as companyRepository } from "./company.repository.js";
+export { default as credentialRepository } from "./credential.repository.js";
+export { default as employeeRepository } from "./employee.repository.js";
+export { default as employeeRatingRepository } from "./employeeRating.repository.js";
+export { default as hubRepository } from "./hub.repository.js";
+export { default as rideRepository } from "./ride.repository.js";
+export { default as salaryRepository } from "./salary.repository.js";
+export { default as shipmentRepository } from "./shipment.repository.js";
+export { default as vehicleRepository } from "./vehicle.repository.js";
+export { default as rideTemplateRepository } from "./rideTemplate.repository.js";
+export { default as deliveryReceiptRepository } from "./deliveryRequest.repository.js";
+export { default as DefaultRepository } from "./default.repository.js";

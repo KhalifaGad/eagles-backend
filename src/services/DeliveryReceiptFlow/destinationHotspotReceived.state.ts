@@ -1,12 +1,20 @@
-import { DeliveryReceiptInterface, HubReceivedType, PopulatedEntitiesWrapper, ShipmentStatuses } from "../../types";
-import { DeliveryReceiptStateInterface } from "./state";
-import { ShippedToDestinationAgency } from "./shippedToDestinationAgency.state";
+import {
+  DeliveryReceiptInterface,
+  HubReceivedType,
+  PopulatedDeliveryReceipt,
+  PopulatedDeliveryReceiptWithRecipient,
+  PopulatedEntitiesWrapper,
+  ShipmentStatuses,
+  WithRelation,
+} from "$types";
+import { ShippedToDestinationAgency } from "./shippedToDestinationAgency.state.js";
+import { DeliveryReceiptStateInterface } from "./state.js";
 
 export class DestinationHotspotReceivedState implements DeliveryReceiptStateInterface {
   status = ShipmentStatuses.DESTINATION_HOTSPOT_RECEIVED;
   event?: HubReceivedType;
 
-  constructor(private deliveryReceipt?: PopulatedEntitiesWrapper<DeliveryReceiptInterface>) {
+  constructor(private deliveryReceipt?: PopulatedEntitiesWrapper<WithRelation<DeliveryReceiptInterface, "recipient">>) {
     this.initEvent();
   }
 
@@ -14,11 +22,11 @@ export class DestinationHotspotReceivedState implements DeliveryReceiptStateInte
     return { status: this.status, event: this.event };
   }
 
-  isValidReceipt(deliveryReceipt: DeliveryReceiptInterface) {
+  isValidReceipt(deliveryReceipt: PopulatedDeliveryReceipt) {
     return true;
   }
 
-  onReceiptConfirmed(deliveryReceipt: PopulatedEntitiesWrapper<DeliveryReceiptInterface>) {
+  onReceiptConfirmed(deliveryReceipt: PopulatedDeliveryReceiptWithRecipient) {
     const { type, attributedTo, recipient, originator } = deliveryReceipt;
 
     if (attributedTo === "Hub") throw new Error(`${attributedTo} cannot receipt this shipment`);

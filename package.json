@@ -2,7 +2,7 @@
   "name": "egypt-eagles",
   "version": "1.22.17",
   "description": "",
-  "main": "index.ts",
+  "main": "dist/index.js",
   "license": "ISC",
   "author": "",
   "engines": {
@@ -21,15 +21,19 @@
       "pre-commit": "npm run format; npm run lint:fix"
     }
   },
+  "type": "module",
   "scripts": {
-    "start": "NODE_ENV=Production ts-node .",
-    "dev": "NODE_ENV=Development nodemon",
+    "launch": "node ./dist/index.js",
+    "build": "tsc && tsc-alias",
+    "start": "NODE_ENV=production npm run build && npm run launch",
+    "start:watch": "NODE_ENV=development nodemon",
     "seed": "NODE_ENV=Seeding ts-node ./scripts/seed.script.ts",
     "deleteTemplates": "NODE_ENV=Seeding ts-node ./scripts/deleteTemplates.script.ts",
     "test": "mocha",
     "lint": "eslint .",
     "lint:fix": "eslint . --ext .ts --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "tsc": "tsc"
   },
   "dependencies": {
     "@hapi/boom": "^10.0.0",
@@ -38,23 +42,23 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "helmet": "^5.1.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^4.6.0",
     "mongoose": "^6.3.4",
     "ts-node": "^10.8.0",
-    "typescript": "^4.6.4",
     "winston": "^3.7.2",
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@tsconfig/node20": "^20.1.2",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jsonwebtoken": "^8.5.8",
-    "@types/node": "^17.0.35",
-    "@types/yup": "^0.32.0",
+    "@types/node": "^20.8.3",
     "@typescript-eslint/eslint-plugin": "^5.25.0",
     "@typescript-eslint/parser": "^5.25.0",
     "chai": "^4.3.6",
+    "concurrently": "^8.2.1",
     "eslint": "^8.16.0",
     "eslint-plugin-no-loops": "^0.3.0",
     "eslint-plugin-promise": "^6.0.0",
@@ -63,6 +67,18 @@
     "mocha": "^10.0.0",
     "nodemon": "^2.0.16",
     "prettier": "^2.6.2",
-    "supertest": "^6.2.3"
+    "supertest": "^6.2.3",
+    "tsc-alias": "^1.8.8",
+    "tsx": "^3.13.0",
+    "typescript": "^5.2.2"
+  },
+  "_moduleAliases": {
+    "~*": "src/*",
+    "$infra": "src/infra/index.js",
+    "$types": "src/types/index.js",
+    "$config": "src/config/index.js",
+    "$services": "src/services/index.js",
+    "$errors": "src/errors/index.js",
+    "$utils": "src/utilities/index.js"
   }
 }

@@ -1,13 +1,13 @@
-import { isOfTypeEntity } from "../../mongoDB";
-import { DestinationHotspotReceivedState } from "./destinationHotspotReceived.state";
-import { HubReceivedState } from "./hubReceived.state";
-import { OriginHotspotReceivedState } from "./originHotspotReceived.state";
-import { ShippedToDestinationHotspot } from "./shippedToDestinationHotspot.state";
-import { PlacedState } from "./placed.state";
-import { ShippedToDestinationAgency } from "./shippedToDestinationAgency.state";
-import { ShippedToHubState } from "./shippedToHub.state";
-import { DeliveryReceiptStateInterface } from "./state";
-import { DeliveryReceiptInterface, PopulatedEntitiesWrapper, ShipmentStatuses } from "../../types";
+import { isOfTypeEntity } from "$infra";
+import { PopulatedDeliveryReceipt, PopulatedDeliveryReceiptWithRecipient, ShipmentStatuses } from "$types";
+import { DestinationHotspotReceivedState } from "./destinationHotspotReceived.state.js";
+import { HubReceivedState } from "./hubReceived.state.js";
+import { OriginHotspotReceivedState } from "./originHotspotReceived.state.js";
+import { PlacedState } from "./placed.state.js";
+import { ShippedToDestinationAgency } from "./shippedToDestinationAgency.state.js";
+import { ShippedToDestinationHotspot } from "./shippedToDestinationHotspot.state.js";
+import { ShippedToHubState } from "./shippedToHub.state.js";
+import { DeliveryReceiptStateInterface } from "./state.js";
 
 export class DeliveryReceiptFlow {
   private state: DeliveryReceiptStateInterface;
@@ -41,17 +41,16 @@ export class DeliveryReceiptFlow {
     return this.state.getState();
   }
 
-  isValidReceipt(deliveryReceipt: DeliveryReceiptInterface) {
+  isValidReceipt(deliveryReceipt: PopulatedDeliveryReceipt) {
     return this.state.isValidReceipt(deliveryReceipt);
   }
 
-  onReceiptConfirmed(deliveryReceipt: DeliveryReceiptInterface) {
-    if (!isOfTypeEntity(deliveryReceipt)) throw new Error("Bad implementation");
+  onReceiptConfirmed(deliveryReceipt: PopulatedDeliveryReceiptWithRecipient) {
     const { recipient, originator } = deliveryReceipt;
 
     if (!isOfTypeEntity(recipient) || !isOfTypeEntity(originator)) throw new Error("Bad implementation");
 
-    const unwrappedDeliveryReceipt: PopulatedEntitiesWrapper<DeliveryReceiptInterface> = {
+    const unwrappedDeliveryReceipt = {
       ...deliveryReceipt,
       recipient,
       originator,

@@ -1,11 +1,10 @@
-import { Types } from "mongoose";
-import Repository from "../mongoDB/repositories";
-import { AuthUser, ID, ListArgumentsInterface, ListInterface } from "../types";
+import { DefaultRepository } from "$infra";
+import { AuthUser, ID, ListArgumentsInterface, ListInterface } from "$types";
 
 export default class DefaultService<T> {
-  repository: Repository<T>;
+  repository: DefaultRepository<T>;
 
-  constructor(repository: Repository<T>) {
+  constructor(repository: DefaultRepository<T>) {
     this.repository = repository;
     this.list = this.list.bind(this);
     this.show = this.show.bind(this);

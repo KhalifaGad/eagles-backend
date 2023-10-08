@@ -1,6 +1,6 @@
-import { hubRepository } from "../mongoDB/repositories";
-import DefaultService from "./default.service";
-import { HubInterface } from "../types";
+import { hubRepository } from "$infra";
+import { HubInterface } from "$types";
+import DefaultService from "./default.service.js";
 
 class HubService extends DefaultService<HubInterface> {
   constructor() {

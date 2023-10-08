@@ -1,14 +1,14 @@
-import { ShippedToHubState } from "./shippedToHub.state";
-import { isOfTypeEntity } from "../../mongoDB";
+import { isOfTypeEntity } from "$infra";
 import {
   DeliveryReceiptAttributedToEnum,
-  DeliveryReceiptInterface,
-  PopulatedEntitiesWrapper,
+  PopulatedDeliveryReceipt,
+  PopulatedDeliveryReceiptWithRecipient,
   ShipmentStatuses,
-} from "../../types";
-import { DeliveryReceiptStateInterface } from "./state";
-import { HubReceivedState } from "./hubReceived.state";
-import { OriginHotspotReceivedState } from "./originHotspotReceived.state";
+} from "$types";
+import { HubReceivedState } from "./hubReceived.state.js";
+import { OriginHotspotReceivedState } from "./originHotspotReceived.state.js";
+import { ShippedToHubState } from "./shippedToHub.state.js";
+import { DeliveryReceiptStateInterface } from "./state.js";
 
 export class PlacedState implements DeliveryReceiptStateInterface {
   status = ShipmentStatuses.PLACED;
@@ -17,19 +17,20 @@ export class PlacedState implements DeliveryReceiptStateInterface {
     return { status: this.status };
   }
 
-  isValidReceipt(deliveryReceipt: DeliveryReceiptInterface) {
+  isValidReceipt(deliveryReceipt: PopulatedDeliveryReceipt) {
     const { attributedTo } = deliveryReceipt;
     const allowedAttributedTo = [DeliveryReceiptAttributedToEnum.Ride, DeliveryReceiptAttributedToEnum.Hub];
     return allowedAttributedTo.includes(attributedTo as DeliveryReceiptAttributedToEnum);
   }
 
-  onReceiptConfirmed(deliveryReceipt: PopulatedEntitiesWrapper<DeliveryReceiptInterface>) {
+  onReceiptConfirmed(deliveryReceipt: PopulatedDeliveryReceiptWithRecipient) {
     const { type, attributedTo, recipient, originator } = deliveryReceipt;
 
     const allowedAttributedTo = [DeliveryReceiptAttributedToEnum.Ride, DeliveryReceiptAttributedToEnum.Hub];
 
-    if (!allowedAttributedTo.includes(attributedTo as DeliveryReceiptAttributedToEnum))
-      {throw new Error(`${attributedTo} cannot receipt this shipment`);}
+    if (!allowedAttributedTo.includes(attributedTo as DeliveryReceiptAttributedToEnum)) {
+      throw new Error(`${attributedTo} cannot receipt this shipment`);
+    }
 
     if (attributedTo === DeliveryReceiptAttributedToEnum.Ride) {
       return new ShippedToHubState(deliveryReceipt);

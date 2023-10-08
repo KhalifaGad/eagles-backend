@@ -1,5 +1,5 @@
-import { Entity } from "../types";
+import { Entity } from "$types";
 
-export const getEntityRef = <T>(enityt: Entity<T>) => {
-  return typeof enityt === "string" ? enityt : enityt._id;
+export const getEntityRef = <T>(entity: Entity<T>) => {
+  return typeof entity === "string" ? entity : entity._id;
 };

@@ -1,9 +1,14 @@
 {
+  "extends": "@tsconfig/node20/tsconfig.json",
   "compilerOptions": {
-    "moduleResolution": "node",
-    "target": "es6",
+    "module": "nodenext",
+    "target": "es2022",
+    "moduleResolution": "NodeNext",
     "outDir": "dist/",
     "sourceRoot": "./",
+    "baseUrl": "./",
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
     "skipLibCheck": true,
     "noImplicitAny": true,
@@ -13,8 +18,35 @@
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "paths": {},
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+    "paths": {
+      "~*": [
+        "src/*"
+      ],
+      "$infra": [
+        "src/infra/index.js"
+      ],
+      "$types": [
+        "src/types/index.js"
+      ],
+      "$config": [
+        "src/config/index.js"
+      ],
+      "$services": [
+        "src/services/index.js"
+      ],
+      "$errors": [
+        "src/errors/index.js"
+      ],
+      "$utils": [
+        "src/utilities/index.js"
+      ]
+    },
+    "typeRoots": [
+      "./src/types/express.types.d.ts",
+      "./node_modules/@types"
+    ]
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

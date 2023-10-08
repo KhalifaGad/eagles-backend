@@ -1,6 +1,6 @@
-import { agencyRepository } from "../mongoDB/repositories";
-import DefaultService from "./default.service";
-import { AgencyInterface } from "../types";
+import { agencyRepository } from "$infra";
+import { AgencyInterface } from "$types";
+import DefaultService from "./default.service.js";
 
 class AgencyService extends DefaultService<AgencyInterface> {
   constructor() {

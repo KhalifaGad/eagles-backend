@@ -1,11 +1,16 @@
-import { DeliveryReceiptInterface, PopulatedEntitiesWrapper, ShipmentStatuses, ShippedType } from "../../types";
-import { DeliveryReceiptStateInterface } from "./state";
+import {
+  PopulatedDeliveryReceipt,
+  PopulatedDeliveryReceiptWithRecipient,
+  ShipmentStatuses,
+  ShippedType,
+} from "$types";
+import { DeliveryReceiptStateInterface } from "./state.js";
 
 export class ShippedToDestinationAgency implements DeliveryReceiptStateInterface {
   status = ShipmentStatuses.SHIPPED_TO_DESTINATION_AGENCY;
   event?: ShippedType;
 
-  constructor(private deliveryReceipt?: PopulatedEntitiesWrapper<DeliveryReceiptInterface>) {
+  constructor(private deliveryReceipt?: PopulatedDeliveryReceiptWithRecipient) {
     this.initEvent();
   }
 
@@ -13,11 +18,11 @@ export class ShippedToDestinationAgency implements DeliveryReceiptStateInterface
     return { status: this.status };
   }
 
-  isValidReceipt(deliveryReceipt: DeliveryReceiptInterface) {
+  isValidReceipt(deliveryReceipt: PopulatedDeliveryReceipt) {
     return true;
   }
 
-  onReceiptConfirmed(deliveryReceipt: PopulatedEntitiesWrapper<DeliveryReceiptInterface>) {
+  onReceiptConfirmed(deliveryReceipt: PopulatedDeliveryReceiptWithRecipient) {
     return this;
   }
 

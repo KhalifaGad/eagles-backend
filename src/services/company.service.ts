@@ -1,15 +1,15 @@
-import { badData } from "../errors";
-import { createHash, getEntityRef } from "../utilities";
-import DefaultRepository, { companyRepository, credentialRepository } from "../mongoDB/repositories";
-import DefaultService from "./default.service";
+import { badData } from "$errors";
+import { companyRepository, credentialRepository, DefaultRepository } from "$infra";
 import {
   AccountEnum,
   CompanyInterface,
   CredentialInterface,
-  MerchantInterface,
   ID,
+  MerchantInterface,
   ProbablyWithPassword,
-} from "../types";
+} from "$types";
+import { createHash } from "$utils";
+import DefaultService from "./default.service.js";
 
 interface CompanyMutationInterface extends CompanyInterface {
   employees: ProbablyWithPassword<MerchantInterface>[];

@@ -1,5 +1,5 @@
-import { model, Schema } from "mongoose";
 import { EmployeeInterface } from "$types";
+import { model, Schema } from "mongoose";
 import { Schemas } from "../constants/index.js";
 import { addressSchema } from "./shared.schema.js";
 
@@ -18,6 +18,7 @@ const employeeSchema = new Schema<EmployeeInterface>(
     isAdmin: { type: Boolean, default: false },
     isCustomerService: { type: Boolean, default: false },
     isAgencyAdmin: { type: Boolean, default: false },
+    canJoinRides: { type: Boolean, default: false },
     agency: { type: Schema.Types.ObjectId, ref: Schemas.agency },
     hub: { type: Schema.Types.ObjectId, ref: Schemas.hub },
   },

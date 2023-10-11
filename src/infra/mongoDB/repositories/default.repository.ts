@@ -1,6 +1,6 @@
+import { ID, ListArgumentsInterface, ListInterface, ListOptionsInterface } from "$types";
 import { DeleteResult } from "mongodb";
 import { AnyObject, FilterQuery, Model, PopulateOptions } from "mongoose";
-import { ID, ListArgumentsInterface, ListInterface, ListOptionsInterface } from "$types";
 import { buildListOptions, buildSearch } from "../helpers/index.js";
 
 export default class DefaultRepository<T> {

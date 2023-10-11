@@ -1,5 +1,5 @@
-import { Schema } from "mongoose";
 import { AddressInterface } from "$types";
+import { Schema } from "mongoose";
 import { Schemas } from "../constants/index.js";
 
 export const addressSchema = new Schema<AddressInterface>(

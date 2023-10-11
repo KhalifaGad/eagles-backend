@@ -1,5 +1,5 @@
-import { model, Schema } from "mongoose";
 import { RideInterface, StepLocationTypeEnum } from "$types";
+import { model, Schema } from "mongoose";
 import { Schemas } from "../constants/index.js";
 
 const rideSchema = new Schema<RideInterface>(
@@ -16,7 +16,7 @@ const rideSchema = new Schema<RideInterface>(
         {
           sequence: { type: Number, required: true, min: 1 },
           stepLocationType: { type: String, enum: StepLocationTypeEnum, required: true },
-          stepLocationEntity: { type: Schema.Types.ObjectId, refPath: "stepLocationType", required: true },
+          stepLocationEntity: { type: Schema.Types.ObjectId, refPath: "steps.stepLocationType", required: true },
         },
       ],
       required: true,

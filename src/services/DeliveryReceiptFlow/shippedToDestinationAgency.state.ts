@@ -1,9 +1,4 @@
-import {
-  PopulatedDeliveryReceipt,
-  PopulatedDeliveryReceiptWithRecipient,
-  ShipmentStatuses,
-  ShippedType,
-} from "$types";
+import { PopulatedDeliveryReceipt, PopulatedDeliveryReceiptWithRecipient, ShipmentStatuses, ShippedType } from "$types";
 import { DeliveryReceiptStateInterface } from "./state.js";
 
 export class ShippedToDestinationAgency implements DeliveryReceiptStateInterface {

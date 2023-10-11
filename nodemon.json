@@ -1,10 +1,6 @@
 {
-  "watch": [
-    "src"
-  ],
-  "ignore": [
-    ".git"
-  ],
+  "watch": ["src"],
+  "ignore": [".git"],
   "ext": "ts,json,js",
   "exec": "npm run start"
 }

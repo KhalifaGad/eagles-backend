@@ -6,7 +6,7 @@ import { deliveryReceiptSchema } from "../validations/index.js";
 const router = Router();
 
 router
-  .route("/delivery-recei.js")
+  .route("/delivery-receipts")
   .get(deliveryReceiptController.list)
   .post(validateMiddleware(deliveryReceiptSchema), deliveryReceiptController.create);
 

@@ -8,7 +8,7 @@ class DeliveryReceiptRepository extends DefaultRepository<DeliveryReceiptInterfa
       { path: "recipient" },
       { path: "originator" },
       {
-        path: "shipme.js",
+        path: "shipments",
         populate: [
           { path: "consignee", populate: { path: "address.city" } },
           { path: "consignor", populate: { path: "address.city" } },

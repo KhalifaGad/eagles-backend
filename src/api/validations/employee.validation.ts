@@ -1,5 +1,5 @@
-import { addressSchema } from "./shared.validation.js";
 import * as yup from "yup";
+import { addressSchema } from "./shared.validation.js";
 
 export const employeeSchema = yup
   .object()
@@ -16,9 +16,10 @@ export const employeeSchema = yup
     isAdmin: yup.boolean().nullable(),
     isCustomerService: yup.boolean().nullable(),
     isAgencyAdmin: yup.boolean().nullable(),
+    canJoinRides: yup.boolean().nullable(),
     address: addressSchema.nullable(),
     hub: yup.string().nullable(),
-    password: yup.string().nullable(),
+    password: yup.string().min(6).nullable(),
     birthdate: yup
       .string()
       .nullable()

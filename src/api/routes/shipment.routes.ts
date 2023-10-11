@@ -6,7 +6,7 @@ import { createShipmentSchema, shipmentSchema } from "../validations/index.js";
 const router = Router();
 
 router
-  .route("/shipme.js")
+  .route("/shipments")
   .get(shipmentController.list)
   .post(validateMiddleware(createShipmentSchema), shipmentController.create);
 

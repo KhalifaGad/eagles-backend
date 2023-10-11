@@ -5,7 +5,7 @@ import { clientSchema } from "../validations/index.js";
 
 const router = Router();
 
-router.route("/clie.js").get(clientController.list).post(validateMiddleware(clientSchema), clientController.create);
+router.route("/clients").get(clientController.list).post(validateMiddleware(clientSchema), clientController.create);
 
 router
   .route("/clients/:id")

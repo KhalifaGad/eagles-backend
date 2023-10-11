@@ -92,6 +92,7 @@ export interface EmployeeInterface {
   address?: AddressInterface;
   salary: number;
   isAdmin: boolean;
+  canJoinRides: boolean;
   isCustomerService: boolean;
   isAgencyAdmin: boolean;
   agency?: Entity<AgencyInterface>;
@@ -354,13 +355,7 @@ export interface CreateRideTemplateInterface {
 export interface RideStepInterface {
   sequence: number;
   stepLocationType: StepLocationTypeEnum;
-  area: string;
-  street: string;
-  cityName: string;
-  landmark?: string;
-  lat?: number;
-  lng?: number;
-  name?: string;
+  stepLocationEntity: Entity<AgencyInterface | HubInterface>;
 }
 
 export interface RideTemplateInterface {
@@ -370,6 +365,7 @@ export interface RideTemplateInterface {
 }
 
 export interface RideInterface {
+  // TODO: ADD Current (state or step or both)
   _id?: ID;
   code: string;
   employees: Entity<EmployeeInterface>[];

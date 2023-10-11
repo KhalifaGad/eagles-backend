@@ -1,5 +1,5 @@
-import { FilterQuery, Types } from "mongoose";
 import { ListOptionsInterface } from "$types";
+import { FilterQuery, Types } from "mongoose";
 import { defaultListOptions } from "../constants/index.js";
 
 function getFilterValue(value: unknown) {

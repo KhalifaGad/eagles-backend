@@ -1,10 +1,5 @@
 import { isOfTypeEntity } from "$infra";
-import {
-  PopulatedDeliveryReceipt,
-  PopulatedDeliveryReceiptWithRecipient,
-  ShipmentStatuses,
-  ShippedType,
-} from "$types";
+import { PopulatedDeliveryReceipt, PopulatedDeliveryReceiptWithRecipient, ShipmentStatuses, ShippedType } from "$types";
 import { DestinationHotspotReceivedState } from "./destinationHotspotReceived.state.js";
 import { DeliveryReceiptStateInterface } from "./state.js";
 

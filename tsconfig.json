@@ -19,34 +19,15 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "~*": [
-        "src/*"
-      ],
-      "$infra": [
-        "src/infra/index.js"
-      ],
-      "$types": [
-        "src/types/index.js"
-      ],
-      "$config": [
-        "src/config/index.js"
-      ],
-      "$services": [
-        "src/services/index.js"
-      ],
-      "$errors": [
-        "src/errors/index.js"
-      ],
-      "$utils": [
-        "src/utilities/index.js"
-      ]
+      "~*": ["src/*"],
+      "$infra": ["src/infra/index.js"],
+      "$types": ["src/types/index.js"],
+      "$config": ["src/config/index.js"],
+      "$services": ["src/services/index.js"],
+      "$errors": ["src/errors/index.js"],
+      "$utils": ["src/utilities/index.js"]
     },
-    "typeRoots": [
-      "./src/types/express.types.d.ts",
-      "./node_modules/@types"
-    ]
+    "typeRoots": ["./src/types/express.types.d.ts", "./node_modules/@types"]
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

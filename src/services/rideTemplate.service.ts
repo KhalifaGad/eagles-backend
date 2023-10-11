@@ -1,5 +1,5 @@
 import { agencyRepository, hubRepository, rideTemplateRepository } from "$infra";
-import { CityInterface, CreateRideTemplateInterface, RideTemplateInterface } from "$types";
+import { CreateRideTemplateInterface, ID, RideTemplateInterface } from "$types";
 import DefaultService from "./default.service.js";
 
 class RideTemplateService extends DefaultService<RideTemplateInterface> {
@@ -24,15 +24,9 @@ class RideTemplateService extends DefaultService<RideTemplateInterface> {
       if (!locationEntity) throw new Error("Not Found");
 
       return {
-        name: locationEntity.name,
         sequence: step.sequence,
         stepLocationType: step.stepLocationType,
-        area: locationEntity.address.area,
-        street: locationEntity.address.street,
-        cityName: (locationEntity.address.city as CityInterface).arabicName,
-        landmark: locationEntity.address.landmark,
-        lat: locationEntity.address.lat,
-        lng: locationEntity.address.lng,
+        stepLocationEntity: locationEntity._id as ID,
       };
     });
 

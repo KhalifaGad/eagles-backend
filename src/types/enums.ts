@@ -61,10 +61,15 @@ export enum ShipmentStatuses {
   RETURNED_TO_ORIGIN = "RETURNED_TO_ORIGIN",
 }
 
-export enum DeliveryReceiptAttributedToEnum {
+export enum DeliveryReceiptPartTypeEnum {
   Hub = "Hub",
   Agency = "Agency",
   Ride = "Ride",
+}
+
+export enum DeliveryReceiptTypeEnum {
+  Receive = "Receive",
+  Delivery = "Delivery",
 }
 
 export enum ShipmentDestinationEnum {

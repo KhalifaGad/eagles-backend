@@ -1,12 +1,4 @@
-import {
-  DeliveryReceiptInterface,
-  HubReceivedType,
-  PopulatedDeliveryReceipt,
-  PopulatedDeliveryReceiptWithRecipient,
-  PopulatedEntitiesWrapper,
-  ShipmentStatuses,
-  WithRelation,
-} from "$types";
+import { DeliveryReceiptPartTypeEnum, HubReceivedType, PopulatedDeliveryReceipt, ShipmentStatuses } from "$types";
 import { ShippedToDestinationAgency } from "./shippedToDestinationAgency.state.js";
 import { DeliveryReceiptStateInterface } from "./state.js";
 
@@ -14,7 +6,7 @@ export class DestinationHotspotReceivedState implements DeliveryReceiptStateInte
   status = ShipmentStatuses.DESTINATION_HOTSPOT_RECEIVED;
   event?: HubReceivedType;
 
-  constructor(private deliveryReceipt?: PopulatedEntitiesWrapper<WithRelation<DeliveryReceiptInterface, "recipient">>) {
+  constructor(private deliveryReceipt: PopulatedDeliveryReceipt) {
     this.initEvent();
   }
 
@@ -22,26 +14,29 @@ export class DestinationHotspotReceivedState implements DeliveryReceiptStateInte
     return { status: this.status, event: this.event };
   }
 
-  isValidReceipt(deliveryReceipt: PopulatedDeliveryReceipt) {
+  isValidReceipt() {
     return true;
   }
 
-  onReceiptConfirmed(deliveryReceipt: PopulatedDeliveryReceiptWithRecipient) {
-    const { type, attributedTo, recipient, originator } = deliveryReceipt;
+  onReceiptConfirmed() {
+    const { type, originatorType, recipientAgency, originatorAgency } = this.deliveryReceipt;
 
-    if (attributedTo === "Hub") throw new Error(`${attributedTo} cannot receipt this shipment`);
+    // An originator cannot confirm his own receipt
+    if (originatorType === DeliveryReceiptPartTypeEnum.Hub) {
+      throw new Error("Hub cannot receipt this shipment");
+    }
 
-    const isGoingToAgency = type === "Receive" ? !!originator.agency : !!recipient.agency;
+    const isGoingToAgency = type === "Receive" ? !!originatorAgency : !!recipientAgency;
 
     if (!isGoingToAgency) throw new Error("This shipment should picked up by agency employee");
 
-    return new ShippedToDestinationAgency(deliveryReceipt);
+    return new ShippedToDestinationAgency(this.deliveryReceipt);
   }
 
   private initEvent() {
     if (!this.deliveryReceipt) return;
-    const { type, recipient, originator } = this.deliveryReceipt;
-    const receiptingHub = type === "Receive" ? recipient.hub : originator.hub;
+    const { type, recipientHub, originatorHub } = this.deliveryReceipt;
+    const receiptingHub = type === "Receive" ? recipientHub : originatorHub;
     if (!receiptingHub) throw new Error("Bad implementation");
     this.event = {
       name: "HOTSPOT_RECEIVED",

@@ -19,14 +19,14 @@ class ConfirmDeliveryReceiptService {
     const shipments = deliveryReceipt.shipments as ShipmentInterface[];
 
     shipments.forEach(shipment => {
-      if (!new DeliveryReceiptFlow(shipment.status).isValidReceipt(deliveryReceipt)) {
+      if (!new DeliveryReceiptFlow(shipment.status, deliveryReceipt).isValidReceipt()) {
         throw badData(getShipmentInvalidStateErrorMessage(shipment.code));
       }
     });
 
     for (const shipment of shipments) {
-      const deliveryReceiptFlow = new DeliveryReceiptFlow(shipment.status);
-      deliveryReceiptFlow.onReceiptConfirmed(deliveryReceipt);
+      const deliveryReceiptFlow = new DeliveryReceiptFlow(shipment.status, deliveryReceipt);
+      deliveryReceiptFlow.onReceiptConfirmed();
       const { status, event } = deliveryReceiptFlow.getState();
       await shipmentRepository.updateWhereId(shipment._id as ID, {
         status,

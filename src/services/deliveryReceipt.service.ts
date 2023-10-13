@@ -23,18 +23,19 @@ class DeliveryReceiptService extends DefaultService<DeliveryReceiptInterface> {
     ]);
 
     if (!originator) throw notFound("الموظف غير موجود");
+    if (recipientId && !recipient) throw notFound("الموظف غير موجود");
 
     const reference = await this.generateReference();
 
     const populatedDeliveryReceipt = {
       ...payload,
       reference,
-      originator,
       recipient: recipient ?? undefined,
+      originator,
     };
 
     shipments.forEach(shipment => {
-      if (!new DeliveryReceiptFlow(shipment.status).isValidReceipt(populatedDeliveryReceipt)) {
+      if (!new DeliveryReceiptFlow(shipment.status, populatedDeliveryReceipt).isValidReceipt()) {
         throw badData(getShipmentInvalidStateErrorMessage(shipment.code));
       }
     });

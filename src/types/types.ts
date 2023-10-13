@@ -2,7 +2,8 @@ import { FilterQuery, LeanDocument, Types as MongooseTypes } from "mongoose";
 import * as Enums from "./enums.js";
 import {
   AccountEnum,
-  DeliveryReceiptAttributedToEnum,
+  DeliveryReceiptPartTypeEnum,
+  DeliveryReceiptTypeEnum,
   ShipmentConsigneeEnum,
   ShipmentConsignorEnum,
   ShipmentStatuses,
@@ -386,14 +387,17 @@ export interface CreateRidePayload {
 
 export interface DeliveryReceiptInterface {
   reference: string;
-  type: "Receive" | "Delivery";
-  attributedTo: DeliveryReceiptAttributedToEnum;
+  type: DeliveryReceiptTypeEnum;
   recipient?: Entity<EmployeeInterface>;
   recipientHub?: Entity<HubInterface>;
   recipientAgency?: Entity<AgencyInterface>;
+  recipientType: DeliveryReceiptPartTypeEnum;
+  recipientRide?: Entity<RideInterface>;
   originator: Entity<EmployeeInterface>;
   originatorHub?: Entity<HubInterface>;
   originatorAgency?: Entity<AgencyInterface>;
+  originatorRide?: Entity<RideInterface>;
+  originatorType: DeliveryReceiptPartTypeEnum;
   isRecipientConfirmed: boolean;
   shipments: Entity<ShipmentInterface>[];
 }

@@ -1,17 +1,12 @@
-import {
-  PopulatedDeliveryReceipt,
-  PopulatedDeliveryReceiptWithRecipient,
-  ShipmentEventType,
-  ShipmentStatuses,
-} from "$types";
+import { ShipmentEventType, ShipmentStatuses } from "$types";
 
 export interface DeliveryReceiptStateInterface {
   event?: ShipmentEventType;
   status: ShipmentStatuses;
 
-  isValidReceipt(deliveryReceipt: PopulatedDeliveryReceipt): boolean;
+  isValidReceipt(): boolean;
 
-  onReceiptConfirmed(deliveryReceipt: PopulatedDeliveryReceiptWithRecipient): DeliveryReceiptStateInterface;
+  onReceiptConfirmed(): DeliveryReceiptStateInterface;
 
   getState(): { event?: ShipmentEventType; status: ShipmentStatuses };
 }

@@ -6,7 +6,11 @@ class DeliveryReceiptRepository extends DefaultRepository<DeliveryReceiptInterfa
   constructor() {
     super(DeliveryReceiptModel, [
       { path: "recipient" },
+      { path: "recipientHub" },
+      { path: "recipientAgency" },
       { path: "originator" },
+      { path: "originatorHub" },
+      { path: "originatorAgency" },
       {
         path: "shipments",
         populate: [

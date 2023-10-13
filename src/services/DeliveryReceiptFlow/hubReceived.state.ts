@@ -1,8 +1,8 @@
 import {
-  DeliveryReceiptAttributedToEnum,
+  DeliveryReceiptPartTypeEnum,
+  DeliveryReceiptTypeEnum,
   HubReceivedType,
   PopulatedDeliveryReceipt,
-  PopulatedDeliveryReceiptWithRecipient,
   ShipmentStatuses,
 } from "$types";
 import { ShippedToDestinationAgency } from "./shippedToDestinationAgency.state.js";
@@ -13,7 +13,7 @@ export class HubReceivedState implements DeliveryReceiptStateInterface {
   status = ShipmentStatuses.HUB_RECEIVED;
   event?: HubReceivedType;
 
-  constructor(private deliveryReceipt?: PopulatedDeliveryReceiptWithRecipient) {
+  constructor(private deliveryReceipt: PopulatedDeliveryReceipt) {
     this.initEvent();
   }
 
@@ -21,30 +21,31 @@ export class HubReceivedState implements DeliveryReceiptStateInterface {
     return { status: this.status, event: this.event };
   }
 
-  isValidReceipt(deliveryReceipt: PopulatedDeliveryReceipt) {
-    const { attributedTo } = deliveryReceipt;
-    const allowedAttributedTo = [DeliveryReceiptAttributedToEnum.Ride, DeliveryReceiptAttributedToEnum.Agency];
+  isValidReceipt() {
+    const { type, originatorType, recipientType } = this.deliveryReceipt;
+    const allowedAttributedTo = [DeliveryReceiptPartTypeEnum.Ride, DeliveryReceiptPartTypeEnum.Agency];
 
-    return allowedAttributedTo.includes(attributedTo as DeliveryReceiptAttributedToEnum);
+    const confirmationPartType = type === DeliveryReceiptTypeEnum.Receive ? recipientType : originatorType;
+
+    return allowedAttributedTo.includes(confirmationPartType);
   }
 
-  onReceiptConfirmed(deliveryReceipt: PopulatedDeliveryReceiptWithRecipient) {
-    const { type, attributedTo, recipient, originator } = deliveryReceipt;
+  onReceiptConfirmed() {
+    const { type, recipientAgency, originatorAgency } = this.deliveryReceipt;
 
-    if (!this.isValidReceipt(deliveryReceipt)) {
-      throw new Error(`${attributedTo} cannot receipt this shipment`);
+    if (!this.isValidReceipt()) {
+      throw new Error("Cannot confirm this receipt by the current employee");
     }
 
-    const isGoingToAgency = type === "Receive" ? !!originator.agency : !!recipient.agency;
+    const isGoingToAgency = type === DeliveryReceiptTypeEnum.Receive ? !!originatorAgency : !!recipientAgency;
     return isGoingToAgency
-      ? new ShippedToDestinationAgency(deliveryReceipt)
-      : new ShippedToDestinationHotspot(deliveryReceipt);
+      ? new ShippedToDestinationAgency(this.deliveryReceipt)
+      : new ShippedToDestinationHotspot(this.deliveryReceipt);
   }
 
   private initEvent() {
-    if (!this.deliveryReceipt) return;
-    const { type, recipient, originator } = this.deliveryReceipt;
-    const receiptingHub = type === "Receive" ? recipient.hub : originator.hub;
+    const { type, recipientHub, originatorHub } = this.deliveryReceipt;
+    const receiptingHub = type === "Receive" ? recipientHub : originatorHub;
     if (!receiptingHub) throw new Error("Bad implementation");
     this.event = {
       name: "HUB_RECEIVED",

@@ -1,5 +1,4 @@
-import { isOfTypeEntity } from "$infra";
-import { PopulatedDeliveryReceipt, PopulatedDeliveryReceiptWithRecipient, ShipmentStatuses } from "$types";
+import { PopulatedDeliveryReceipt, ShipmentStatuses } from "$types";
 import { DestinationHotspotReceivedState } from "./destinationHotspotReceived.state.js";
 import { HubReceivedState } from "./hubReceived.state.js";
 import { OriginHotspotReceivedState } from "./originHotspotReceived.state.js";
@@ -12,26 +11,26 @@ import { DeliveryReceiptStateInterface } from "./state.js";
 export class DeliveryReceiptFlow {
   private state: DeliveryReceiptStateInterface;
 
-  constructor(private status: ShipmentStatuses) {
-    this.state = this.initState();
+  constructor(private status: ShipmentStatuses, private deliveryReceipt: PopulatedDeliveryReceipt) {
+    this.state = this.initState(deliveryReceipt);
   }
 
-  initState() {
+  initState(deliveryReceipt: PopulatedDeliveryReceipt) {
     switch (this.status) {
       case ShipmentStatuses.PLACED:
-        return new PlacedState();
+        return new PlacedState(deliveryReceipt);
       case ShipmentStatuses.ORIGIN_HOTSPOT_RECEIVED:
-        return new OriginHotspotReceivedState();
+        return new OriginHotspotReceivedState(deliveryReceipt);
       case ShipmentStatuses.HUB_RECEIVED:
-        return new HubReceivedState();
+        return new HubReceivedState(deliveryReceipt);
       case ShipmentStatuses.DESTINATION_HOTSPOT_RECEIVED:
-        return new DestinationHotspotReceivedState();
+        return new DestinationHotspotReceivedState(deliveryReceipt);
       case ShipmentStatuses.SHIPPED_TO_DESTINATION_HOTSPOT:
-        return new ShippedToDestinationHotspot();
+        return new ShippedToDestinationHotspot(deliveryReceipt);
       case ShipmentStatuses.SHIPPED_TO_DESTINATION_AGENCY:
-        return new ShippedToDestinationAgency();
+        return new ShippedToDestinationAgency(deliveryReceipt);
       case ShipmentStatuses.SHIPPED_TO_HUB:
-        return new ShippedToHubState();
+        return new ShippedToHubState(deliveryReceipt);
       default:
         throw new Error("Bad implementation");
     }
@@ -41,21 +40,11 @@ export class DeliveryReceiptFlow {
     return this.state.getState();
   }
 
-  isValidReceipt(deliveryReceipt: PopulatedDeliveryReceipt) {
-    return this.state.isValidReceipt(deliveryReceipt);
+  isValidReceipt() {
+    return this.state.isValidReceipt();
   }
 
-  onReceiptConfirmed(deliveryReceipt: PopulatedDeliveryReceiptWithRecipient) {
-    const { recipient, originator } = deliveryReceipt;
-
-    if (!isOfTypeEntity(recipient) || !isOfTypeEntity(originator)) throw new Error("Bad implementation");
-
-    const unwrappedDeliveryReceipt = {
-      ...deliveryReceipt,
-      recipient,
-      originator,
-    };
-
-    this.state = this.state.onReceiptConfirmed(unwrappedDeliveryReceipt);
+  onReceiptConfirmed() {
+    this.state = this.state.onReceiptConfirmed();
   }
 }

@@ -11,5 +11,5 @@ export { default as salaryRepository } from "./salary.repository.js";
 export { default as shipmentRepository } from "./shipment.repository.js";
 export { default as vehicleRepository } from "./vehicle.repository.js";
 export { default as rideTemplateRepository } from "./rideTemplate.repository.js";
-export { default as deliveryReceiptRepository } from "./deliveryRequest.repository.js";
+export { default as deliveryReceiptRepository } from "./deliveryReceipt.repository.js";
 export { default as DefaultRepository } from "./default.repository.js";

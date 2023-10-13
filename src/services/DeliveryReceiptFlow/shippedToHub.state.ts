@@ -1,5 +1,11 @@
 import { isOfTypeEntity } from "$infra";
-import { PopulatedDeliveryReceipt, PopulatedDeliveryReceiptWithRecipient, ShipmentStatuses, ShippedType } from "$types";
+import {
+  DeliveryReceiptPartTypeEnum,
+  DeliveryReceiptTypeEnum,
+  PopulatedDeliveryReceipt,
+  ShipmentStatuses,
+  ShippedType,
+} from "$types";
 import { HubReceivedState } from "./hubReceived.state.js";
 import { DeliveryReceiptStateInterface } from "./state.js";
 
@@ -7,7 +13,7 @@ export class ShippedToHubState implements DeliveryReceiptStateInterface {
   status = ShipmentStatuses.SHIPPED_TO_HUB;
   event?: ShippedType;
 
-  constructor(private deliveryReceipt?: PopulatedDeliveryReceiptWithRecipient) {
+  constructor(private deliveryReceipt: PopulatedDeliveryReceipt) {
     this.initEvent();
   }
 
@@ -15,23 +21,23 @@ export class ShippedToHubState implements DeliveryReceiptStateInterface {
     return { status: this.status, event: this.event };
   }
 
-  isValidReceipt(deliveryReceipt: PopulatedDeliveryReceipt) {
-    const { attributedTo, recipientHub } = deliveryReceipt;
+  isValidReceipt() {
+    const { recipientHub, type, recipientType, originatorType } = this.deliveryReceipt;
 
     if (!recipientHub) return false;
     if (!isOfTypeEntity(recipientHub)) throw new Error("Bad implementation");
 
-    return attributedTo === "Hub" && !recipientHub.isHotspot;
+    const confirmationPartType = type === DeliveryReceiptTypeEnum.Receive ? recipientType : originatorType;
+
+    return confirmationPartType === DeliveryReceiptPartTypeEnum.Hub && !recipientHub.isHotspot;
   }
 
-  onReceiptConfirmed(deliveryReceipt: PopulatedDeliveryReceiptWithRecipient) {
-    const { attributedTo } = deliveryReceipt;
-
-    if (this.isValidReceipt(deliveryReceipt)) {
-      throw new Error(`${attributedTo} cannot receipt this shipment`);
+  onReceiptConfirmed() {
+    if (this.isValidReceipt()) {
+      throw new Error("A Hub cannot receipt this shipment");
     }
 
-    return new HubReceivedState(deliveryReceipt);
+    return new HubReceivedState(this.deliveryReceipt);
   }
 
   private initEvent() {
@@ -40,7 +46,7 @@ export class ShippedToHubState implements DeliveryReceiptStateInterface {
 
     const employee = type === "Receive" ? recipient : originator;
 
-    if (!employee._id) throw new Error("Bad implementation");
+    if (!employee?._id) throw new Error("Bad implementation");
 
     this.event = {
       name: "SHIPPED",

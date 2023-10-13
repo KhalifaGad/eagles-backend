@@ -1,7 +1,8 @@
 import {
+  DeliveryReceiptPartTypeEnum,
+  DeliveryReceiptTypeEnum,
   HubReceivedType,
   PopulatedDeliveryReceipt,
-  PopulatedDeliveryReceiptWithRecipient,
   ShipmentStatuses,
 } from "$types";
 import { ShippedToHubState } from "./shippedToHub.state.js";
@@ -11,7 +12,7 @@ export class OriginHotspotReceivedState implements DeliveryReceiptStateInterface
   status = ShipmentStatuses.ORIGIN_HOTSPOT_RECEIVED;
   event?: HubReceivedType;
 
-  constructor(private deliveryReceipt?: PopulatedDeliveryReceiptWithRecipient) {
+  constructor(private deliveryReceipt: PopulatedDeliveryReceipt) {
     this.initEvent();
   }
 
@@ -19,25 +20,24 @@ export class OriginHotspotReceivedState implements DeliveryReceiptStateInterface
     return { status: this.status, event: this.event };
   }
 
-  isValidReceipt(deliveryReceipt: PopulatedDeliveryReceipt) {
-    const { attributedTo } = deliveryReceipt;
-    return attributedTo === "Ride";
+  isValidReceipt() {
+    const { type, originatorType, recipientType } = this.deliveryReceipt;
+    const confirmationPartType = type === DeliveryReceiptTypeEnum.Receive ? recipientType : originatorType;
+    return confirmationPartType === DeliveryReceiptPartTypeEnum.Ride;
   }
 
-  onReceiptConfirmed(deliveryReceipt: PopulatedDeliveryReceiptWithRecipient) {
-    const { attributedTo } = deliveryReceipt;
-
-    if (!this.isValidReceipt(deliveryReceipt)) {
-      throw new Error(`${attributedTo} cannot receipt this shipment`);
+  onReceiptConfirmed() {
+    if (!this.isValidReceipt()) {
+      throw new Error("Cannot confirm this receipt by the current employee");
     }
 
-    return new ShippedToHubState(deliveryReceipt);
+    return new ShippedToHubState(this.deliveryReceipt);
   }
 
   private initEvent() {
     if (!this.deliveryReceipt) return;
-    const { type, recipient, originator } = this.deliveryReceipt;
-    const receiptingHub = type === "Receive" ? recipient.hub : originator.hub;
+    const { type, recipientHub, originatorHub } = this.deliveryReceipt;
+    const receiptingHub = type === "Receive" ? recipientHub : originatorHub;
     if (!receiptingHub) throw new Error("Bad implementation");
     this.event = {
       name: "HUB_RECEIVED",

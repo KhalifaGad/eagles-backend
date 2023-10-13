@@ -1,8 +1,8 @@
 import { isOfTypeEntity } from "$infra";
 import {
-  DeliveryReceiptAttributedToEnum,
+  DeliveryReceiptPartTypeEnum,
+  DeliveryReceiptTypeEnum,
   PopulatedDeliveryReceipt,
-  PopulatedDeliveryReceiptWithRecipient,
   ShipmentStatuses,
 } from "$types";
 import { HubReceivedState } from "./hubReceived.state.js";
@@ -13,30 +13,33 @@ import { DeliveryReceiptStateInterface } from "./state.js";
 export class PlacedState implements DeliveryReceiptStateInterface {
   status = ShipmentStatuses.PLACED;
 
+  constructor(private deliveryReceipt: PopulatedDeliveryReceipt) {}
+
   getState() {
     return { status: this.status };
   }
 
-  isValidReceipt(deliveryReceipt: PopulatedDeliveryReceipt) {
-    const { attributedTo } = deliveryReceipt;
-    const allowedAttributedTo = [DeliveryReceiptAttributedToEnum.Ride, DeliveryReceiptAttributedToEnum.Hub];
-    return allowedAttributedTo.includes(attributedTo as DeliveryReceiptAttributedToEnum);
+  isValidReceipt() {
+    const { type, originatorType, recipientType } = this.deliveryReceipt;
+    const allowedAttributedTo = [DeliveryReceiptPartTypeEnum.Ride, DeliveryReceiptPartTypeEnum.Hub];
+    const partType = type === DeliveryReceiptTypeEnum.Receive ? recipientType : originatorType;
+    return allowedAttributedTo.includes(partType);
   }
 
-  onReceiptConfirmed(deliveryReceipt: PopulatedDeliveryReceiptWithRecipient) {
-    const { type, attributedTo, recipient, originator } = deliveryReceipt;
+  onReceiptConfirmed() {
+    const { type, recipientType, originatorType, recipientHub, originatorHub } = this.deliveryReceipt;
 
-    const allowedAttributedTo = [DeliveryReceiptAttributedToEnum.Ride, DeliveryReceiptAttributedToEnum.Hub];
-
-    if (!allowedAttributedTo.includes(attributedTo as DeliveryReceiptAttributedToEnum)) {
-      throw new Error(`${attributedTo} cannot receipt this shipment`);
+    if (!this.isValidReceipt()) {
+      throw new Error("This shipment cannot be received by the current employee");
     }
 
-    if (attributedTo === DeliveryReceiptAttributedToEnum.Ride) {
-      return new ShippedToHubState(deliveryReceipt);
+    const confirmationPartType = type === DeliveryReceiptTypeEnum.Receive ? recipientType : originatorType;
+
+    if (confirmationPartType === DeliveryReceiptPartTypeEnum.Ride) {
+      return new ShippedToHubState(this.deliveryReceipt);
     }
 
-    const receiptingHub = type === "Receive" ? recipient.hub : originator.hub;
+    const receiptingHub = type === DeliveryReceiptTypeEnum.Receive ? recipientHub : originatorHub;
 
     if (!receiptingHub || !isOfTypeEntity(receiptingHub)) {
       throw new Error("Bad implementation");
@@ -45,7 +48,7 @@ export class PlacedState implements DeliveryReceiptStateInterface {
     const isReceivedByHotspot = receiptingHub.isHotspot;
 
     return isReceivedByHotspot
-      ? new OriginHotspotReceivedState(deliveryReceipt)
-      : new HubReceivedState(deliveryReceipt);
+      ? new OriginHotspotReceivedState(this.deliveryReceipt)
+      : new HubReceivedState(this.deliveryReceipt);
   }
 }

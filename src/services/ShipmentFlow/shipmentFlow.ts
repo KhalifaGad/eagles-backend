@@ -8,7 +8,7 @@ import { ShippedToDestinationHotspot } from "./shippedToDestinationHotspot.state
 import { ShippedToHubState } from "./shippedToHub.state.js";
 import { DeliveryReceiptStateInterface } from "./state.js";
 
-export class DeliveryReceiptFlow {
+export class ShipmentFlow {
   private state: DeliveryReceiptStateInterface;
 
   constructor(private status: ShipmentStatuses, private deliveryReceipt: PopulatedDeliveryReceipt) {

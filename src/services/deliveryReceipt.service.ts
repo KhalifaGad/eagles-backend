@@ -2,8 +2,8 @@ import { badData, notFound } from "$errors";
 import { deliveryReceiptRepository, employeeRepository, shipmentRepository } from "$infra";
 import { DeliveryReceiptInterface, ID } from "$types";
 import { getUniqueCode } from "$utils";
+import { getShipmentInvalidStateErrorMessage, ShipmentFlow } from "~services/ShipmentFlow/index.js";
 import DefaultService from "./default.service.js";
-import { DeliveryReceiptFlow, getShipmentInvalidStateErrorMessage } from "./DeliveryReceiptFlow/index.js";
 
 class DeliveryReceiptService extends DefaultService<DeliveryReceiptInterface> {
   constructor() {
@@ -35,7 +35,7 @@ class DeliveryReceiptService extends DefaultService<DeliveryReceiptInterface> {
     };
 
     shipments.forEach(shipment => {
-      if (!new DeliveryReceiptFlow(shipment.status, populatedDeliveryReceipt).isValidReceipt()) {
+      if (!new ShipmentFlow(shipment.status, populatedDeliveryReceipt).isValidReceipt()) {
         throw badData(getShipmentInvalidStateErrorMessage(shipment.code));
       }
     });

@@ -22,7 +22,7 @@ export class PlacedState implements DeliveryReceiptStateInterface {
   isValidReceipt() {
     const { type, originatorType, recipientType } = this.deliveryReceipt;
     const allowedAttributedTo = [DeliveryReceiptPartTypeEnum.Ride, DeliveryReceiptPartTypeEnum.Hub];
-    const partType = type === DeliveryReceiptTypeEnum.Receive ? recipientType : originatorType;
+    const partType = type === DeliveryReceiptTypeEnum.Receive ? originatorType : recipientType;
     return allowedAttributedTo.includes(partType);
   }
 

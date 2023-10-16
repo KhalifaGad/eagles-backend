@@ -1,6 +1,5 @@
-import { badData } from "@hapi/boom";
-import { agencyRepository, clientRepository, companyRepository, hubRepository, shipmentRepository } from "$infra";
 import { notFound } from "$errors";
+import { agencyRepository, clientRepository, companyRepository, hubRepository, shipmentRepository } from "$infra";
 import {
   AccountEnum,
   AddressInterface,
@@ -15,6 +14,7 @@ import {
   ShipmentStatuses,
 } from "$types";
 import { getEntityRef, getUniqueCode } from "$utils";
+import { badData } from "@hapi/boom";
 import DefaultService from "./default.service.js";
 
 class ShipmentService extends DefaultService<ShipmentInterface> {
@@ -39,10 +39,7 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
 
     const consignee = await this.getConsignee(payload.consigneeType, payload.consignee);
     const isInCity = getEntityRef(consignee.address.city) === getEntityRef(consignor.address.city);
-    const destinationAgencyId = isInCity ? originAgency._id : payload.destinationAgency;
-    const destinationAgency = destinationAgencyId
-      ? await agencyRepository.findById(destinationAgencyId)
-      : await this.getNearestAgency(consignee.address);
+    const destinationAgency = isInCity ? originAgency : await this.getNearestAgency(consignee.address);
 
     if (!destinationAgency) throw notFound("لا يمكن ايجاد وكاله تسليم في نفس المدينه");
 

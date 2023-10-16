@@ -4,6 +4,12 @@ import { AuthUser, EmployeeInterface, ID, PopulatedDeliveryReceipt, ShipmentInte
 import { getShipmentInvalidStateErrorMessage, ShipmentFlow } from "./ShipmentFlow/index.js";
 
 class ConfirmDeliveryReceiptService {
+  constructor() {
+    this.confirm = this.confirm.bind(this);
+    this.confirmationGuard = this.confirmationGuard.bind(this);
+    this.getRecipient = this.getRecipient.bind(this);
+  }
+
   async confirm(id: ID, authUser: AuthUser) {
     const unguardedDeliveryReceipt = (await deliveryReceiptRepository.findById(
       id

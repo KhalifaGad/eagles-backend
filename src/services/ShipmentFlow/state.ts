@@ -8,5 +8,8 @@ export interface DeliveryReceiptStateInterface {
 
   onReceiptConfirmed(): DeliveryReceiptStateInterface;
 
-  getState(): { event?: ShipmentEventType; status: ShipmentStatuses };
+  getState(): {
+    event?: ShipmentEventType;
+    status: ShipmentStatuses;
+  };
 }

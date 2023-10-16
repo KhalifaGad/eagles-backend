@@ -1,24 +1,67 @@
 import * as yup from "yup";
 
+const shipmentStatuses = [
+  "PLACED",
+  "CONSIGNOR_PICKED",
+  "ORIGIN_AGENCY_SHIPPED",
+  "ORIGIN_HOTSPOT_RECEIVED",
+  "SHIPPED_TO_HUB",
+  "HUB_RECEIVED",
+  "SHIPPED_TO_DESTINATION_HOTSPOT",
+  "DESTINATION_HOTSPOT_RECEIVED",
+  "SHIPPED_TO_DESTINATION_AGENCY",
+  "DESTINATION_AGENCY_RECEIVED",
+  "SHIPPED_TO_CUSTOMER",
+  "DELIVERED",
+  "FAILED_ATTEMPT",
+  "RETURNED_TO_ORIGIN",
+];
+
 export const shipmentSchema = yup
   .object()
   .shape({
-    referenceNumber: yup.string().required(),
+    _id: yup.string(),
+    code: yup.string(),
+    referenceNumber: yup.string(),
     consigneeType: yup.mixed().oneOf(["Client", "Company"]),
-    consignee: yup.string().required(),
+    consignee: yup.string(),
     consignorType: yup.mixed().oneOf(["Client", "Company"]),
     consignor: yup.string(),
-    shippingFees: yup.string().required(),
-    collectCashFees: yup.string().required(),
-    shipmentPrice: yup.number().default(0),
-    originAgency: yup.string().required(),
+    shippingFees: yup.number(),
+    collectCashFees: yup.number(),
+    shipmentPrice: yup.number(),
+    originAgency: yup.string(),
+    originHotspot: yup.string(),
+    destinationHotspot: yup.string(),
+    destinationAgency: yup.string(),
     isInCity: yup.boolean(),
     notes: yup.array().of(yup.string()),
+    hub: yup.string(),
+    failedAttemptsCount: yup.number(),
+    isReturning: yup.boolean(),
+    status: yup.mixed().oneOf(shipmentStatuses),
+    searchables: yup.object({
+      consignorName: yup.string(),
+      consigneeName: yup.string(),
+      consignorMobile: yup.string(),
+      consigneeMobile: yup.string(),
+      originAgencyName: yup.string(),
+      destinationAgencyName: yup.string(),
+    }),
+    createdAt: yup
+      .mixed()
+      .transform(value => new Date(value))
+      .required(),
+    updatedAt: yup
+      .mixed()
+      .transform(value => new Date(value))
+      .required(),
     products: yup
       .array()
       .of(
         yup.object({
-          name: yup.string().required(),
+          _id: yup.string(),
+          name: yup.string(),
           description: yup.string(),
           price: yup.number(),
         })
@@ -26,6 +69,7 @@ export const shipmentSchema = yup
       .min(1),
     returns: yup.array().of(
       yup.object({
+        _id: yup.string(),
         name: yup.string().required(),
         description: yup.string(),
         price: yup.number(),
@@ -57,10 +101,9 @@ export const shipmentSchema = yup
           })
         ),
         date: yup
-          .string()
-          .required()
-          .trim()
-          .matches(/^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/),
+          .mixed()
+          .transform(value => new Date(value))
+          .required(),
       })
     ),
   })
@@ -75,8 +118,8 @@ export const createShipmentSchema = yup.object().shape({
   shippingFees: yup.number().default(0),
   collectCashFees: yup.number().default(0),
   shipmentPrice: yup.number().default(0),
-  originAgency: yup.string().nullable(),
-  destinationAgency: yup.string().nullable(),
+  originAgency: yup.string(),
+  destinationAgency: yup.string(),
   isInCity: yup.boolean(),
   notes: yup.array().of(yup.string()).nullable(),
   products: yup

@@ -1,5 +1,6 @@
 import { PopulatedDeliveryReceipt, ShipmentStatuses } from "$types";
 import { DestinationHotspotReceivedState } from "./destinationHotspotReceived.state.js";
+import { DestinationAgencyReceivedState } from "./distnationAgencyReceived.state.js";
 import { HubReceivedState } from "./hubReceived.state.js";
 import { OriginHotspotReceivedState } from "./originHotspotReceived.state.js";
 import { PlacedState } from "./placed.state.js";
@@ -12,25 +13,27 @@ export class ShipmentFlow {
   private state: DeliveryReceiptStateInterface;
 
   constructor(private status: ShipmentStatuses, private deliveryReceipt: PopulatedDeliveryReceipt) {
-    this.state = this.initState(deliveryReceipt);
+    this.state = this.initState();
   }
 
-  initState(deliveryReceipt: PopulatedDeliveryReceipt) {
+  initState() {
     switch (this.status) {
       case ShipmentStatuses.PLACED:
-        return new PlacedState(deliveryReceipt);
+        return new PlacedState(this.deliveryReceipt);
       case ShipmentStatuses.ORIGIN_HOTSPOT_RECEIVED:
-        return new OriginHotspotReceivedState(deliveryReceipt);
+        return new OriginHotspotReceivedState(this.deliveryReceipt);
       case ShipmentStatuses.HUB_RECEIVED:
-        return new HubReceivedState(deliveryReceipt);
+        return new HubReceivedState(this.deliveryReceipt);
       case ShipmentStatuses.DESTINATION_HOTSPOT_RECEIVED:
-        return new DestinationHotspotReceivedState(deliveryReceipt);
+        return new DestinationHotspotReceivedState(this.deliveryReceipt);
       case ShipmentStatuses.SHIPPED_TO_DESTINATION_HOTSPOT:
-        return new ShippedToDestinationHotspot(deliveryReceipt);
+        return new ShippedToDestinationHotspot(this.deliveryReceipt);
       case ShipmentStatuses.SHIPPED_TO_DESTINATION_AGENCY:
-        return new ShippedToDestinationAgency(deliveryReceipt);
+        return new ShippedToDestinationAgency(this.deliveryReceipt);
+      case ShipmentStatuses.DESTINATION_AGENCY_RECEIVED:
+        return new DestinationAgencyReceivedState(this.deliveryReceipt);
       case ShipmentStatuses.SHIPPED_TO_HUB:
-        return new ShippedToHubState(deliveryReceipt);
+        return new ShippedToHubState(this.deliveryReceipt);
       default:
         throw new Error("Bad implementation");
     }
@@ -45,6 +48,6 @@ export class ShipmentFlow {
   }
 
   onReceiptConfirmed() {
-    this.state = this.state.onReceiptConfirmed();
+    this.state.onReceiptConfirmed();
   }
 }

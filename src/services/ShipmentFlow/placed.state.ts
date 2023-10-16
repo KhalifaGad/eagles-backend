@@ -3,27 +3,29 @@ import {
   DeliveryReceiptPartTypeEnum,
   DeliveryReceiptTypeEnum,
   PopulatedDeliveryReceipt,
+  ShipmentEventType,
   ShipmentStatuses,
 } from "$types";
-import { HubReceivedState } from "./hubReceived.state.js";
-import { OriginHotspotReceivedState } from "./originHotspotReceived.state.js";
-import { ShippedToHubState } from "./shippedToHub.state.js";
 import { DeliveryReceiptStateInterface } from "./state.js";
 
 export class PlacedState implements DeliveryReceiptStateInterface {
   status = ShipmentStatuses.PLACED;
+  event?: ShipmentEventType;
 
   constructor(private deliveryReceipt: PopulatedDeliveryReceipt) {}
 
   getState() {
-    return { status: this.status };
+    return { status: this.status, event: this.event };
   }
 
+  /**
+   * @description: returns true if the shipment recipient of type Ride or Hub
+   */
   isValidReceipt() {
     const { type, originatorType, recipientType } = this.deliveryReceipt;
     const allowedAttributedTo = [DeliveryReceiptPartTypeEnum.Ride, DeliveryReceiptPartTypeEnum.Hub];
-    const partType = type === DeliveryReceiptTypeEnum.Receive ? originatorType : recipientType;
-    return allowedAttributedTo.includes(partType);
+    const shipmentRecipient = type === DeliveryReceiptTypeEnum.Receive ? originatorType : recipientType;
+    return allowedAttributedTo.includes(shipmentRecipient);
   }
 
   onReceiptConfirmed() {
@@ -32,14 +34,14 @@ export class PlacedState implements DeliveryReceiptStateInterface {
     if (!this.isValidReceipt()) {
       throw new Error("This shipment cannot be received by the current employee");
     }
+    const shipmentRecipientType = type === DeliveryReceiptTypeEnum.Receive ? recipientType : originatorType;
 
-    const confirmationPartType = type === DeliveryReceiptTypeEnum.Receive ? recipientType : originatorType;
-
-    if (confirmationPartType === DeliveryReceiptPartTypeEnum.Ride) {
-      return new ShippedToHubState(this.deliveryReceipt);
+    if (shipmentRecipientType === DeliveryReceiptPartTypeEnum.Ride) {
+      this.addShippedToHubEvent();
+      return this;
     }
 
-    const receiptingHub = type === DeliveryReceiptTypeEnum.Receive ? recipientHub : originatorHub;
+    const receiptingHub = type === DeliveryReceiptTypeEnum.Receive ? originatorHub : recipientHub;
 
     if (!receiptingHub || !isOfTypeEntity(receiptingHub)) {
       throw new Error("Bad implementation");
@@ -47,8 +49,57 @@ export class PlacedState implements DeliveryReceiptStateInterface {
 
     const isReceivedByHotspot = receiptingHub.isHotspot;
 
-    return isReceivedByHotspot
-      ? new OriginHotspotReceivedState(this.deliveryReceipt)
-      : new HubReceivedState(this.deliveryReceipt);
+    if (isReceivedByHotspot) {
+      this.addOriginHotspotReceivedEvent();
+      return this;
+    }
+
+    this.addHubReceivedEvent();
+    return this;
+  }
+
+  private addShippedToHubEvent() {
+    const { type, recipient, originator } = this.deliveryReceipt;
+
+    const employee = type === DeliveryReceiptTypeEnum.Receive ? recipient : originator;
+
+    if (!employee?._id) throw new Error("Bad implementation");
+
+    this.status = ShipmentStatuses.SHIPPED_TO_HUB;
+
+    this.event = {
+      name: "SHIPPED",
+      date: new Date(),
+      destinationType: "HUB",
+      employee: employee._id,
+    };
+  }
+
+  private addOriginHotspotReceivedEvent() {
+    const { type, recipientHub, originatorHub } = this.deliveryReceipt;
+    const receiptingHub = type === DeliveryReceiptTypeEnum.Receive ? recipientHub : originatorHub;
+    if (!receiptingHub) throw new Error("Bad implementation");
+
+    this.status = ShipmentStatuses.ORIGIN_HOTSPOT_RECEIVED;
+
+    this.event = {
+      name: "HOTSPOT_RECEIVED",
+      date: new Date(),
+      hub: receiptingHub,
+    };
+  }
+
+  private addHubReceivedEvent() {
+    const { type, recipientHub, originatorHub } = this.deliveryReceipt;
+    const receiptingHub = type === DeliveryReceiptTypeEnum.Receive ? originatorHub : recipientHub;
+    if (!receiptingHub) throw new Error("Bad implementation");
+
+    this.status = ShipmentStatuses.HUB_RECEIVED;
+
+    this.event = {
+      name: "HUB_RECEIVED",
+      date: new Date(),
+      hub: receiptingHub,
+    };
   }
 }

@@ -1,56 +1,84 @@
 import {
   DeliveryReceiptPartTypeEnum,
   DeliveryReceiptTypeEnum,
-  HubReceivedType,
   PopulatedDeliveryReceipt,
+  ShipmentEventType,
   ShipmentStatuses,
 } from "$types";
-import { ShippedToDestinationAgency } from "./shippedToDestinationAgency.state.js";
-import { ShippedToDestinationHotspot } from "./shippedToDestinationHotspot.state.js";
+import { forbidden } from "~errors/index.js";
 import { DeliveryReceiptStateInterface } from "./state.js";
 
 export class HubReceivedState implements DeliveryReceiptStateInterface {
   status = ShipmentStatuses.HUB_RECEIVED;
-  event?: HubReceivedType;
+  event?: ShipmentEventType;
 
-  constructor(private deliveryReceipt: PopulatedDeliveryReceipt) {
-    this.initEvent();
-  }
+  constructor(private deliveryReceipt: PopulatedDeliveryReceipt) {}
 
   getState() {
     return { status: this.status, event: this.event };
   }
 
+  /**
+   * @description: returns true if the shipment recipient of type Ride or Agency
+   */
   isValidReceipt() {
     const { type, originatorType, recipientType } = this.deliveryReceipt;
     const allowedAttributedTo = [DeliveryReceiptPartTypeEnum.Ride, DeliveryReceiptPartTypeEnum.Agency];
 
-    const confirmationPartType = type === DeliveryReceiptTypeEnum.Receive ? recipientType : originatorType;
+    const shipmentRecipient = type === DeliveryReceiptTypeEnum.Receive ? originatorType : recipientType;
 
-    return allowedAttributedTo.includes(confirmationPartType);
+    return allowedAttributedTo.includes(shipmentRecipient);
   }
 
   onReceiptConfirmed() {
     const { type, recipientAgency, originatorAgency } = this.deliveryReceipt;
 
     if (!this.isValidReceipt()) {
-      throw new Error("Cannot confirm this receipt by the current employee");
+      throw forbidden("لا يمكن استلام الشحنة من قبل الموظف الحالي");
     }
 
     const isGoingToAgency = type === DeliveryReceiptTypeEnum.Receive ? !!originatorAgency : !!recipientAgency;
-    return isGoingToAgency
-      ? new ShippedToDestinationAgency(this.deliveryReceipt)
-      : new ShippedToDestinationHotspot(this.deliveryReceipt);
+
+    if (isGoingToAgency) {
+      this.addShippedToDestinationAgencyEvent();
+      return this;
+    }
+
+    this.addShippedToDestinationHotspotEvent();
+    return this;
   }
 
-  private initEvent() {
-    const { type, recipientHub, originatorHub } = this.deliveryReceipt;
-    const receiptingHub = type === "Receive" ? recipientHub : originatorHub;
-    if (!receiptingHub) throw new Error("Bad implementation");
+  private addShippedToDestinationAgencyEvent() {
+    const { type, recipient, originator } = this.deliveryReceipt;
+
+    const employee = type === DeliveryReceiptTypeEnum.Receive ? recipient : originator;
+
+    if (!employee?._id) throw forbidden("لا يمكن استلام الشحنة من قبل الموظف الحالي");
+
+    this.status = ShipmentStatuses.SHIPPED_TO_DESTINATION_AGENCY;
+
     this.event = {
-      name: "HUB_RECEIVED",
+      name: "SHIPPED",
       date: new Date(),
-      hub: receiptingHub,
+      destinationType: "AGENCY",
+      employee: employee._id,
+    };
+  }
+
+  private addShippedToDestinationHotspotEvent() {
+    const { type, recipient, originator } = this.deliveryReceipt;
+
+    const employee = type === DeliveryReceiptTypeEnum.Receive ? recipient : originator;
+
+    if (!employee?._id) throw forbidden("لا يمكن استلام الشحنة من قبل الموظف الحالي");
+
+    this.status = ShipmentStatuses.SHIPPED_TO_DESTINATION_HOTSPOT;
+
+    this.event = {
+      name: "SHIPPED",
+      date: new Date(),
+      destinationType: "HUB",
+      employee: employee._id,
     };
   }
 }

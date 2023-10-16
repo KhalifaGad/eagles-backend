@@ -1,58 +1,54 @@
-import { isOfTypeEntity } from "$infra";
 import {
   DeliveryReceiptPartTypeEnum,
   DeliveryReceiptTypeEnum,
   PopulatedDeliveryReceipt,
+  ShipmentEventType,
   ShipmentStatuses,
-  ShippedType,
 } from "$types";
-import { HubReceivedState } from "./hubReceived.state.js";
+import { forbidden } from "~errors/index.js";
 import { DeliveryReceiptStateInterface } from "./state.js";
 
 export class ShippedToHubState implements DeliveryReceiptStateInterface {
   status = ShipmentStatuses.SHIPPED_TO_HUB;
-  event?: ShippedType;
+  event?: ShipmentEventType;
 
-  constructor(private deliveryReceipt: PopulatedDeliveryReceipt) {
-    this.initEvent();
-  }
+  constructor(private deliveryReceipt: PopulatedDeliveryReceipt) {}
 
   getState() {
     return { status: this.status, event: this.event };
   }
 
+  /**
+   * @description: returns true if the shipment recipient of type Hub
+   */
   isValidReceipt() {
-    const { recipientHub, type, recipientType, originatorType } = this.deliveryReceipt;
+    const { type, recipientType, originatorType } = this.deliveryReceipt;
 
-    if (!recipientHub) return false;
-    if (!isOfTypeEntity(recipientHub)) throw new Error("Bad implementation");
+    const shipmentRecipientType = type === DeliveryReceiptTypeEnum.Receive ? originatorType : recipientType;
 
-    const confirmationPartType = type === DeliveryReceiptTypeEnum.Receive ? recipientType : originatorType;
-
-    return confirmationPartType === DeliveryReceiptPartTypeEnum.Hub && !recipientHub.isHotspot;
+    return shipmentRecipientType === DeliveryReceiptPartTypeEnum.Hub;
   }
 
   onReceiptConfirmed() {
     if (this.isValidReceipt()) {
-      throw new Error("A Hub cannot receipt this shipment");
+      throw forbidden("لا يمكن استلام الشحنة الا من قبل المستودع");
     }
 
-    return new HubReceivedState(this.deliveryReceipt);
+    this.addEvent();
+    return this;
   }
 
-  private initEvent() {
-    if (!this.deliveryReceipt) return;
-    const { type, recipient, originator } = this.deliveryReceipt;
+  addEvent() {
+    const { type, recipientHub, originatorHub } = this.deliveryReceipt;
+    const receiptingHub = type === DeliveryReceiptTypeEnum.Receive ? originatorHub : recipientHub;
+    if (!receiptingHub) throw forbidden("لا يمكن استلام الشحنة الا من موظف بالمستودع");
 
-    const employee = type === "Receive" ? recipient : originator;
-
-    if (!employee?._id) throw new Error("Bad implementation");
+    this.status = ShipmentStatuses.HUB_RECEIVED;
 
     this.event = {
-      name: "SHIPPED",
+      name: "HUB_RECEIVED",
       date: new Date(),
-      destinationType: "HUB",
-      employee: employee._id,
+      hub: receiptingHub,
     };
   }
 }

@@ -16,6 +16,6 @@ router
   .put(validateMiddleware(deliveryReceiptSchema), deliveryReceiptController.update)
   .delete(deliveryReceiptController.delete);
 
-router.route("/delivery-receipts/:id/confirmation").post(deliveryReceiptController.update);
+router.route("/delivery-receipts/:id/confirmations").post(deliveryReceiptController.confirm);
 
 export default router;

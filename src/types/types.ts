@@ -254,7 +254,7 @@ export interface SalaryInterface {
   billed: boolean;
 }
 
-type AgencyReceivedType = EventType & {
+export type AgencyReceivedType = EventType & {
   name: AgencyReceivedEventNameType;
   agency: Entity<AgencyInterface>;
   employee: Entity<EmployeeInterface>;
@@ -278,7 +278,7 @@ export type ShipmentEventType =
 export interface ShipmentInterface {
   _id?: ID;
   code: string;
-  referenceNumber: string;
+  referenceNumber?: string;
   consignorType: Enums.ShipmentConsignorEnum;
   consignor: Entity<CompanyInterface | ClientInterface>;
   consigneeType: Enums.ShipmentConsigneeEnum;
@@ -322,7 +322,7 @@ export interface CreateShipmentInterface {
   shipmentPrice: number;
   originAgency?: ID;
   destinationAgency: ID;
-  isInCity?: boolean;
+  isInCity: boolean;
   notes: string[];
   products: ShipmentProductType[];
 }

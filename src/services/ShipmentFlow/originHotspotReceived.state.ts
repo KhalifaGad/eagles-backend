@@ -12,17 +12,18 @@ export class OriginHotspotReceivedState implements DeliveryReceiptStateInterface
   status = ShipmentStatuses.ORIGIN_HOTSPOT_RECEIVED;
   event?: HubReceivedType;
 
-  constructor(private deliveryReceipt: PopulatedDeliveryReceipt) {
-    this.initEvent();
-  }
+  constructor(private deliveryReceipt: PopulatedDeliveryReceipt) {}
 
   getState() {
     return { status: this.status, event: this.event };
   }
 
+  /**
+   * @description: returns true if the shipment recipient of type Ride
+   */
   isValidReceipt() {
     const { type, originatorType, recipientType } = this.deliveryReceipt;
-    const confirmationPartType = type === DeliveryReceiptTypeEnum.Receive ? recipientType : originatorType;
+    const confirmationPartType = type === DeliveryReceiptTypeEnum.Receive ? originatorType : recipientType;
     return confirmationPartType === DeliveryReceiptPartTypeEnum.Ride;
   }
 
@@ -34,15 +35,15 @@ export class OriginHotspotReceivedState implements DeliveryReceiptStateInterface
     return new ShippedToHubState(this.deliveryReceipt);
   }
 
-  private initEvent() {
-    if (!this.deliveryReceipt) return;
+  initEvent() {
     const { type, recipientHub, originatorHub } = this.deliveryReceipt;
-    const receiptingHub = type === "Receive" ? recipientHub : originatorHub;
+    const receiptingHub = type === DeliveryReceiptTypeEnum.Receive ? recipientHub : originatorHub;
     if (!receiptingHub) throw new Error("Bad implementation");
     this.event = {
-      name: "HUB_RECEIVED",
+      name: "HOTSPOT_RECEIVED",
       date: new Date(),
       hub: receiptingHub,
     };
+    return this;
   }
 }

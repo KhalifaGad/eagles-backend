@@ -1,13 +1,34 @@
-import { addressSchema } from "./shared.validation.js";
 import * as yup from "yup";
+import { addressSchema } from "./shared.validation.js";
 
 export const clientSchema = yup.object().shape({
   _id: yup.string().nullable(),
-  name: yup.string().required(),
+  name: yup
+    .string()
+    .transform(value => {
+      if (!value) return null;
+      return value.trim();
+    })
+    .required(),
   address: addressSchema.required(),
-  email: yup.string(),
-  mobile: yup.string().required(),
-  secondMobile: yup.string(),
+  email: yup
+    .string()
+    .transform(value => {
+      if (!value) return null;
+      return value.trim();
+    })
+    .default(null),
+  mobile: yup
+    .string()
+    .transform(value => {
+      if (!value) return null;
+      return value.trim();
+    })
+    .required(),
+  secondMobile: yup.string().transform(value => {
+    if (!value) return null;
+    return value.trim();
+  }),
   defaultNearestAgency: yup.string().nullable(),
   birthdate: yup
     .string()

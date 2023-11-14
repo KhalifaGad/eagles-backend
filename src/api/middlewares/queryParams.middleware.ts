@@ -12,7 +12,18 @@ const parser = (stringifiedJSON: string) => {
 export default (req: Request, _res: Response, next: NextFunction) => {
   const optionsFields = ["page", "pageLimit", "sortBy", "sortDirection", "showAll"];
 
-  req.query = Object.keys(req.query).reduce((accumulator, key) => {
+  const groupedKeys = req.query.groupedKeys as string[];
+  let groupedFilter: Record<string, any> | null = null;
+
+  if (groupedKeys && Array.isArray(groupedKeys) && groupedKeys.length > 0) {
+    groupedKeys.forEach(key => {
+      if (!groupedFilter) groupedFilter = {};
+      groupedFilter[key] = req.query[key];
+      delete req.query[key];
+    });
+  }
+
+  const preparedQuery = Object.keys(req.query).reduce((accumulator, key) => {
     const accumulatorKey = (optionsFields.includes(key) ? "options" : "filter") as keyof typeof accumulator;
 
     return Object.assign(accumulator, {
@@ -21,7 +32,20 @@ export default (req: Request, _res: Response, next: NextFunction) => {
         [key]: parser(req.query[key] as string),
       },
     });
-  }, {});
+  }, {} as Record<string, any>);
+
+  if (!groupedFilter) {
+    req.query = preparedQuery;
+  } else {
+    const filter = preparedQuery.filter ?? {};
+    req.query = {
+      ...preparedQuery,
+      filter: {
+        ...filter,
+        groupedFilter,
+      },
+    };
+  }
 
   next();
 };

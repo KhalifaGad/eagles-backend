@@ -14,14 +14,26 @@ function getFilterValue(value: unknown) {
 }
 
 export function buildSearch(filter: Record<string, unknown>): FilterQuery<any> {
-  if (Object.keys(filter).length < 1) return {};
-  return {
-    $or: Object.keys(filter).map(property => {
-      return {
-        [property]: getFilterValue(filter[property]),
-      };
-    }),
-  };
+  const { groupedFilter, ...restFilter } = filter;
+
+  if (Object.keys(restFilter).length < 1 && Object.keys(groupedFilter as Record<string, any>).length < 1) return {};
+  const or = restFilter
+    ? {
+        $or: Object.entries(restFilter).map(([key, value]) => {
+          return {
+            [key]: getFilterValue(value),
+          };
+        }),
+      }
+    : {};
+
+  const and = groupedFilter
+    ? {
+        $and: Object.entries(groupedFilter).map(([key, value]) => ({ [key]: getFilterValue(value) })),
+      }
+    : {};
+
+  return Object.assign({}, or, and);
 }
 
 export const buildListOptions = (options: ListOptionsInterface): ListOptionsInterface => ({

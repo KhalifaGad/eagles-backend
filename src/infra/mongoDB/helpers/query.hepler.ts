@@ -27,13 +27,16 @@ export function buildSearch(filter: Record<string, unknown>): FilterQuery<any> {
       }
     : {};
 
-  const and = groupedFilter
-    ? {
-        $and: Object.entries(groupedFilter).map(([key, value]) => ({ [key]: getFilterValue(value) })),
-      }
-    : {};
+  const and =
+    !!groupedFilter && Object.keys(groupedFilter).length > 0
+      ? {
+          $and: Object.entries(groupedFilter).map(([key, value]) => ({ [key]: getFilterValue(value) })),
+        }
+      : {};
+  const result = Object.assign({}, or, and);
 
-  return Object.assign({}, or, and);
+  return result;
+  // return Object.assign({}, or, and);
 }
 
 export const buildListOptions = (options: ListOptionsInterface): ListOptionsInterface => ({

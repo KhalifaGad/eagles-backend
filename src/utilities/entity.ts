@@ -1,7 +1,8 @@
 import { Entity } from "$types";
+import { Require_id } from "mongoose";
 
 export const getEntityRef = <T>(entity: Entity<T>) => {
-  return typeof entity === "string" ? entity : `${entity._id}`;
+  return typeof entity === "string" ? entity : `${(entity as Require_id<T>)._id}`;
 };
 
 export const removeEmptyStrings = <T>(obj: Record<string, any>) => {

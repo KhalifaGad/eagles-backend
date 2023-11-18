@@ -1,6 +1,6 @@
 import { ID, ListArgumentsInterface, ListInterface, ListOptionsInterface } from "$types";
 import { DeleteResult } from "mongodb";
-import { AnyObject, FilterQuery, Model, PopulateOptions } from "mongoose";
+import { AnyKeys, AnyObject, FilterQuery, Model, PopulateOptions, Require_id } from "mongoose";
 import { buildListOptions, buildSearch } from "../helpers/index.js";
 
 export default class DefaultRepository<T> {
@@ -23,14 +23,19 @@ export default class DefaultRepository<T> {
     this.updateWhereId = this.updateWhereId.bind(this);
   }
 
-  async findById(id: ID): Promise<T | null> {
-    if (this.population) return this.model.findById(id).populate(this.population).lean();
-    return this.model.findById(id).lean();
+  async findById(id: ID): Promise<Require_id<T> | null> {
+    const doc = this.population
+      ? await this.model.findById(id).populate(this.population).lean()
+      : await this.model.findById(id).lean();
+    if (doc) {
+      return doc as Require_id<T>;
+    }
+    return null;
   }
 
-  async findOne(filter: FilterQuery<T> = {}): Promise<T> {
-    if (this.population) return this.model.findOne(filter).populate(this.population).lean();
-    return this.model.findOne(filter).lean();
+  async findOne(filter: FilterQuery<T> = {}): Promise<T | null> {
+    if (this.population) return this.model.findOne(filter).populate(this.population).lean() as Promise<T | null>;
+    return this.model.findOne(filter).lean() as Promise<T | null>;
   }
 
   async findMany(filter: FilterQuery<T> = {}): Promise<T[]> {
@@ -67,9 +72,9 @@ export default class DefaultRepository<T> {
     return this.model.countDocuments(filter);
   }
 
-  async create(data: Partial<T>): Promise<T> {
+  async create(data: AnyKeys<T>): Promise<T> {
     const createdData = await this.model.create(data);
-    return (await this.findById(createdData._id)) as T;
+    return (await this.findById(createdData._id as ID)) as T;
   }
 
   async insertMany(data: T[]): Promise<T[]> {
@@ -91,6 +96,10 @@ export default class DefaultRepository<T> {
   }
 
   async updateWhereId(id: ID, data: Partial<T> = {}): Promise<T | null> {
-    return this.model.findByIdAndUpdate(id, data, { new: true, populate: this.population, lean: true });
+    return this.model.findByIdAndUpdate(id, data, {
+      new: true,
+      populate: this.population,
+      lean: true,
+    }) as Promise<T | null>;
   }
 }

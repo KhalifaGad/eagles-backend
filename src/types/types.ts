@@ -1,4 +1,4 @@
-import { FilterQuery, LeanDocument, Types as MongooseTypes } from "mongoose";
+import { FilterQuery, PopulatedDoc, Require_id, Types as MongooseTypes } from "mongoose";
 import * as Enums from "./enums.js";
 import {
   AccountEnum,
@@ -25,12 +25,12 @@ export interface ListArgumentsInterface<T> {
 }
 
 export interface ListInterface<T> {
-  data: T[];
+  data: Require_id<T>[];
   totalCount: number;
 }
 
 export type ID = MongooseTypes.ObjectId;
-export type Entity<T> = NonNullable<LeanDocument<T & Partial<MongooseTypes.ObjectId>>> | ID;
+export type Entity<T> = NonNullable<PopulatedDoc<T>>;
 
 export type PopulatedEntitiesWrapper<T> = {
   [K in keyof T]: T[K] extends Entity<infer E> ? E : T[K] extends string ? string : T[K];

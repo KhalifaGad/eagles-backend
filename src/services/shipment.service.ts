@@ -48,6 +48,10 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
     const originRelatedHub = await hubRepository.findById(originAgency.relatedHub as ID);
     if (!originRelatedHub) throw notFound("لا يمكن ايجاد المستودع");
 
+    if (originRelatedHub.isHotspot && !originRelatedHub.parentHub) {
+      throw notFound("لا يمكن ايجاد المستودع الرئيسي لنقطة التجميع");
+    }
+
     return this.repository.create({
       ...payload,
       code,
@@ -57,7 +61,7 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
       destinationAgency: destinationAgency._id,
       originHotspot: originRelatedHub._id,
       destinationHotspot: destinationAgency.relatedHub,
-      hub: originRelatedHub.isHotspot ? originRelatedHub.parentHub : originRelatedHub._id,
+      hub: originRelatedHub.isHotspot ? originRelatedHub.parentHub! : originRelatedHub._id,
       status: ShipmentStatuses.PLACED,
       searchables: {
         consignorName: consignor.name,

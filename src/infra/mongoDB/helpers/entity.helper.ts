@@ -1,10 +1,6 @@
-import { Types as MongooseTypes } from "mongoose";
 import { Entity } from "$types";
+import { Types as MongooseTypes } from "mongoose";
 
-function isMongooseID<T>(value: Entity<T>): value is MongooseTypes.ObjectId {
-  return value instanceof MongooseTypes.ObjectId || typeof value === "string";
-}
-
-export function isOfTypeEntity<T extends Entity<any>>(value: Entity<T>): value is T {
-  return !isMongooseID(value);
+export function isOfTypeEntity<T extends Entity<unknown>>(value: Entity<T>): value is T {
+  return !(value instanceof MongooseTypes.ObjectId);
 }

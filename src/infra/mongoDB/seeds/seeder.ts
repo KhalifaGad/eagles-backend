@@ -16,6 +16,8 @@ export default async () => {
     hubsData.map(async ({ name, cityEnglishName, address, isHotspot }) => {
       const city = await repositories.cityRepository.findOne({ englishName: cityEnglishName });
 
+      if (!city) throw new Error("City not found");
+
       return repositories.hubRepository.upsert(
         { name, isHotspot, address: { ...address, city: city._id as ID } },
         "name"

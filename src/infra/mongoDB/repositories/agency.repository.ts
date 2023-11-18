@@ -1,8 +1,9 @@
-import { badData } from "@hapi/boom";
-import DefaultRepository from "./default.repository.js";
-import { AgencyModel } from "../models/index.js";
 import { AddressInterface, AgencyInterface } from "$types";
 import { calculateDistance, getEntityRef } from "$utils";
+import { badData } from "@hapi/boom";
+import { Require_id } from "mongoose";
+import { AgencyModel } from "../models/index.js";
+import DefaultRepository from "./default.repository.js";
 
 class AgencyRepository extends DefaultRepository<AgencyInterface> {
   constructor() {
@@ -28,7 +29,7 @@ class AgencyRepository extends DefaultRepository<AgencyInterface> {
     return this.sortByDistanceToPoint(agencies, lat, lng).at(0);
   };
 
-  private sortByDistanceToPoint = (agencies: AgencyInterface[], lat: number, lng: number) => {
+  private sortByDistanceToPoint = (agencies: Require_id<AgencyInterface>[], lat: number, lng: number) => {
     // Calculate the distance for each object and add it as a "distance" property
     const agenciesWithDistances = agencies.map(agency => ({
       ...agency,

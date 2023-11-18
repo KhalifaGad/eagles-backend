@@ -7,8 +7,9 @@
     "node_modules/**/node_modules"
   ],
   "ext": "ts,json,js",
-  "exec": "npm run build",
+  "exec": "npm run build && npm run launch",
   "restartable": "rs",
+  "delay": 2000,
   "env": {
     "NODE_ENV": "development"
   },

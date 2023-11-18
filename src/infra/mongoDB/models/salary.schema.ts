@@ -1,5 +1,5 @@
-import { model, Schema } from "mongoose";
 import { SalaryInterface } from "$types";
+import { model, Schema } from "mongoose";
 import { Schemas } from "../constants/index.js";
 
 const salarySchema = new Schema<SalaryInterface>(
@@ -12,7 +12,7 @@ const salarySchema = new Schema<SalaryInterface>(
     finalSalary: {
       type: Number,
       default: function () {
-        return this.baseSalary + this.reward - this.deduction;
+        return this.baseSalary + (this.reward ?? 0) - (this.deduction ?? 0);
       },
     },
     deductionReason: { type: String },

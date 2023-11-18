@@ -1,11 +1,10 @@
-import { createLogger, format as winstonFormat, transports } from "winston";
+import { createLogger, format as winstonFormats, transports } from "winston";
 
-const format = winstonFormat.combine(
-  winstonFormat.timestamp({ format: "DD-MM-YYYY HH:mm:ss" }),
-  winstonFormat.printf(info => {
-    return `${info.level}-${[info.timestamp]}: ${info.message}, ${info.meta || ""}, ${info.stack || ""}`;
-  }),
-  winstonFormat.json()
+const format = winstonFormats.combine(
+  winstonFormats.timestamp({ format: "DD-MM-YYYY HH:mm:ss" }),
+  winstonFormats.json(),
+  winstonFormats.metadata(),
+  winstonFormats.prettyPrint()
 );
 
 export default createLogger({

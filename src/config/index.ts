@@ -6,7 +6,10 @@ export default Object.freeze({
   port: parseInt(process.env.PORT || "5000"),
 
   mongoDB: {
-    connectionString: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/egypt-eagles",
+    uri: process.env.MONGODB_URI ?? "",
+    database: process.env.DATABASE_NAME,
+    password: process.env.DATABASE_PASSWORD,
+    username: process.env.DATABASE_USERNAME,
   },
 
   jwtSecret: process.env.COOKIE_SECRET || "JWT_SECRET",

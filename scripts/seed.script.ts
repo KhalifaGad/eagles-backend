@@ -2,7 +2,7 @@ import { establishConnection, seeder } from "$infra";
 
 const run = async () => {
   await establishConnection();
-  if (process.env.NODE_ENV === "Seeding") return seeder();
+  return seeder();
 };
 
 run()

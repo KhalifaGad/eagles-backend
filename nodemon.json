@@ -1,6 +1,18 @@
 {
-  "watch": ["src"],
-  "ignore": [".git"],
+  "watch": [
+    "src"
+  ],
+  "ignore": [
+    ".git",
+    "node_modules/**/node_modules"
+  ],
   "ext": "ts,json,js",
-  "exec": "npm run start"
+  "exec": "npm run build",
+  "restartable": "rs",
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "execMap": {
+    "ts": "node --inspect"
+  }
 }

@@ -27,7 +27,7 @@
     "build": "tsc && tsc-alias",
     "start": "NODE_ENV=production npm run build && npm run launch",
     "start:watch": "NODE_ENV=development nodemon",
-    "seed": "NODE_ENV=Seeding ts-node ./scripts/seed.script.ts",
+    "seed": "npm run build && node ./dist/scripts/seed.script.js",
     "deleteTemplates": "NODE_ENV=Seeding ts-node ./scripts/deleteTemplates.script.ts",
     "test": "mocha",
     "lint": "eslint .",

@@ -7,7 +7,7 @@ export default async () => {
     await establishConnection();
     new Server(config.port).start();
   } catch (err: any) {
-    console.error(err.message);
+    console.error(err);
     return process.exit(1);
   }
 };

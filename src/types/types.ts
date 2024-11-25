@@ -2,6 +2,7 @@ import { FilterQuery, PopulatedDoc, Require_id, Types as MongooseTypes } from "m
 import * as Enums from "./enums.js";
 import {
   AccountEnum,
+  AttributedToTypeEnum,
   DeliveryReceiptPartTypeEnum,
   DeliveryReceiptTypeEnum,
   ShipmentConsigneeEnum,
@@ -104,6 +105,7 @@ type ShipmentProductType = {
   name: string;
   description?: string;
   price: number;
+  _id?: ID;
 };
 
 type PlacedEventNameType = "PLACED";
@@ -116,6 +118,7 @@ type ShippedEventNameType = "SHIPPED";
 type FailedAttemptEventNameType = "FAILED_ATTEMPT";
 type ReturnEventNameType = "RETURN";
 type shipmentDestinationType = "AGENCY" | "HUB" | "CONSIGNEE";
+type FinalizedEventNameType = "COMPLETED" | "RETURN_TO_ORIGIN";
 
 type EventType = { name: string; date: Date };
 
@@ -265,6 +268,11 @@ type PickedType = EventType & {
   employee: Entity<EmployeeInterface>;
 };
 
+type FinalizedEventType = EventType & {
+  name: FinalizedEventNameType;
+  employee?: Entity<EmployeeInterface>;
+};
+
 export type ShipmentEventType =
   | PlacedType
   | ConfirmedType
@@ -273,7 +281,8 @@ export type ShipmentEventType =
   | HubReceivedType
   | ShippedType
   | FailedAttemptType
-  | ReturnType;
+  | ReturnType
+  | FinalizedEventType;
 
 export interface ShipmentInterface {
   _id?: ID;
@@ -287,10 +296,10 @@ export interface ShipmentInterface {
   // custodianType: Enums.AccountEnum;
   isInCity: boolean;
   originAgency: Entity<AgencyInterface>;
-  originHotspot: Entity<HubInterface>;
-  destinationAgency: Entity<AgencyInterface>;
-  destinationHotspot: Entity<HubInterface>;
-  hub: Entity<HubInterface>;
+  originHotspot?: Entity<HubInterface>;
+  destinationAgency?: Entity<AgencyInterface>;
+  destinationHotspot?: Entity<HubInterface>;
+  hub?: Entity<HubInterface>;
   events: ShipmentEventType[];
   shippingFees: number;
   status: ShipmentStatuses;
@@ -299,6 +308,7 @@ export interface ShipmentInterface {
   notes?: string[];
   products: ShipmentProductType[];
   returns: ShipmentProductType[];
+  returnShipment?: Entity<ShipmentInterface>;
   failedAttemptsCount: number;
   isReturning: boolean;
   searchables: {
@@ -321,10 +331,14 @@ export interface CreateShipmentInterface {
   collectCashFees: number;
   shipmentPrice: number;
   originAgency?: ID;
-  destinationAgency: ID;
+  destinationAgency?: ID;
   isInCity: boolean;
   notes: string[];
   products: ShipmentProductType[];
+}
+
+export interface CompleteShipmentInterface {
+  rejectedProducts?: string[];
 }
 
 export interface AuthUser {
@@ -357,6 +371,7 @@ export interface RideStepInterface {
   sequence: number;
   stepLocationType: StepLocationTypeEnum;
   stepLocationEntity: Entity<AgencyInterface | HubInterface>;
+  visitDate?: Date;
 }
 
 export interface RideTemplateInterface {
@@ -366,14 +381,14 @@ export interface RideTemplateInterface {
 }
 
 export interface RideInterface {
-  // TODO: ADD Current (state or step or both)
   _id?: ID;
   code: string;
   employees: Entity<EmployeeInterface>[];
   shipments: Entity<ShipmentInterface>[];
-  steps: RideStepInterface[]; // TODO: FIX THIS
+  steps: RideStepInterface[];
   startDate?: Date;
   endDate?: Date;
+  lastVisitedStep?: number;
 }
 
 export interface CreateRidePayload {
@@ -389,17 +404,18 @@ export interface DeliveryReceiptInterface {
   reference: string;
   type: DeliveryReceiptTypeEnum;
   recipient?: Entity<EmployeeInterface>;
-  recipientHub?: Entity<HubInterface>;
-  recipientAgency?: Entity<AgencyInterface>;
+  recipientHub?: Entity<HubInterface> | null;
+  recipientAgency?: Entity<AgencyInterface> | null;
+  recipientRide?: Entity<RideInterface> | null;
   recipientType: DeliveryReceiptPartTypeEnum;
-  recipientRide?: Entity<RideInterface>;
   originator: Entity<EmployeeInterface>;
-  originatorHub?: Entity<HubInterface>;
-  originatorAgency?: Entity<AgencyInterface>;
-  originatorRide?: Entity<RideInterface>;
+  originatorHub?: Entity<HubInterface> | null;
+  originatorAgency?: Entity<AgencyInterface> | null;
+  originatorRide?: Entity<RideInterface> | null;
   originatorType: DeliveryReceiptPartTypeEnum;
   isRecipientConfirmed: boolean;
   shipments: Entity<ShipmentInterface>[];
+  rideCode?: string;
 }
 
 export type PopulatedDeliveryReceipt = WithRelation<
@@ -412,3 +428,8 @@ export type PopulatedDeliveryReceiptWithRecipient = WithRelation<
   "shipments",
   Entity<ShipmentInterface>[]
 >;
+
+export interface ShipmentFinancialReportPayload {
+  startDate: string;
+  endDate: string;
+}

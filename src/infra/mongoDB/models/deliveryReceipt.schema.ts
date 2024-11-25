@@ -18,6 +18,7 @@ const deliveryReceiptSchema = new Schema<DeliveryReceiptInterface>(
     shipments: [{ type: Schema.Types.ObjectId, ref: Schemas.shipment, required: true }],
     type: { type: String, enum: DeliveryReceiptTypeEnum, required: true },
     isRecipientConfirmed: { type: Boolean, required: true, default: false },
+    rideCode: { type: String },
   },
   { timestamps: true, versionKey: false }
 );

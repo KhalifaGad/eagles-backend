@@ -48,14 +48,8 @@ export const shipmentSchema = yup
       originAgencyName: yup.string(),
       destinationAgencyName: yup.string(),
     }),
-    createdAt: yup
-      .mixed()
-      .transform(value => new Date(value))
-      .required(),
-    updatedAt: yup
-      .mixed()
-      .transform(value => new Date(value))
-      .required(),
+    createdAt: yup.mixed().transform(value => new Date(value)),
+    updatedAt: yup.mixed().transform(value => new Date(value)),
     products: yup
       .array()
       .of(

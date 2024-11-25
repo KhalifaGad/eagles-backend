@@ -30,7 +30,7 @@ export class ShippedToHubState implements DeliveryReceiptStateInterface {
   }
 
   onReceiptConfirmed() {
-    if (this.isValidReceipt()) {
+    if (!this.isValidReceipt()) {
       throw forbidden("لا يمكن استلام الشحنة الا من قبل المستودع");
     }
 

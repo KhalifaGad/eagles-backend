@@ -8,7 +8,14 @@ const clientSchema = new Schema<ClientInterface>(
     name: { type: String, required: true },
     birthdate: { type: Date },
     address: { type: addressSchema, required: true },
-    email: { type: String, unique: true, required: false },
+    email: {
+      type: String,
+      index: {
+        unique: true,
+        partialFilterExpression: { email: { $exists: true, $ne: null } },
+      },
+      sparse: true, // This ensures that the unique constraint ignores nulls
+    },
     mobile: { type: String, required: true, unique: true },
     defaultNearestAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency },
     secondMobile: {

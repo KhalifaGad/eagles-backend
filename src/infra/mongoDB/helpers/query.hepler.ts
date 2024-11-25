@@ -2,8 +2,16 @@ import { ListOptionsInterface } from "$types";
 import { FilterQuery, Types } from "mongoose";
 import { defaultListOptions } from "../constants/index.js";
 
+function parseJSON(value: string) {
+  try {
+    return JSON.parse(value);
+  } catch {
+    return value;
+  }
+}
+
 function getFilterValue(value: unknown) {
-  if (typeof value === "string") {
+  if (typeof value === "string" && parseJSON(value) === value) {
     return Types.ObjectId.isValid(value) ? value : { $regex: value, $options: "i" };
   }
   if (Array.isArray(value)) {
@@ -17,15 +25,16 @@ export function buildSearch(filter: Record<string, unknown>): FilterQuery<any> {
   const { groupedFilter, ...restFilter } = filter;
 
   if (Object.keys(restFilter).length < 1 && Object.keys(groupedFilter as Record<string, any>).length < 1) return {};
-  const or = restFilter
-    ? {
-        $or: Object.entries(restFilter).map(([key, value]) => {
-          return {
-            [key]: getFilterValue(value),
-          };
-        }),
-      }
-    : {};
+  let or = {};
+  if (Object.keys(restFilter).length > 0) {
+    or = {
+      $or: Object.entries(restFilter).map(([key, value]) => {
+        return {
+          [key]: getFilterValue(value),
+        };
+      }),
+    };
+  }
 
   const and =
     !!groupedFilter && Object.keys(groupedFilter).length > 0
@@ -33,10 +42,11 @@ export function buildSearch(filter: Record<string, unknown>): FilterQuery<any> {
           $and: Object.entries(groupedFilter).map(([key, value]) => ({ [key]: getFilterValue(value) })),
         }
       : {};
-  const result = Object.assign({}, or, and);
 
-  return result;
-  // return Object.assign({}, or, and);
+  return {
+    ...or,
+    ...and,
+  };
 }
 
 export const buildListOptions = (options: ListOptionsInterface): ListOptionsInterface => ({

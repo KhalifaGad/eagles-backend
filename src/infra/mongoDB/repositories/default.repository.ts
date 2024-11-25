@@ -4,8 +4,8 @@ import { AnyKeys, AnyObject, FilterQuery, Model, PopulateOptions, Require_id } f
 import { buildListOptions, buildSearch } from "../helpers/index.js";
 
 export default class DefaultRepository<T> {
-  private model: Model<T>;
-  private population?: PopulateOptions | PopulateOptions[];
+  protected readonly model: Model<T>;
+  protected readonly population?: PopulateOptions | PopulateOptions[];
 
   constructor(model: Model<T>, population?: PopulateOptions | PopulateOptions[]) {
     this.model = model;
@@ -38,8 +38,8 @@ export default class DefaultRepository<T> {
     return this.model.findOne(filter).lean() as Promise<T | null>;
   }
 
-  async findMany(filter: FilterQuery<T> = {}): Promise<T[]> {
-    if (this.population) return this.model.find(filter).populate(this.population).lean();
+  async findMany(filter: FilterQuery<T> = {}, ignorePopulations?: boolean): Promise<T[]> {
+    if (this.population && !ignorePopulations) return this.model.find(filter).populate(this.population).lean();
     return this.model.find(filter).lean();
   }
 

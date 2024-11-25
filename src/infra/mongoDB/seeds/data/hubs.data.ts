@@ -6,12 +6,12 @@ export default [
       area: "منطقه ا",
       street: "شارع ا",
     },
-    isHotspot: false,
+    isHotspot: true,
   },
   {
     name: "مخزن ٦ اكتوبر",
     cityEnglishName: "Giza",
-    isHotspot: false,
+    isHotspot: true,
     address: {
       area: "منطقه ب",
       street: "شارع ب",

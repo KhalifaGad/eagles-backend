@@ -1,11 +1,6 @@
 {
-  "watch": [
-    "src"
-  ],
-  "ignore": [
-    ".git",
-    "node_modules/**/node_modules"
-  ],
+  "watch": ["src"],
+  "ignore": [".git", "node_modules/**/node_modules"],
   "ext": "ts,json,js",
   "exec": "npm run build && npm run launch",
   "restartable": "rs",

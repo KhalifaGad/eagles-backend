@@ -12,7 +12,7 @@ export class PlacedState implements DeliveryReceiptStateInterface {
   status = ShipmentStatuses.PLACED;
   event?: ShipmentEventType;
 
-  constructor(private deliveryReceipt: PopulatedDeliveryReceipt) {}
+  constructor(private readonly deliveryReceipt: PopulatedDeliveryReceipt) {}
 
   getState() {
     return { status: this.status, event: this.event };
@@ -34,7 +34,7 @@ export class PlacedState implements DeliveryReceiptStateInterface {
     if (!this.isValidReceipt()) {
       throw new Error("This shipment cannot be received by the current employee");
     }
-    const shipmentRecipientType = type === DeliveryReceiptTypeEnum.Receive ? recipientType : originatorType;
+    const shipmentRecipientType = type === DeliveryReceiptTypeEnum.Delivery ? recipientType : originatorType;
 
     if (shipmentRecipientType === DeliveryReceiptPartTypeEnum.Ride) {
       this.addShippedToHubEvent();
@@ -77,7 +77,7 @@ export class PlacedState implements DeliveryReceiptStateInterface {
 
   private addOriginHotspotReceivedEvent() {
     const { type, recipientHub, originatorHub } = this.deliveryReceipt;
-    const receiptingHub = type === DeliveryReceiptTypeEnum.Receive ? recipientHub : originatorHub;
+    const receiptingHub = type === DeliveryReceiptTypeEnum.Receive ? originatorHub : recipientHub;
     if (!receiptingHub) throw new Error("Bad implementation");
 
     this.status = ShipmentStatuses.ORIGIN_HOTSPOT_RECEIVED;

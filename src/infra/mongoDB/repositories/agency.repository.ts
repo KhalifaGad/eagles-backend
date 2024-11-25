@@ -8,9 +8,11 @@ import DefaultRepository from "./default.repository.js";
 class AgencyRepository extends DefaultRepository<AgencyInterface> {
   constructor() {
     super(AgencyModel, { path: "address.city" });
+    this.sortByDistanceToPoint = this.sortByDistanceToPoint.bind(this);
+    this.getNearestAgency = this.getNearestAgency.bind(this);
   }
 
-  getNearestAgency = async (address: AddressInterface) => {
+  async getNearestAgency(address: AddressInterface) {
     const { lat, lng, city } = address;
     const cityEntityRef = getEntityRef(city);
     if (!lat || !lng || !cityEntityRef) {
@@ -27,9 +29,9 @@ class AgencyRepository extends DefaultRepository<AgencyInterface> {
     });
 
     return this.sortByDistanceToPoint(agencies, lat, lng).at(0);
-  };
+  }
 
-  private sortByDistanceToPoint = (agencies: Require_id<AgencyInterface>[], lat: number, lng: number) => {
+  private sortByDistanceToPoint(agencies: Require_id<AgencyInterface>[], lat: number, lng: number) {
     // Calculate the distance for each object and add it as a "distance" property
     const agenciesWithDistances = agencies.map(agency => ({
       ...agency,
@@ -41,7 +43,7 @@ class AgencyRepository extends DefaultRepository<AgencyInterface> {
 
     // Remove the "distance" property if you don't need it in the final result
     return agenciesWithDistances.map(({ distance, ...rest }) => rest);
-  };
+  }
 }
 
 export default new AgencyRepository();

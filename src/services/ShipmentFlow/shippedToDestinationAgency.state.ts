@@ -24,8 +24,8 @@ export class ShippedToDestinationAgency implements DeliveryReceiptStateInterface
   isValidReceipt() {
     const { type, recipientAgency, originatorAgency, recipientType, originatorType } = this.deliveryReceipt;
 
-    const agency = type === DeliveryReceiptTypeEnum.Receive ? recipientAgency : originatorAgency;
-    const shipmentRecipientType = type === DeliveryReceiptTypeEnum.Receive ? recipientType : originatorType;
+    const agency = type === DeliveryReceiptTypeEnum.Receive ? originatorAgency : recipientAgency;
+    const shipmentRecipientType = type === DeliveryReceiptTypeEnum.Receive ? originatorType : recipientType;
 
     return !!agency && shipmentRecipientType === DeliveryReceiptPartTypeEnum.Agency;
   }
@@ -42,8 +42,8 @@ export class ShippedToDestinationAgency implements DeliveryReceiptStateInterface
   private addDestinationAgencyReceivedEvent() {
     const { type, recipient, originator, recipientAgency, originatorAgency } = this.deliveryReceipt;
 
-    const employee = type === DeliveryReceiptTypeEnum.Receive ? recipient : originator;
-    const agency = type === DeliveryReceiptTypeEnum.Receive ? recipientAgency : originatorAgency;
+    const employee = type === DeliveryReceiptTypeEnum.Receive ? originator : recipient;
+    const agency = type === DeliveryReceiptTypeEnum.Receive ? originatorAgency : recipientAgency;
 
     if (!employee?._id) throw forbidden("لا يمكن استلام الشحنة من قبل الموظف الحالي");
     if (!agency?._id) throw forbidden("لا يمكن استلام الشحنة من قبل الوكاله الحاليه");

@@ -10,10 +10,14 @@ router
   .get(shipmentController.list)
   .post(validateMiddleware(createShipmentSchema), shipmentController.create);
 
+router.route("/shipments/financial-report").get(shipmentController.financialReport);
+
 router
   .route("/shipments/:id")
   .get(shipmentController.show)
   .put(validateMiddleware(shipmentSchema), shipmentController.update)
   .delete(shipmentController.delete);
+
+router.route("/shipments/:id/completion").post(shipmentController.complete);
 
 export default router;

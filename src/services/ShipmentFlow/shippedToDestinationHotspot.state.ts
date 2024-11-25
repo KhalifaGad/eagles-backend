@@ -1,5 +1,12 @@
 import { isOfTypeEntity } from "$infra";
-import { DeliveryReceiptTypeEnum, PopulatedDeliveryReceipt, ShipmentEventType, ShipmentStatuses } from "$types";
+import {
+  DeliveryReceiptTypeEnum,
+  PopulatedDeliveryReceipt,
+  ShipmentEventType,
+  ShipmentInterface,
+  ShipmentStatuses,
+} from "$types";
+import { Types as MongooseTypes } from "mongoose";
 import { forbidden } from "~errors/index.js";
 import { DeliveryReceiptStateInterface } from "./state.js";
 
@@ -7,7 +14,10 @@ export class ShippedToDestinationHotspot implements DeliveryReceiptStateInterfac
   status = ShipmentStatuses.SHIPPED_TO_DESTINATION_HOTSPOT;
   event?: ShipmentEventType;
 
-  constructor(private deliveryReceipt: PopulatedDeliveryReceipt) {}
+  constructor(
+    private readonly shipment: ShipmentInterface,
+    private readonly deliveryReceipt: PopulatedDeliveryReceipt
+  ) {}
 
   getState() {
     return { status: this.status, event: this.event };
@@ -18,17 +28,20 @@ export class ShippedToDestinationHotspot implements DeliveryReceiptStateInterfac
    */
   isValidReceipt() {
     const { type, recipientHub, originatorHub } = this.deliveryReceipt;
+    const { destinationHotspot } = this.shipment;
 
-    const hub = type === DeliveryReceiptTypeEnum.Receive ? recipientHub : originatorHub;
+    const hub = type === DeliveryReceiptTypeEnum.Delivery ? recipientHub : originatorHub;
 
     if (!hub) return false;
     if (!isOfTypeEntity(hub)) throw new Error("Bad implementation");
 
-    return hub.isHotspot;
+    const destinationHotspotId = destinationHotspot?._id ?? destinationHotspot;
+
+    return hub.isHotspot && hub?._id?.toString() === destinationHotspotId?.toString();
   }
 
   onReceiptConfirmed() {
-    if (this.isValidReceipt()) {
+    if (!this.isValidReceipt()) {
       throw forbidden("يمكن استلام الشحنة الا من قبل نقطة توزيع");
     }
 
@@ -38,7 +51,7 @@ export class ShippedToDestinationHotspot implements DeliveryReceiptStateInterfac
 
   addDestinationHotspotReceivedEvent() {
     const { type, recipientHub, originatorHub } = this.deliveryReceipt;
-    const receiptingHub = type === DeliveryReceiptTypeEnum.Receive ? recipientHub : originatorHub;
+    const receiptingHub = type === DeliveryReceiptTypeEnum.Delivery ? recipientHub : originatorHub;
     if (!receiptingHub) throw forbidden("يمكن استلام الشحنة الا من قبل نقطة توزيع");
 
     this.status = ShipmentStatuses.DESTINATION_HOTSPOT_RECEIVED;

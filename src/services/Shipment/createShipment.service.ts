@@ -1,8 +1,16 @@
-import { notFound } from "$errors";
-import { agencyRepository, clientRepository, companyRepository, hubRepository, shipmentRepository } from "$infra";
+import { badData } from "@hapi/boom";
+import { notFound } from "~errors/index.js";
+import {
+  agencyRepository,
+  clientRepository,
+  companyRepository,
+  hubRepository,
+  shipmentRepository,
+} from "~infra/index.js";
 import {
   AccountEnum,
   AddressInterface,
+  AgencyInterface,
   AuthUser,
   CreateShipmentInterface,
   EmployeeInterface,
@@ -10,25 +18,21 @@ import {
   ShipmentConsigneeEnum,
   ShipmentConsignorEnum,
   ShipmentEventNamesEnum,
-  ShipmentInterface,
   ShipmentStatuses,
-} from "$types";
-import { getEntityRef, getUniqueCode } from "$utils";
-import { badData } from "@hapi/boom";
-import DefaultService from "./default.service.js";
+} from "~types/index.js";
+import { getEntityRef } from "~utilities/index.js";
+import codeGenerator from "./codeGenerator.js";
 
-class ShipmentService extends DefaultService<ShipmentInterface> {
+class CreateShipmentService {
   constructor() {
-    super(shipmentRepository);
-    this.createShipment = this.createShipment.bind(this);
+    this.create = this.create.bind(this);
     this.getConsignor = this.getConsignor.bind(this);
     this.getConsignee = this.getConsignee.bind(this);
     this.getNearestAgency = this.getNearestAgency.bind(this);
     this.shipmentCreationGuard = this.shipmentCreationGuard.bind(this);
-    this.generateCode = this.generateCode.bind(this);
   }
 
-  async createShipment(payload: CreateShipmentInterface, authUser: AuthUser) {
+  async create(payload: CreateShipmentInterface, authUser: AuthUser) {
     this.shipmentCreationGuard(payload);
     const consignor = await this.getConsignor(payload.consignorType, payload.consignor);
     const originAgencyId = payload.originAgency;
@@ -39,29 +43,25 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
 
     const consignee = await this.getConsignee(payload.consigneeType, payload.consignee);
     const isInCity = getEntityRef(consignee.address.city) === getEntityRef(consignor.address.city);
-    const destinationAgency = isInCity ? originAgency : await this.getNearestAgency(consignee.address);
+    const destinationAgency = isInCity ? undefined : await this.getNearestAgency(consignee.address);
 
-    if (!destinationAgency) throw notFound("لا يمكن ايجاد وكاله تسليم في نفس المدينه");
+    const code = await codeGenerator.generate();
 
-    const code = await this.generateCode();
+    const { originHub, originHotspot } = await this.getOriginHubs(originAgency, isInCity);
 
-    const originRelatedHub = await hubRepository.findById(originAgency.relatedHub as ID);
-    if (!originRelatedHub) throw notFound("لا يمكن ايجاد المستودع");
+    const hub = originHotspot?.parentHub ?? originHub?._id;
+    const destinationHotspot = await this.getDestinationHotspot(destinationAgency, hub as ID | undefined);
 
-    if (originRelatedHub.isHotspot && !originRelatedHub.parentHub) {
-      throw notFound("لا يمكن ايجاد المستودع الرئيسي لنقطة التجميع");
-    }
-
-    return this.repository.create({
+    return shipmentRepository.create({
       ...payload,
       code,
       consignor: consignor._id,
       consignee: consignee._id,
       originAgency: originAgency._id,
-      destinationAgency: destinationAgency._id,
-      originHotspot: originRelatedHub._id,
-      destinationHotspot: destinationAgency.relatedHub,
-      hub: originRelatedHub.isHotspot ? originRelatedHub.parentHub! : originRelatedHub._id,
+      destinationAgency: destinationAgency?._id,
+      originHotspot: originHotspot?._id,
+      destinationHotspot,
+      hub,
       status: ShipmentStatuses.PLACED,
       searchables: {
         consignorName: consignor.name,
@@ -69,7 +69,7 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
         consignorMobile: consignor.mobile,
         consigneeMobile: consignee.mobile,
         originAgencyName: originAgency.name,
-        destinationAgencyName: destinationAgency.name,
+        destinationAgencyName: destinationAgency?.name,
       },
       events: [
         {
@@ -117,16 +117,38 @@ class ShipmentService extends DefaultService<ShipmentInterface> {
     }
   }
 
-  private async generateCode() {
-    let code = "";
-    let isExist = true;
-    do {
-      code = getUniqueCode();
-      const existingCount = await shipmentRepository.count({ code });
-      isExist = existingCount > 1;
-    } while (isExist);
-    return code;
+  private async getOriginHubs(originAgency: AgencyInterface, isInCity: boolean) {
+    if (isInCity) {
+      return {
+        originHub: undefined,
+        originHotspot: undefined,
+      };
+    }
+    const originHub = await hubRepository.findById(originAgency.relatedHub as ID);
+    if (!originHub) throw notFound("لا يمكن ايجاد المستودع");
+
+    const originHotspot = originHub.isHotspot ? originHub : undefined;
+
+    return {
+      originHub,
+      originHotspot,
+    };
+  }
+
+  private async getDestinationHotspot(destinationAgency?: AgencyInterface, hub?: ID) {
+    if (!destinationAgency) {
+      // This means it's in the same city
+      return undefined;
+    }
+
+    if (destinationAgency.relatedHub === hub) {
+      return undefined;
+    }
+
+    const destinationHotspot = await hubRepository.findById(destinationAgency.relatedHub as ID);
+
+    return destinationHotspot?.isHotspot ? destinationHotspot : undefined;
   }
 }
 
-export default new ShipmentService();
+export default new CreateShipmentService();

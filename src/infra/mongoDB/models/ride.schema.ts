@@ -17,6 +17,7 @@ const rideSchema = new Schema<RideInterface>(
           sequence: { type: Number, required: true, min: 1 },
           stepLocationType: { type: String, enum: StepLocationTypeEnum, required: true },
           stepLocationEntity: { type: Schema.Types.ObjectId, refPath: "steps.stepLocationType", required: true },
+          visitDate: { type: Date },
         },
       ],
       required: true,
@@ -24,6 +25,7 @@ const rideSchema = new Schema<RideInterface>(
     },
     startDate: { type: Date },
     endDate: { type: Date },
+    lastVisitedStep: { type: Number },
   },
   { timestamps: true, versionKey: false }
 ).index({ code: 1 });

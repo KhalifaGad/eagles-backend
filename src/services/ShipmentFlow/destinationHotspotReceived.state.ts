@@ -3,6 +3,7 @@ import {
   DeliveryReceiptTypeEnum,
   PopulatedDeliveryReceipt,
   ShipmentEventType,
+  ShipmentInterface,
   ShipmentStatuses,
 } from "$types";
 import { forbidden } from "~errors/index.js";
@@ -12,7 +13,7 @@ export class DestinationHotspotReceivedState implements DeliveryReceiptStateInte
   status = ShipmentStatuses.DESTINATION_HOTSPOT_RECEIVED;
   event?: ShipmentEventType;
 
-  constructor(private deliveryReceipt: PopulatedDeliveryReceipt) {}
+  constructor(private readonly shipment: ShipmentInterface, private deliveryReceipt: PopulatedDeliveryReceipt) {}
 
   getState() {
     return { status: this.status, event: this.event };
@@ -24,10 +25,14 @@ export class DestinationHotspotReceivedState implements DeliveryReceiptStateInte
   isValidReceipt() {
     const { type, recipientAgency, originatorAgency, recipientType, originatorType } = this.deliveryReceipt;
 
-    const agency = type === DeliveryReceiptTypeEnum.Receive ? recipientAgency : originatorAgency;
-    const shipmentRecipientType = type === DeliveryReceiptTypeEnum.Receive ? recipientType : originatorType;
+    const agency = type === DeliveryReceiptTypeEnum.Delivery ? recipientAgency : originatorAgency;
+    const shipmentRecipientType = type === DeliveryReceiptTypeEnum.Delivery ? recipientType : originatorType;
 
-    return !!agency && shipmentRecipientType === DeliveryReceiptPartTypeEnum.Agency;
+    if (!agency || agency._id?.toString() !== this.shipment.destinationAgency?._id?.toString()) {
+      return false;
+    }
+
+    return shipmentRecipientType === DeliveryReceiptPartTypeEnum.Agency;
   }
 
   onReceiptConfirmed() {
@@ -42,8 +47,8 @@ export class DestinationHotspotReceivedState implements DeliveryReceiptStateInte
   private addDestinationAgencyReceivedEvent() {
     const { type, recipient, originator, recipientAgency, originatorAgency } = this.deliveryReceipt;
 
-    const employee = type === DeliveryReceiptTypeEnum.Receive ? recipient : originator;
-    const agency = type === DeliveryReceiptTypeEnum.Receive ? recipientAgency : originatorAgency;
+    const agency = type === DeliveryReceiptTypeEnum.Delivery ? recipientAgency : originatorAgency;
+    const employee = type === DeliveryReceiptTypeEnum.Delivery ? recipient : originator;
 
     if (!employee?._id) throw forbidden("لا يمكن استلام الشحنة من قبل الموظف الحالي");
     if (!agency?._id) throw forbidden("لا يمكن استلام الشحنة من قبل الوكاله الحاليه");

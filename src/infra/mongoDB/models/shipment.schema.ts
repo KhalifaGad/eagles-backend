@@ -27,10 +27,10 @@ const shipmentSchema = new Schema<ShipmentInterface>(
     collectCashFees: { type: Number, required: true, default: 0 },
     shipmentPrice: { type: Number, required: true, default: 0 },
     originAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency, required: true },
-    originHotspot: { type: Schema.Types.ObjectId, ref: Schemas.hub, required: true },
-    destinationAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency, required: true },
-    destinationHotspot: { type: Schema.Types.ObjectId, ref: Schemas.hub, required: true },
-    hub: { type: Schema.Types.ObjectId, ref: Schemas.hub, required: true },
+    originHotspot: { type: Schema.Types.ObjectId, ref: Schemas.hub },
+    destinationAgency: { type: Schema.Types.ObjectId, ref: Schemas.agency },
+    destinationHotspot: { type: Schema.Types.ObjectId, ref: Schemas.hub },
+    hub: { type: Schema.Types.ObjectId, ref: Schemas.hub },
     failedAttemptsCount: { type: Number, required: true, default: 0 },
     isReturning: { type: Boolean, required: true, default: false },
     status: { type: String, enum: ShipmentStatuses, required: true },
@@ -52,6 +52,7 @@ const shipmentSchema = new Schema<ShipmentInterface>(
       min: 1,
     },
     returns: [shipmentProductSchemaObject],
+    returnShipment: { type: Schema.Types.ObjectId, ref: Schemas.shipment },
     events: {
       type: [
         {

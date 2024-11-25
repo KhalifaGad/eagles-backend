@@ -1,4 +1,4 @@
-import { PopulatedDeliveryReceipt, ShipmentStatuses } from "$types";
+import { PopulatedDeliveryReceipt, ShipmentInterface, ShipmentStatuses } from "$types";
 import { DestinationHotspotReceivedState } from "./destinationHotspotReceived.state.js";
 import { DestinationAgencyReceivedState } from "./distnationAgencyReceived.state.js";
 import { HubReceivedState } from "./hubReceived.state.js";
@@ -12,22 +12,22 @@ import { DeliveryReceiptStateInterface } from "./state.js";
 export class ShipmentFlow {
   private state: DeliveryReceiptStateInterface;
 
-  constructor(private status: ShipmentStatuses, private deliveryReceipt: PopulatedDeliveryReceipt) {
+  constructor(private readonly shipment: ShipmentInterface, private deliveryReceipt: PopulatedDeliveryReceipt) {
     this.state = this.initState();
   }
 
   initState() {
-    switch (this.status) {
+    switch (this.shipment.status) {
       case ShipmentStatuses.PLACED:
         return new PlacedState(this.deliveryReceipt);
       case ShipmentStatuses.ORIGIN_HOTSPOT_RECEIVED:
         return new OriginHotspotReceivedState(this.deliveryReceipt);
       case ShipmentStatuses.HUB_RECEIVED:
-        return new HubReceivedState(this.deliveryReceipt);
+        return new HubReceivedState(this.shipment, this.deliveryReceipt);
       case ShipmentStatuses.DESTINATION_HOTSPOT_RECEIVED:
-        return new DestinationHotspotReceivedState(this.deliveryReceipt);
+        return new DestinationHotspotReceivedState(this.shipment, this.deliveryReceipt);
       case ShipmentStatuses.SHIPPED_TO_DESTINATION_HOTSPOT:
-        return new ShippedToDestinationHotspot(this.deliveryReceipt);
+        return new ShippedToDestinationHotspot(this.shipment, this.deliveryReceipt);
       case ShipmentStatuses.SHIPPED_TO_DESTINATION_AGENCY:
         return new ShippedToDestinationAgency(this.deliveryReceipt);
       case ShipmentStatuses.DESTINATION_AGENCY_RECEIVED:

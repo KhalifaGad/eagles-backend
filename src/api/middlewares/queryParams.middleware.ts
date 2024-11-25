@@ -13,14 +13,14 @@ export default (req: Request, _res: Response, next: NextFunction) => {
   const optionsFields = ["page", "pageLimit", "sortBy", "sortDirection", "showAll"];
 
   const groupedKeys = req.query.groupedKeys as string[];
-  let groupedFilter: Record<string, any> = {};
+  const groupedFilter: Record<string, any> = {};
 
   if (groupedKeys && Array.isArray(groupedKeys) && groupedKeys.length > 0) {
     groupedKeys.forEach(key => {
-      if (!groupedFilter) groupedFilter = {};
       groupedFilter[key] = req.query[key];
       delete req.query[key];
     });
+    delete req.query.groupedKeys;
   }
 
   const preparedQuery = Object.keys(req.query).reduce((accumulator, key) => {

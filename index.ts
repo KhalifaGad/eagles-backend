@@ -1,3 +1,3 @@
 import application from "./src/app.js";
 
-application();
+void application();

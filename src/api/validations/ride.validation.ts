@@ -11,6 +11,7 @@ export const createRideSchema = yup
 export const rideSchema = yup
   .object()
   .shape({
+    _id: yup.string(),
     code: yup.string().nullable(),
     employees: yup.array().of(yup.string()).min(2),
     shipments: yup.array().of(yup.string()).nullable(),
@@ -23,15 +24,14 @@ export const rideSchema = yup
           stepLocationEntity: yup.string().required(),
         })
       )
-      .min(3)
-      .required(),
+      .min(3),
     startDate: yup
       .string()
       .trim()
-      .matches(/^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/),
+      .matches(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/),
     endDate: yup
       .string()
       .trim()
-      .matches(/^(19|20)\d\d([-])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/),
+      .matches(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/),
   })
   .noUnknown();

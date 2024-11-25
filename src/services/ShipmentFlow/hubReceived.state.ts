@@ -3,6 +3,7 @@ import {
   DeliveryReceiptTypeEnum,
   PopulatedDeliveryReceipt,
   ShipmentEventType,
+  ShipmentInterface,
   ShipmentStatuses,
 } from "$types";
 import { forbidden } from "~errors/index.js";
@@ -12,7 +13,10 @@ export class HubReceivedState implements DeliveryReceiptStateInterface {
   status = ShipmentStatuses.HUB_RECEIVED;
   event?: ShipmentEventType;
 
-  constructor(private deliveryReceipt: PopulatedDeliveryReceipt) {}
+  constructor(
+    private readonly shipment: ShipmentInterface,
+    private readonly deliveryReceipt: PopulatedDeliveryReceipt
+  ) {}
 
   getState() {
     return { status: this.status, event: this.event };
@@ -31,15 +35,13 @@ export class HubReceivedState implements DeliveryReceiptStateInterface {
   }
 
   onReceiptConfirmed() {
-    const { type, recipientAgency, originatorAgency } = this.deliveryReceipt;
-
     if (!this.isValidReceipt()) {
       throw forbidden("لا يمكن استلام الشحنة من قبل الموظف الحالي");
     }
 
-    const isGoingToAgency = type === DeliveryReceiptTypeEnum.Receive ? !!originatorAgency : !!recipientAgency;
+    const hasDestinationHotspot = !!this.shipment.destinationHotspot;
 
-    if (isGoingToAgency) {
+    if (!hasDestinationHotspot) {
       this.addShippedToDestinationAgencyEvent();
       return this;
     }

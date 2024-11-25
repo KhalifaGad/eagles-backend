@@ -42,6 +42,8 @@ export enum ShipmentEventNamesEnum {
   SHIPPED = "SHIPPED",
   FAILED_ATTEMPT = "FAILED_ATTEMPT",
   RETURN = "RETURN",
+  COMPLETED = "COMPLETED",
+  RETURN_TO_ORIGIN = "RETURN_TO_ORIGIN",
 }
 
 export enum ShipmentStatuses {
@@ -81,4 +83,11 @@ export enum ShipmentDestinationEnum {
 export enum StepLocationTypeEnum {
   Agency = "Agency",
   Hub = "Hub",
+}
+
+export enum AttributedToTypeEnum {
+  AGENCY = "Agency",
+  HUB = "Hub",
+  Client = "Client",
+  Company = "Company",
 }
